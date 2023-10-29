@@ -36,8 +36,10 @@ module.exports = {
     assetModuleFilename: 'assets/[name][ext]' // asset 폴더에 있던 파일들은 dist 내부에 asset 폴더 생성후 이름과 확장자를 그대로 사용하여 저장
   },
   resolve: {
-    plugins: [new TsConfigPathsPlugin()],
-    extensions: ['.ts', '.tsx', '.js', '.json']
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    alias: {
+      '@': path.resolve(__dirname, 'src') // 예시: 별칭(alias) 설정
+    }
   },
   module: {
     rules: [
