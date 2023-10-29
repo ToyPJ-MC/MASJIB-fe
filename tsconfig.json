@@ -16,14 +16,26 @@
     "resolveJsonModule": true, //ts 는 기본적으로 json 파일 확인을 지원하지 않음. json 파일을 가져오기 위한 설정
     "isolatedModules": true, // 각 파일을 분리된 모듈로 트랜스파일
     "noEmit": true, //결과 파일을 내보낼지에 대한 여부
-    "jsx": "react-jsx" // JSX 코드 생성 설정 (preserve, react-native, 혹은 react-jsx)
+    "jsx": "react-jsx", // JSX 코드 생성 설정 (preserve, react-native, 혹은 react-jsx)
+    "baseUrl": ".", // baseUrl을 기준으로 관련된 위치에 모듈 이름의 경로 매핑 목록을 나열합니다.
+    "paths": {
+      "@/src/*": [
+        //@src로 시작하면 아래 줄의 디렉토리를 의미한다.
+        "src/*" //baseUrl을 기준으로 src/ 하위 디렉토리를 @src로 표현한다.
+      ],
+      "@/components/*": ["src/components/*"] //@components로 시작하면 components/ 하위 디렉토리를 의미한다.
+    }
   },
   "include": [
+    "src",
     "src/**/*.ts",
     "src/**/*.tsx",
     ".eslintrc.js",
     "src/**/*",
-    "**/*.json"
+    "**/*.json",
+    "react-app-env.d.ts",
+    "postcss.config.cjs",
+    "tailwind.config.cjs"
   ], // 프로그램에 포함할 파일 이름 또는 패턴의 배열을 지정. (src/**/*, tests/**/*) 예시처럼 해당 파일이 가진 디렉토리를 기준으로 확인됨.
-  "exclude": ["node_modules"] // 프로그램에 포함하지 않을 파일 이름 또는 패턴의 배열을 지정. (node_modules)
+  "exclude": ["node_modules", "./public/"] // 프로그램에 포함하지 않을 파일 이름 또는 패턴의 배열을 지정. (node_modules)
 }

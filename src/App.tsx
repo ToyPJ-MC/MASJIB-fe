@@ -1,12 +1,13 @@
-import React from 'react';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './App.css';
+import Main from './pages/Main/Main';
 
-function App() {
-  return (
-    <div className='App'>
-      <h1>React Typescript</h1>
-    </div>
-  );
-}
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Main />
+  }
+]);
+const App = () => <RouterProvider router={router} />;
 
 export default App;
