@@ -66,7 +66,7 @@ module.exports = {
       // css loader 설정
       {
         test: /\.(s*)css$/,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader', 'postcss-loader']
       },
       // image loader 설정
       {

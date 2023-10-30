@@ -1,16 +1,20 @@
 import React from 'react';
-import test from '../../assets/restaurant.jpg';
+import restaurantimg from '../../assets/restaurant.jpg';
 
 const Main = () => {
-  console.log(test);
   return (
     <div
       style={{
-        backgroundImage: `url(${test})`,
-        backgroundSize: 'cover'
+        backgroundImage: `url(${restaurantimg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        height: '100vh',
+        width: '100vw'
       }}
+      className='z-0'
     >
-      <h1>Main</h1>
+      <div className='text-lg text-white font-bold z-10'>Main</div>
     </div>
   );
 };
