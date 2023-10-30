@@ -67,6 +67,20 @@ module.exports = {
       {
         test: /\.(s*)css$/,
         use: ['style-loader', 'css-loader']
+      },
+      // image loader 설정
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader'
+          }
+        ]
+      },
+      // html loader 설정
+      {
+        test: /\.html$/,
+        use: [{ loader: 'html-loader' }]
       }
     ]
   },
@@ -90,7 +104,8 @@ module.exports = {
     // 기본 html 위치 설정.
     new HtmlWebpackPlugin({
       template: './public/index.html',
-      filename: 'index.html'
+      filename: 'index.html',
+      env: process.env
     }),
     // Typescript(타입스크립트)의 컴파일 속도 향상을 위한 플러그인을 설정
     new ForkTsCheckerWebpackPlugin(),
@@ -99,12 +114,12 @@ module.exports = {
     new CompressionPlugin({
       algorithm: 'gzip'
     }),
-
+    new TsConfigPathsPlugin({
+      configFile: './tsconfig.json'
+    }),
     // env 변수 사용을 위한 플러그인
     new webpack.DefinePlugin({
-      'process.env.REACT_APP_S3_ACCESS_KEY': JSON.stringify(
-        process.env.REACT_APP_S3_ACCESS_KEY
-      ),
+      'process.env.PUBLIC_URL': JSON.stringify(process.env.PUBLIC_URL),
       'process.env.REACT_APP_S3_SECRET_ACCESS_KEY': JSON.stringify(
         process.env.REACT_APP_S3_SECRET_ACCESS_KEY
       )
