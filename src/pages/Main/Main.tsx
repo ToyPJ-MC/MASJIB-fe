@@ -1,20 +1,13 @@
 import React from 'react';
 import restaurantimg from '../../assets/restaurant.jpg';
-import { Button, createTheme } from '@mui/material';
-
-let theme = createTheme({});
-theme = createTheme(theme, {
-  palette: {
-    white: theme.palette.augmentColor({
-      color: {
-        main: '#ffffff'
-      },
-      name: 'white'
-    })
-  }
-});
+import { Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const Main = () => {
+  const navigate = useNavigate();
+  const mapbtn = () => {
+    navigate('/masjibmap');
+  };
   return (
     <div
       style={{
@@ -38,10 +31,18 @@ const Main = () => {
                 color: 'white',
                 outlineColor: 'white',
                 border: 3,
-                ':hover': { borderColor: 'white', border: 3 },
+                ':hover': {
+                  borderColor: 'white',
+                  border: 3,
+                  backgroundColor: 'whitesmoke',
+                  color: 'black'
+                },
                 marginTop: 3,
-                borderRadius: 30
+                borderRadius: 30,
+                textAlign: 'center',
+                fontWeight: 'bold'
               }}
+              onClick={mapbtn}
             >
               Review
             </Button>
