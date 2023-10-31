@@ -3,7 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 const Map = () => {
   return (
     <div>
-      <div className='grid grid-cols-4 mt-8'>
+      <div className='grid grid-cols-4 mt-8 items-center'>
         <div className='font-bold text-4xl text-blue-500 ml-6'>MASJIB</div>
         <div className='col-span-2'>
           <TextField
@@ -31,6 +31,7 @@ const Map = () => {
           sx={{
             textAlign: 'center',
             width: '30%',
+            height: '3em',
             color: 'white',
             marginLeft: '30%',
             backgroundColor: '#3B82F6',
@@ -48,10 +49,9 @@ const Map = () => {
       </div>
       <div>
         {/*여기가 위에 상단바 밑에 구성*/}
-        dfasdfsdfdsafsda
+        Map & Categories
       </div>
     </div>
   );
 };
 export default Map;
-// 1.4375em
