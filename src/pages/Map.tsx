@@ -1,36 +1,72 @@
-import { Button, IconButton, TextField } from '@mui/material';
+import React from 'react';
+import { Autocomplete, Button, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate } from 'react-router-dom';
 const Map = () => {
+  const categoriesChange = ['한식', '중식', '일식', '양식'];
+  const navigate = useNavigate();
+  const homebtn = () => {
+    navigate('/'); // home
+  };
   return (
     <div>
-      <div className='grid grid-cols-4 mt-8 items-center'>
-        <div className='font-bold text-4xl text-blue-500 ml-6'>MASJIB</div>
-        <div className='col-span-2'>
-          <TextField
-            id='outlined-basic'
-            label='Category'
-            variant='outlined'
-            sx={{
-              width: '45%'
-            }}
-          />
-          <TextField
-            id='outlined-basic'
-            label='Location'
-            variant='outlined'
-            sx={{
-              width: '45%'
-            }}
-          />
-          <Button variant='outlined' sx={{ height: '3.55em' }}>
-            <SearchIcon />
-          </Button>
+      <div className='grid grid-cols-4 mt-8 items-center place-content-center'>
+        <div
+          className='font-bold text-4xl text-blue-500 ml-6'
+          onClick={homebtn}
+        >
+          MASJIB
+        </div>
+        <div className='col-span-2 grid grid-cols-2'>
+          <div>
+            <Autocomplete
+              disablePortal
+              id='category'
+              options={categoriesChange}
+              sx={{
+                width: '100%'
+              }}
+              renderInput={(params) => (
+                <TextField {...params} label='Categories' />
+              )}
+            />
+            {/* <TagInput
+              inputProps={{
+                placeholder: 'Choose categories'
+                // style: { fontSize: '20px', height: '60px' }
+              }}
+              values={categories}
+              onChange={setCategories}
+              autocompleteItems={autocompleteItems}
+              height={60}
+              tagProps={{
+                variant: 'solid',
+                color: 'blue',
+                fontSize: '15px',
+                height: '30px'
+              }}
+              width='100%'
+            /> */}
+          </div>
+          <div>
+            <TextField
+              id='outlined-basic'
+              label='Location'
+              variant='outlined'
+              sx={{
+                width: '80%'
+              }}
+            />
+            <Button variant='outlined' sx={{ height: '3.55em' }}>
+              <SearchIcon />
+            </Button>
+          </div>
         </div>
         <Button
           variant='outlined'
           sx={{
             textAlign: 'center',
-            width: '30%',
+            width: '25%',
             height: '3em',
             color: 'white',
             marginLeft: '30%',
