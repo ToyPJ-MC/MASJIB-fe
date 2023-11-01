@@ -1,5 +1,5 @@
 import React from 'react';
-import { Autocomplete, Button, TextField } from '@mui/material';
+import { Autocomplete, Button, Rating, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
 const Map = () => {
@@ -83,9 +83,25 @@ const Map = () => {
           Log In
         </Button>
       </div>
-      <div>
+      <div className='grid grid-cols-2'>
         {/*여기가 위에 상단바 밑에 구성*/}
-        Map & Categories
+        <div>
+          <div className='grid grid-cols-2'>
+            <div>Categories</div>
+            <div className='grid grid-rows-3'>
+              <div>
+                <div>Price</div>
+              </div>
+              <div>
+                <div>Rating</div>
+                <Rating name='half-rating' defaultValue={2.5} precision={0.5} />
+              </div>
+              <div>Favorite</div>
+            </div>
+          </div>
+          <div>Categories에 따른 음식점 리뷰들</div>
+        </div>
+        <div>Kakao Map</div>
       </div>
     </div>
   );
