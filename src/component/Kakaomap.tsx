@@ -5,7 +5,6 @@ declare global {
     kakao: any;
   }
 }
-console.log(window.kakao.maps);
 const Kakaomap = () => {
   const [lat, setLat] = useState(0);
   const [lon, setLon] = useState(0);
@@ -13,6 +12,7 @@ const Kakaomap = () => {
     new window.kakao.maps.LatLng(lat, lon)
   );
   useEffect(() => {
+    // 현재위치 받아오기
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         let lat = position.coords.latitude;
@@ -24,6 +24,7 @@ const Kakaomap = () => {
     }
   }, []);
   if (lat !== 0 && lon !== 0) {
+    // 현재 위치 마커 및 음식점 위치 마커 표시
     let container = document.getElementById('map');
     let options = {
       center: new window.kakao.maps.LatLng(lat, lon),
