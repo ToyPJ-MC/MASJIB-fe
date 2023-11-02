@@ -31,6 +31,35 @@ const Kakaomap = () => {
       level: 4
     };
     let map = new window.kakao.maps.Map(container, options);
+    let ps = new window.kakao.maps.services.Places(map);
+
+    const placesSearchCB = function (
+      result: any,
+      status: any,
+      Pagination: any
+    ) {
+      if (status === window.kakao.maps.services.Status.OK) {
+        for (let i = 0; i < result.length; i++) {
+          let marker = new window.kakao.maps.Marker({
+            map: map,
+            position: new window.kakao.maps.LatLng(result[i].y, result[i].x)
+          });
+          let infowindow = new window.kakao.maps.InfoWindow({
+            content: result[i].place_name
+          });
+          window.kakao.maps.event.addListener(marker, 'mouseover', function () {
+            infowindow.open(map, marker);
+          });
+          window.kakao.maps.event.addListener(marker, 'mouseout', function () {
+            infowindow.close();
+          });
+        }
+        if (Pagination.hasNextPage) {
+          Pagination.nextPage(); // 다음 페이지로 요청
+        }
+      }
+    };
+    ps.categorySearch('FD6', placesSearchCB, { useMapBounds: true });
     let marker = new window.kakao.maps.Marker({
       map: map,
       position: locPosition
