@@ -36,7 +36,8 @@ module.exports = {
     assetModuleFilename: 'assets/[name][ext]' // asset 폴더에 있던 파일들은 dist 내부에 asset 폴더 생성후 이름과 확장자를 그대로 사용하여 저장
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    plugins: [new TsConfigPathsPlugin()],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     alias: {
       '@': path.resolve(__dirname, 'src') // 예시: 별칭(alias) 설정
     }
@@ -119,9 +120,10 @@ module.exports = {
     }),
     // env 변수 사용을 위한 플러그인
     new webpack.DefinePlugin({
+      'process.env.KAKAO_KEY': JSON.stringify(process.env.KAKAO_KEY),
       'process.env.PUBLIC_URL': JSON.stringify(process.env.PUBLIC_URL),
-      'process.env.REACT_APP_S3_SECRET_ACCESS_KEY': JSON.stringify(
-        process.env.REACT_APP_S3_SECRET_ACCESS_KEY
+      'process.env.KAKAO_RESTAPI_KEY': JSON.stringify(
+        process.env.KAKAO_RESTAPI_KEY
       )
     })
   ]

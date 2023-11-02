@@ -1,6 +1,6 @@
 import Main from '../pages/Main/Main';
 import React from 'react';
-import Map from '../pages/Map';
+import Information from '../pages/Information';
 const Router = [
   {
     title: 'Home',
@@ -8,9 +8,9 @@ const Router = [
     component: <Main />
   },
   {
-    title: 'MASJIB MAP',
-    url: '/masjibmap',
-    component: <Map />
+    title: 'MASJIB Information',
+    url: '/information',
+    component: <Information />
   }
 ];
 export default Router;

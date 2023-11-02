@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const Main = () => {
   const navigate = useNavigate();
   const mapbtn = () => {
-    navigate('/masjibmap');
+    navigate('/information');
   };
   return (
     <div

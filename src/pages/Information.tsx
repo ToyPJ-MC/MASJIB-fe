@@ -2,7 +2,8 @@ import React from 'react';
 import { Autocomplete, Button, Rating, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
-const Map = () => {
+import Kakaomap from '../component/Kakaomap';
+const Information = () => {
   const categoriesChange = ['한식', '중식', '일식', '양식'];
   const navigate = useNavigate();
   const homebtn = () => {
@@ -30,23 +31,6 @@ const Map = () => {
                 <TextField {...params} label='Categories' />
               )}
             />
-            {/* <TagInput
-              inputProps={{
-                placeholder: 'Choose categories'
-                // style: { fontSize: '20px', height: '60px' }
-              }}
-              values={categories}
-              onChange={setCategories}
-              autocompleteItems={autocompleteItems}
-              height={60}
-              tagProps={{
-                variant: 'solid',
-                color: 'blue',
-                fontSize: '15px',
-                height: '30px'
-              }}
-              width='100%'
-            /> */}
           </div>
           <div>
             <TextField
@@ -84,7 +68,6 @@ const Map = () => {
         </Button>
       </div>
       <div className='grid grid-cols-2'>
-        {/*여기가 위에 상단바 밑에 구성*/}
         <div>
           <div className='grid grid-cols-2'>
             <div>Categories</div>
@@ -101,9 +84,11 @@ const Map = () => {
           </div>
           <div>Categories에 따른 음식점 리뷰들</div>
         </div>
-        <div>Kakao Map</div>
+        <div>
+          <Kakaomap />
+        </div>
       </div>
     </div>
   );
 };
-export default Map;
+export default Information;

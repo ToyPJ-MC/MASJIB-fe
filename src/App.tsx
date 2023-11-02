@@ -1,7 +1,7 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import React from 'react';
 import Main from './pages/Main/Main';
-import Map from './pages/Map';
+import Information from './pages/Information';
 
 const router = createBrowserRouter([
   {
@@ -9,8 +9,8 @@ const router = createBrowserRouter([
     element: <Main />
   },
   {
-    path: '/masjibmap',
-    element: <Map />
+    path: '/information',
+    element: <Information />
   }
 ]);
 const App = () => <RouterProvider router={router} />;
