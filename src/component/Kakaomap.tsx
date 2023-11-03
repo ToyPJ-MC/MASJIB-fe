@@ -11,6 +11,10 @@ const Kakaomap = () => {
   const [locPosition, setLocPosition] = useState(
     new window.kakao.maps.LatLng(lat, lon)
   );
+  let imageSrc =
+    'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
+  let imageSize = new window.kakao.maps.Size(24, 35);
+  let markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
   useEffect(() => {
     // 현재위치 받아오기
     if (navigator.geolocation) {
@@ -59,11 +63,13 @@ const Kakaomap = () => {
           Pagination.nextPage(); // 다음 페이지로 요청
         }
       }
-    };
+    }; // 128.904577167914 35.2480689110871 // 35.248081041497755 128.90452790690753
     ps.categorySearch('FD6', placesSearchCB, { useMapBounds: true });
     let marker = new window.kakao.maps.Marker({
+      // 현재 위치 마커
       map: map,
-      position: locPosition
+      position: locPosition,
+      image: markerImage
     });
     marker.setMap(map);
     let zoomControl = new window.kakao.maps.ZoomControl();
