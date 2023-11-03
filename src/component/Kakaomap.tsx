@@ -33,6 +33,7 @@ const Kakaomap = () => {
   }, []);
   if (lat !== 0 && lon !== 0) {
     // 현재 위치 마커 및 음식점 위치 마커 표시
+    console.log('check');
     let container = document.getElementById('map');
     let options = {
       center: new window.kakao.maps.LatLng(lat, lon),
@@ -57,17 +58,18 @@ const Kakaomap = () => {
                     console.log(result[0].place_name); // 음식점 이름
                     console.log(result[0].x); // 음식점 x좌표
                     console.log(result[0].y); // 음식점 y좌표
-                    let newmarker = new window.kakao.maps.Marker({
-                      // 음식점 마커
-                      map: map,
-                      position: new window.kakao.maps.LatLng(
-                        result[0].y,
-                        result[0].x
-                      )
-                    });
-                    newmarker.setPosition(mouseEvent.latLng);
                     if (code === 'FD6') {
+                      let newmarker = new window.kakao.maps.Marker({
+                        // 음식점 마커
+                        map: map,
+                        position: new window.kakao.maps.LatLng(
+                          result[0].y,
+                          result[0].x
+                        )
+                      });
+                      newmarker.setPosition(mouseEvent.latLng);
                       newmarker.setMap(map);
+                      setCode('');
                     }
                   }
                 };
@@ -79,7 +81,7 @@ const Kakaomap = () => {
         }
       );
       function searchAddrFromCoords(coords: any, callback: any) {
-        // 좌표로 행정동 주소 정보를 요청합니다
+        // 좌표로 주소 정보를 요청합니다
         geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
       }
     }
