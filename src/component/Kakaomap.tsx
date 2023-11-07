@@ -1,5 +1,6 @@
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
+import Loading from './Loading';
 
 declare global {
   interface Window {
@@ -14,6 +15,7 @@ const Kakaomap = () => {
   );
   const [markerbtn, setMarkerbtn] = useState(false);
   const [code, setCode] = useState<string>('');
+  const [test, setTest] = useState<boolean>(false);
   let imageSrc =
     'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
   let imageSize = new window.kakao.maps.Size(24, 35);
@@ -33,7 +35,6 @@ const Kakaomap = () => {
   }, []);
   if (lat !== 0 && lon !== 0) {
     // 현재 위치 마커 및 음식점 위치 마커 표시
-    console.log('check');
     let container = document.getElementById('map');
     let options = {
       center: new window.kakao.maps.LatLng(lat, lon),
@@ -55,9 +56,9 @@ const Kakaomap = () => {
                 const callback = function (result: any, status: any) {
                   if (status === window.kakao.maps.services.Status.OK) {
                     setCode(result[0].category_group_code);
-                    console.log(result[0].place_name); // 음식점 이름
-                    console.log(result[0].x); // 음식점 x좌표
-                    console.log(result[0].y); // 음식점 y좌표
+                    //console.log(result[0].place_name); // 음식점 이름
+                    //console.log(result[0].x); // 음식점 x좌표
+                    //console.log(result[0].y); // 음식점 y좌표
                     if (code === 'FD6') {
                       let newmarker = new window.kakao.maps.Marker({
                         // 음식점 마커
@@ -92,6 +93,7 @@ const Kakaomap = () => {
       Pagination: any
     ) {
       if (status === window.kakao.maps.services.Status.OK) {
+        setTest(true);
         for (let i = 0; i < result.length; i++) {
           let marker = new window.kakao.maps.Marker({
             map: map,
@@ -125,31 +127,34 @@ const Kakaomap = () => {
   }
 
   return (
-    <div>
+    <>
       <div
         id='map'
         style={{ width: '50vw', height: '100vh' }}
         className='z-0 relative'
       >
-        <Button
-          className='z-10'
-          variant='outlined'
-          sx={{
-            backgroundColor: 'white',
-            marginTop: '4px',
-            marginLeft: '4px',
-            ':hover': {
-              backgroundColor: 'white'
-            }
-          }}
-          onClick={() => {
-            setMarkerbtn(true);
-          }}
-        >
-          직접 등록하기
-        </Button>
+        {test ? null : <Loading />}
+        {test ? (
+          <Button
+            className='z-10'
+            variant='outlined'
+            sx={{
+              backgroundColor: 'white',
+              marginTop: '4px',
+              marginLeft: '4px',
+              ':hover': {
+                backgroundColor: 'white'
+              }
+            }}
+            onClick={() => {
+              setMarkerbtn(true);
+            }}
+          >
+            직접 등록하기
+          </Button>
+        ) : null}
       </div>
-    </div>
+    </>
   );
 };
 export default Kakaomap;
