@@ -9,7 +9,7 @@ const dumydataState = atom<dumyType>({
       review: 'This is a dumy review1',
       rating: 3.5,
       address: 'Dumy Address1',
-      imageUrl: '../assets/pic1.jpeg',
+      imageUrl: 'https://ifh.cc/g/X94pgc.jpg',
       category: 'Japanese'
     },
     {
@@ -17,7 +17,7 @@ const dumydataState = atom<dumyType>({
       review: 'This is a dumy review2',
       rating: 4,
       address: 'Dumy Address2',
-      imageUrl: '../assets/pic2.jpeg',
+      imageUrl: 'https://ifh.cc/g/Jx3cOs.jpg',
       category: 'Korean'
     }
   ]

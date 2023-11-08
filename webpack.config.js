@@ -72,11 +72,7 @@ module.exports = {
       // image loader 설정
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        use: [
-          {
-            loader: 'file-loader'
-          }
-        ]
+        use: [['file-loader', 'image-wepack-loader']]
       },
       // html loader 설정
       {

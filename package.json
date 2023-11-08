@@ -23,6 +23,7 @@
     "react-router-dom": "^6.14.2",
     "react-scripts": "5.0.1",
     "recoil": "^0.7.7",
+    "tailwind-scrollbar-hide": "^1.1.7",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
     "webpack-dev-server": "^4.15.1"
@@ -77,6 +78,7 @@
     "fork-ts-checker-webpack-plugin": "^8.0.0",
     "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.5.3",
+    "image-webpack-loader": "^8.1.0",
     "postcss": "^8.4.31",
     "postcss-loader": "^7.3.3",
     "prettier": "^3.0.0",
