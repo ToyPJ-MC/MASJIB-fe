@@ -16,8 +16,8 @@ interface ReviewcardProps {
 }
 const Reviewcard = (props: ReviewcardProps) => {
   return (
-    <Card className='mt-4 min-w-full'>
-      <div className='grid grid-cols-2'>
+    <Card className='min-w-full hover:border'>
+      <div className='grid grid-cols-2 w-fit'>
         <div className='w-48'>
           <img
             src={props.imageUrl}
