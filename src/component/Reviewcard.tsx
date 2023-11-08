@@ -1,4 +1,11 @@
-import { Card, CardContent, CardMedia, Typography } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Rating,
+  Typography
+} from '@mui/material';
+import { Button } from 'evergreen-ui';
 interface ReviewcardProps {
   review: string;
   rating: number;
@@ -9,21 +16,38 @@ interface ReviewcardProps {
 }
 const Reviewcard = (props: ReviewcardProps) => {
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardMedia
-        component='img'
-        height='10'
-        image={props.imageUrl}
-        alt={props.restaurantname}
-      />
-      <CardContent>
-        <Typography gutterBottom variant='h5' component='div'>
-          {props.restaurantname}
-        </Typography>
-        <Typography variant='body2' color='text.secondary'>
-          {props.review}
-        </Typography>
-      </CardContent>
+    <Card className='mt-4 min-w-full'>
+      <div className='grid grid-cols-2'>
+        <div className='w-48'>
+          <img
+            src={props.imageUrl}
+            alt={props.restaurantname}
+            className='w-48 h-48'
+          />
+        </div>
+        <div>
+          <div className='text-2xl font-bold'>{props.restaurantname}</div>
+          <div>
+            <Button size='small'>{props.category}</Button>
+          </div>
+          <div className='grid grid-cols-2 w-fit'>
+            <div className='w-fit grid items-center'>
+              <Rating
+                name='half-rating'
+                defaultValue={props.rating}
+                precision={0.5}
+                readOnly
+              />
+            </div>
+            <div className='text-sm font-light grid items-center'>
+              {props.rating}
+            </div>
+          </div>
+          <Typography variant='body2' color='text.secondary'>
+            {props.review}
+          </Typography>
+        </div>
+      </div>
     </Card>
   );
 };

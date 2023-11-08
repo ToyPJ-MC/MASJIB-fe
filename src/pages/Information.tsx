@@ -127,7 +127,7 @@ const Information = () => {
           <div>
             <div className='text-2xl font-bold'>
               TOP 10 restaurants in current location
-              <div className='overflow-auto h-96'>
+              <div className='overflow-auto h-96 scrollbar-hide'>
                 {reviewcard.map((item, index) => {
                   return (
                     <Reviewcard
