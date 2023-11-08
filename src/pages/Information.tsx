@@ -79,6 +79,8 @@ const Information = () => {
               <ButtonGroup
                 variant='outlined'
                 aria-label='outlined button group'
+                size='small'
+                sx={{ borderColor: 'black' }}
               >
                 <Button>Korean</Button>
                 <Button>Chinese</Button>
@@ -86,6 +88,7 @@ const Information = () => {
               <ButtonGroup
                 variant='outlined'
                 aria-label='outlined button group'
+                size='small'
               >
                 <Button>Japanese</Button>
                 <Button>Western food</Button>
@@ -99,6 +102,7 @@ const Information = () => {
                 <ButtonGroup
                   variant='outlined'
                   aria-label='outlined button group'
+                  size='small'
                 >
                   <Button>10+</Button>
                   <Button>50+</Button>
@@ -110,6 +114,7 @@ const Information = () => {
                 <ButtonGroup
                   variant='outlined'
                   aria-label='outlined button group'
+                  size='small'
                 >
                   <Button>10+</Button>
                   <Button>50+</Button>
