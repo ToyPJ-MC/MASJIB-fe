@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Loading from './Loading';
 import SearchModal from './SearchModal';
 import { useRecoilState } from 'recoil';
-import { modalState } from '../state/atom';
+import { modalState, searchState } from '../state/atom';
 
 declare global {
   interface Window {
@@ -17,6 +17,7 @@ const Kakaomap = () => {
     new window.kakao.maps.LatLng(lat, lon)
   );
   const [modal, setModal] = useRecoilState<boolean>(modalState);
+  const [search, setSearch] = useRecoilState<string>(searchState);
   const [loading, setLoading] = useState<boolean>(false);
   let imageSrc =
     'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
@@ -35,54 +36,106 @@ const Kakaomap = () => {
       });
     }
   }, []);
-  if (lat !== 0 && lon !== 0) {
-    // 현재 위치 마커 및 음식점 위치 마커 표시
-    let container = document.getElementById('map');
-    let options = {
-      center: new window.kakao.maps.LatLng(lat, lon),
-      level: 4
-    };
-    let map = new window.kakao.maps.Map(container, options);
-    let ps = new window.kakao.maps.services.Places(map);
-    const placesSearchCB = function (
-      // 음식점 마커 표시
-      result: any,
-      status: any,
-      Pagination: any
-    ) {
-      if (status === window.kakao.maps.services.Status.OK) {
-        setLoading(true);
-        for (let i = 0; i < result.length; i++) {
+  useEffect(() => {
+    if (lat !== 0 && lon !== 0) {
+      console.log('Rendering');
+      // 현재 위치 마커 및 음식점 위치 마커 표시
+      let container = document.getElementById('map');
+      let options = {
+        center: new window.kakao.maps.LatLng(lat, lon),
+        level: 4
+      };
+      let map = new window.kakao.maps.Map(container, options);
+      let ps = new window.kakao.maps.services.Places(map);
+      let place = new window.kakao.maps.services.Places();
+      console.log(search);
+      if (search === 'Restaurant') {
+        console.log('check');
+        const placesSearchCB = function (
+          // 음식점 마커 표시
+          result: any,
+          status: any,
+          Pagination: any
+        ) {
+          if (status === window.kakao.maps.services.Status.OK) {
+            setLoading(true);
+            for (let i = 0; i < result.length; i++) {
+              let marker = new window.kakao.maps.Marker({
+                map: map,
+                position: new window.kakao.maps.LatLng(result[i].y, result[i].x)
+              });
+              let infowindow = new window.kakao.maps.InfoWindow({
+                content: result[i].place_name
+              });
+              window.kakao.maps.event.addListener(
+                marker,
+                'mouseover',
+                function () {
+                  infowindow.open(map, marker);
+                }
+              );
+              window.kakao.maps.event.addListener(
+                marker,
+                'mouseout',
+                function () {
+                  infowindow.close();
+                }
+              );
+            }
+            if (Pagination.hasNextPage) {
+              Pagination.nextPage(); // 다음 페이지로 요청
+            }
+          }
+        };
+        ps.categorySearch('FD6', placesSearchCB, { useMapBounds: true });
+      }
+      if (search !== 'Restaurant') {
+        place.keywordSearch(search, modalSearchCB);
+        function modalSearchCB(
+          // 음식점 검색 마커 표시
+          result: any,
+          status: any,
+          Pagination: any
+        ) {
+          if (status === window.kakao.maps.services.Status.OK) {
+            setLoading(true);
+            let bounds = new window.kakao.maps.LatLngBounds();
+            for (let i = 0; i < result.length; i++) {
+              displayMarker(result[i]);
+              bounds.extend(
+                new window.kakao.maps.LatLng(result[i].y, result[i].x)
+              );
+            }
+            map.setBounds(bounds);
+          }
+        }
+        function displayMarker(place: any) {
+          let infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
           let marker = new window.kakao.maps.Marker({
             map: map,
-            position: new window.kakao.maps.LatLng(result[i].y, result[i].x)
+            position: new window.kakao.maps.LatLng(place.y, place.x)
           });
-          let infowindow = new window.kakao.maps.InfoWindow({
-            content: result[i].place_name
-          });
-          window.kakao.maps.event.addListener(marker, 'mouseover', function () {
+          window.kakao.maps.event.addListener(marker, 'click', function () {
+            infowindow.setContent(
+              '<div style="padding:5px;font-size:12px;">' +
+                place.place_name +
+                '</div>'
+            );
             infowindow.open(map, marker);
           });
-          window.kakao.maps.event.addListener(marker, 'mouseout', function () {
-            infowindow.close();
-          });
-        }
-        if (Pagination.hasNextPage) {
-          Pagination.nextPage(); // 다음 페이지로 요청
         }
       }
-    };
-    ps.categorySearch('FD6', placesSearchCB, { useMapBounds: true });
-    let marker = new window.kakao.maps.Marker({
-      // 현재 위치 마커
-      map: map,
-      position: locPosition,
-      image: markerImage
-    });
-    marker.setMap(map);
-    let zoomControl = new window.kakao.maps.ZoomControl();
-    map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
-  }
+      let marker = new window.kakao.maps.Marker({
+        // 현재 위치 마커
+        map: map,
+        position: locPosition,
+        image: markerImage
+      });
+      marker.setMap(map);
+      let zoomControl = new window.kakao.maps.ZoomControl();
+      map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
+    }
+  }, [lat, lon, search]);
 
   return (
     <>

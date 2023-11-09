@@ -26,5 +26,9 @@ const modalState = atom<boolean>({
   key: 'modal',
   default: false
 });
+const searchState = atom<string>({
+  key: 'search',
+  default: 'Restaurant'
+});
 
-export { dumydataState, modalState };
+export { dumydataState, modalState, searchState };
