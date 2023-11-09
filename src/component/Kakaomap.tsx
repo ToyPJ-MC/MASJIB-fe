@@ -38,7 +38,6 @@ const Kakaomap = () => {
   }, []);
   useEffect(() => {
     if (lat !== 0 && lon !== 0) {
-      console.log('Rendering');
       // 현재 위치 마커 및 음식점 위치 마커 표시
       let container = document.getElementById('map');
       let options = {
@@ -48,9 +47,8 @@ const Kakaomap = () => {
       let map = new window.kakao.maps.Map(container, options);
       let ps = new window.kakao.maps.services.Places(map);
       let place = new window.kakao.maps.services.Places();
-      console.log(search);
+
       if (search === 'Restaurant') {
-        console.log('check');
         const placesSearchCB = function (
           // 음식점 마커 표시
           result: any,
@@ -108,6 +106,9 @@ const Kakaomap = () => {
             }
             map.setBounds(bounds);
           }
+          if (Pagination.hasNextPage) {
+            Pagination.nextPage(); // 다음 페이지로 요청
+          }
         }
         function displayMarker(place: any) {
           let infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
@@ -135,7 +136,7 @@ const Kakaomap = () => {
       let zoomControl = new window.kakao.maps.ZoomControl();
       map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
     }
-  }, [lat, lon, search]);
+  }, [lat, lon, search, modal]);
 
   return (
     <>
@@ -145,7 +146,7 @@ const Kakaomap = () => {
         className='z-0 relative'
       >
         {loading ? null : <Loading />}
-        {loading ? (
+        {loading && !modal ? (
           <Button
             className='z-10'
             variant='outlined'

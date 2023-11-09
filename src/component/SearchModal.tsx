@@ -1,7 +1,7 @@
 import { Dialog, TextField } from '@mui/material';
 import { useRecoilState } from 'recoil';
 import { modalState, searchState } from '../state/atom';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useState } from 'react';
 
 const SearchModal = () => {
   const [modal, setModal] = useRecoilState<boolean>(modalState);
@@ -10,7 +10,6 @@ const SearchModal = () => {
   const handleClose = () => {
     setModal(false);
   };
-
   return (
     <Dialog open={modal} onClose={handleClose}>
       <div>
