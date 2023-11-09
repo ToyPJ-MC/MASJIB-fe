@@ -13,6 +13,7 @@ const SearchModal = () => {
   return (
     <Dialog open={modal} onClose={handleClose}>
       <div>
+        <div>검색할 음식점</div>
         <TextField
           id='Restuarant-basic'
           label='Restuarant'

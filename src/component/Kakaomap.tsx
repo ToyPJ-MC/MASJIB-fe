@@ -99,6 +99,7 @@ const Kakaomap = () => {
             setLoading(true);
             let bounds = new window.kakao.maps.LatLngBounds();
             for (let i = 0; i < result.length; i++) {
+              if (result[i].category_group_code !== 'FD6') continue;
               displayMarker(result[i]);
               bounds.extend(
                 new window.kakao.maps.LatLng(result[i].y, result[i].x)
