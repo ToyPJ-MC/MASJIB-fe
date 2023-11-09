@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { dumyType } from '../types';
+import { SearchType, dumyType } from '../types';
 
 const dumydataState = atom<dumyType>({
   key: 'dumydata',
@@ -30,5 +30,9 @@ const searchState = atom<string>({
   key: 'search',
   default: 'Restaurant'
 });
+const searchResultState = atom<SearchType>({
+  key: 'searchResult',
+  default: []
+});
 
-export { dumydataState, modalState, searchState };
+export { dumydataState, modalState, searchState, searchResultState };

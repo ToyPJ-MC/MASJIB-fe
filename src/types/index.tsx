@@ -6,5 +6,10 @@ type dumyType = {
   imageUrl: string;
   category: string;
 }[];
+type SearchType = {
+  phone: string;
+  place_name: string;
+  road_address_name: string;
+}[];
 
-export type { dumyType };
+export type { dumyType, SearchType };

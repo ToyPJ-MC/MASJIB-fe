@@ -2,8 +2,9 @@ import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Loading from './Loading';
 import SearchModal from './SearchModal';
-import { useRecoilState } from 'recoil';
-import { modalState, searchState } from '../state/atom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { modalState, searchResultState, searchState } from '../state/atom';
+import { SearchType } from '../types';
 
 declare global {
   interface Window {
@@ -17,7 +18,9 @@ const Kakaomap = () => {
     new window.kakao.maps.LatLng(lat, lon)
   );
   const [modal, setModal] = useRecoilState<boolean>(modalState);
-  const [search, setSearch] = useRecoilState<string>(searchState);
+  const search = useRecoilValue<string>(searchState);
+  const [searchResult, setSearchResult] =
+    useRecoilState<SearchType>(searchResultState);
   const [loading, setLoading] = useState<boolean>(false);
   let imageSrc =
     'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
@@ -97,6 +100,17 @@ const Kakaomap = () => {
         ) {
           if (status === window.kakao.maps.services.Status.OK) {
             setLoading(true);
+            result.map((item: any) => {
+              if (item.category_group_code !== 'FD6') return;
+              setSearchResult((prev) => [
+                ...prev,
+                {
+                  phone: item.phone,
+                  place_name: item.place_name,
+                  road_address_name: item.road_address_name
+                }
+              ]);
+            });
             let bounds = new window.kakao.maps.LatLngBounds();
             for (let i = 0; i < result.length; i++) {
               if (result[i].category_group_code !== 'FD6') continue;
