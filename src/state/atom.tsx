@@ -22,5 +22,9 @@ const dumydataState = atom<dumyType>({
     }
   ]
 });
+const modalState = atom<boolean>({
+  key: 'modal',
+  default: false
+});
 
-export { dumydataState };
+export { dumydataState, modalState };

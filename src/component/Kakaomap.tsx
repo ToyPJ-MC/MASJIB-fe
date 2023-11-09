@@ -1,6 +1,9 @@
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Loading from './Loading';
+import SearchModal from './SearchModal';
+import { useRecoilState } from 'recoil';
+import { modalState } from '../state/atom';
 
 declare global {
   interface Window {
@@ -13,9 +16,8 @@ const Kakaomap = () => {
   const [locPosition, setLocPosition] = useState(
     new window.kakao.maps.LatLng(lat, lon)
   );
-  const [markerbtn, setMarkerbtn] = useState(false);
-  const [code, setCode] = useState<string>('');
-  const [test, setTest] = useState<boolean>(false);
+  const [modal, setModal] = useRecoilState<boolean>(modalState);
+  const [loading, setLoading] = useState<boolean>(false);
   let imageSrc =
     'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
   let imageSize = new window.kakao.maps.Size(24, 35);
@@ -42,50 +44,6 @@ const Kakaomap = () => {
     };
     let map = new window.kakao.maps.Map(container, options);
     let ps = new window.kakao.maps.services.Places(map);
-    if (markerbtn) {
-      let geocoder = new window.kakao.maps.services.Geocoder();
-      let places = new window.kakao.maps.services.Places();
-      window.kakao.maps.event.addListener(
-        map,
-        'click',
-        function (mouseEvent: any) {
-          searchAddrFromCoords(
-            mouseEvent.latLng,
-            function (result: any, status: any) {
-              if (status === window.kakao.maps.services.Status.OK) {
-                const callback = function (result: any, status: any) {
-                  if (status === window.kakao.maps.services.Status.OK) {
-                    setCode(result[0].category_group_code);
-                    //console.log(result[0].place_name); // 음식점 이름
-                    //console.log(result[0].x); // 음식점 x좌표
-                    //console.log(result[0].y); // 음식점 y좌표
-                    if (code === 'FD6') {
-                      let newmarker = new window.kakao.maps.Marker({
-                        // 음식점 마커
-                        map: map,
-                        position: new window.kakao.maps.LatLng(
-                          result[0].y,
-                          result[0].x
-                        )
-                      });
-                      newmarker.setPosition(mouseEvent.latLng);
-                      newmarker.setMap(map);
-                      setCode('');
-                    }
-                  }
-                };
-                places.keywordSearch(result[0].address.address_name, callback);
-                // 마우스로 클릭한 곳이 음식점이면 마커 표시
-              }
-            }
-          );
-        }
-      );
-      function searchAddrFromCoords(coords: any, callback: any) {
-        // 좌표로 주소 정보를 요청합니다
-        geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
-      }
-    }
     const placesSearchCB = function (
       // 음식점 마커 표시
       result: any,
@@ -93,7 +51,7 @@ const Kakaomap = () => {
       Pagination: any
     ) {
       if (status === window.kakao.maps.services.Status.OK) {
-        setTest(true);
+        setLoading(true);
         for (let i = 0; i < result.length; i++) {
           let marker = new window.kakao.maps.Marker({
             map: map,
@@ -133,8 +91,8 @@ const Kakaomap = () => {
         style={{ width: '50vw', height: '100vh' }}
         className='z-0 relative'
       >
-        {test ? null : <Loading />}
-        {test ? (
+        {loading ? null : <Loading />}
+        {loading ? (
           <Button
             className='z-10'
             variant='outlined'
@@ -147,12 +105,13 @@ const Kakaomap = () => {
               }
             }}
             onClick={() => {
-              setMarkerbtn(true);
+              setModal(true);
             }}
           >
             직접 등록하기
           </Button>
         ) : null}
+        {modal ? <SearchModal /> : null}
       </div>
     </>
   );
