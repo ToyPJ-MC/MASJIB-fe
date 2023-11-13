@@ -5,6 +5,8 @@ import SearchModal from './SearchModal';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { modalState, searchResultState, searchState } from '../state/atom';
 import { SearchType } from '../types';
+import Review from '../pages/Review';
+import { Link, useNavigate } from 'react-router-dom';
 
 declare global {
   interface Window {
@@ -26,6 +28,7 @@ const Kakaomap = () => {
     'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
   let imageSize = new window.kakao.maps.Size(24, 35);
   let markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 현재위치 받아오기
@@ -132,6 +135,10 @@ const Kakaomap = () => {
             position: new window.kakao.maps.LatLng(place.y, place.x)
           });
           window.kakao.maps.event.addListener(marker, 'click', function () {
+            window.open(
+              `/review?restaurantname=${place.place_name}&address=${place.road_address_name}&x=${place.x}&y=${place.y}`,
+              '_blank'
+            );
             infowindow.setContent(
               '<div style="padding:5px;font-size:12px;">' +
                 place.place_name +

@@ -9,10 +9,12 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import Kakaomap from '../component/Kakaomap';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { dumydataState } from '../state/atom';
+import { dumydataState, loginmodalState } from '../state/atom';
 import Reviewcard from '../component/Reviewcard';
+import LoginModal from '../component/LoginModal';
 const Information = () => {
   const categoriesChange = ['한식', '중식', '일식', '양식'];
+  const [modal, setModal] = useRecoilState<boolean>(loginmodalState);
   const reviewcard = useRecoilValue(dumydataState);
   return (
     <div className='h-screen w-screen overflow-hidden'>
@@ -66,11 +68,15 @@ const Information = () => {
                 color: 'white'
               }
             }}
+            onClick={() => {
+              setModal(true);
+            }}
           >
             Log In
           </Button>
         </div>
       </div>
+      {modal ? <LoginModal /> : null}
       <div className='grid grid-cols-2'>
         <div className='ml-4'>
           <div className='grid grid-cols-2'>

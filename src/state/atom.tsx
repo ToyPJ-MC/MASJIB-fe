@@ -30,9 +30,19 @@ const searchState = atom<string>({
   key: 'search',
   default: 'Restaurant'
 });
+const loginmodalState = atom<boolean>({
+  key: 'loginmodal',
+  default: false
+});
 const searchResultState = atom<SearchType>({
   key: 'searchResult',
   default: []
 });
 
-export { dumydataState, modalState, searchState, searchResultState };
+export {
+  dumydataState,
+  modalState,
+  searchState,
+  searchResultState,
+  loginmodalState
+};
