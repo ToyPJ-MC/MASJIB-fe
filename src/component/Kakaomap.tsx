@@ -5,8 +5,6 @@ import SearchModal from './SearchModal';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { modalState, searchResultState, searchState } from '../state/atom';
 import { SearchType } from '../types';
-import Review from '../pages/Review';
-import { Link, useNavigate } from 'react-router-dom';
 
 declare global {
   interface Window {
@@ -28,7 +26,6 @@ const Kakaomap = () => {
     'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
   let imageSize = new window.kakao.maps.Size(24, 35);
   let markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
-  const navigate = useNavigate();
 
   useEffect(() => {
     // 현재위치 받아오기
@@ -68,8 +65,25 @@ const Kakaomap = () => {
                 map: map,
                 position: new window.kakao.maps.LatLng(result[i].y, result[i].x)
               });
+
+              displayMarker(result[i]);
+            }
+            if (Pagination.hasNextPage) {
+              Pagination.nextPage(); // 다음 페이지로 요청
+            }
+            function displayMarker(place: any) {
+              let marker = new window.kakao.maps.Marker({
+                map: map,
+                position: new window.kakao.maps.LatLng(place.y, place.x)
+              });
               let infowindow = new window.kakao.maps.InfoWindow({
-                content: result[i].place_name
+                content: place.place_name
+              });
+              window.kakao.maps.event.addListener(marker, 'click', function () {
+                window.open(
+                  `/review?restaurantname=${place.place_name}&address=${place.road_address_name}&x=${place.x}&y=${place.y}`,
+                  '_blank'
+                );
               });
               window.kakao.maps.event.addListener(
                 marker,
@@ -85,9 +99,6 @@ const Kakaomap = () => {
                   infowindow.close();
                 }
               );
-            }
-            if (Pagination.hasNextPage) {
-              Pagination.nextPage(); // 다음 페이지로 요청
             }
           }
         };
@@ -129,22 +140,24 @@ const Kakaomap = () => {
           }
         }
         function displayMarker(place: any) {
-          let infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
           let marker = new window.kakao.maps.Marker({
             map: map,
             position: new window.kakao.maps.LatLng(place.y, place.x)
+          });
+          let infowindow = new window.kakao.maps.InfoWindow({
+            content: place.place_name
           });
           window.kakao.maps.event.addListener(marker, 'click', function () {
             window.open(
               `/review?restaurantname=${place.place_name}&address=${place.road_address_name}&x=${place.x}&y=${place.y}`,
               '_blank'
             );
-            infowindow.setContent(
-              '<div style="padding:5px;font-size:12px;">' +
-                place.place_name +
-                '</div>'
-            );
+          });
+          window.kakao.maps.event.addListener(marker, 'mouseover', function () {
             infowindow.open(map, marker);
+          });
+          window.kakao.maps.event.addListener(marker, 'mouseout', function () {
+            infowindow.close();
           });
         }
       }
