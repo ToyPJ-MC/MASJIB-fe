@@ -22,7 +22,8 @@ const SearchModal = () => {
       open={modal}
       onClose={handleClose}
       aria-labelledby='alert-dialog-title'
-      fullWidth={true}
+      maxWidth='md'
+      sx={{ height: '50vh' }}
     >
       <div className='grid grid-cols-2'>
         <div className='border border-l-0 border-t-0 border-b-0'>
@@ -40,14 +41,22 @@ const SearchModal = () => {
                   setSearchResult([]);
                 }
               }}
-              sx={{ marginBottom: '1em' }}
+              sx={{ marginBottom: '1em', borderRadius: '50px' }}
             />
           </DialogContent>
+          <div className='ml-2 font-extralight sticky top-10'>
+            Kakao API를 사용하는 서비스라 최대 45개밖에 <br></br>안 나오는 점
+            양해부탁드립니다.
+          </div>
+          <div className='ml-2 text-slate-400 font-extralight sticky top-24'>
+            Please understand that since this is a service that uses the Kakao
+            API, there are only 45 items in total.
+          </div>
         </div>
         <div>
           {searchResult.map((item, index) => {
             return (
-              <div key={index}>
+              <div key={index} className='ml-2'>
                 <div>{item.place_name}</div>
                 <div>{item.road_address_name}</div>
                 <div>{item.phone}</div>
