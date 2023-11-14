@@ -184,28 +184,26 @@ const Review = () => {
               </Button>
             </div>
           </div>
-          <div className='grid grid-cols-4 place-items-center ml-12 mt-10'>
-            <div>
-              <div>Overall Rating</div>
-              <div className='w-fit grid items-center'>
-                <Rating
-                  name='half-rating'
-                  defaultValue={3.5}
-                  precision={0.5}
-                  readOnly
-                  size='large'
-                  emptyIcon={
-                    <StarIcon className='text-gray-300' fontSize='inherit' />
-                  }
-                />
-              </div>
-              <div className='grid grid-cols-2 w-fit'>
-                <div className='text-sm font-medium grid items-center'>3.5</div>
-                <div className='text-sm font-medium grid items-center'>
-                  (167reviews)
-                </div>
-              </div>
+          <div className='text-center font-bold text-xl mt-10'>
+            Overall Rating
+          </div>
+          <div className='grid grid-cols-3 place-items-center mt-4'>
+            <div className='text-lg font-medium'>167 Reviews</div>
+            <div className='w-fit grid items-center'>
+              <Rating
+                name='half-rating'
+                defaultValue={3.5}
+                precision={0.5}
+                readOnly
+                size='large'
+                emptyIcon={
+                  <StarIcon className='text-gray-300' fontSize='inherit' />
+                }
+              />
             </div>
+            <div className='text-lg font-medium'>3.5</div>
+          </div>
+          <div className='grid grid-cols-3 mt-10'>
             <div className='grid place-items-center'>
               <div>맛</div>
               <div className='grid grid-cols-2'>
