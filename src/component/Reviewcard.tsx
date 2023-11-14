@@ -1,7 +1,5 @@
 import {
   Card,
-  CardContent,
-  CardMedia,
   Rating,
   Typography
 } from '@mui/material';
