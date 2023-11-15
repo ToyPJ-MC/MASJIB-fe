@@ -84,9 +84,12 @@ module.exports = {
   // proxy 설정
   devServer: {
     historyApiFallback: true,
-    // proxy: {
-    //   "/api": "http://localhost:5000",
-    // },
+    proxy: {
+      '/v2/search/image': {
+        target: 'https://dapi.kakao.com',
+        changeOrigin: true
+      }
+    },
     static: {
       directory: path.resolve(__dirname, 'dist')
     },

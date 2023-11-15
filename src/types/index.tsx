@@ -11,5 +11,8 @@ type SearchType = {
   place_name: string;
   road_address_name: string;
 }[];
+type searchImageType = {
+  imageUrl: string;
+}[];
 
-export type { dumyType, SearchType };
+export type { dumyType, SearchType,searchImageType };

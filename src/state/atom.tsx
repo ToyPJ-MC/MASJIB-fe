@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { SearchType, dumyType } from '../types';
+import { SearchType, dumyType, searchImageType } from '../types';
 
 const dumydataState = atom<dumyType>({
   key: 'dumydata',
@@ -38,11 +38,16 @@ const searchResultState = atom<SearchType>({
   key: 'searchResult',
   default: []
 });
+const searchImageState = atom<searchImageType>({
+  key: 'searchImage',
+  default: []
+});
 
 export {
   dumydataState,
   modalState,
   searchState,
   searchResultState,
-  loginmodalState
+  loginmodalState,
+  searchImageState
 };

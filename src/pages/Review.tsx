@@ -1,4 +1,15 @@
-import { Button, Rating } from '@mui/material';
+import {
+  Button,
+  FormControl,
+  ImageList,
+  ImageListItem,
+  InputLabel,
+  Menu,
+  MenuItem,
+  Rating,
+  Select,
+  SelectChangeEvent
+} from '@mui/material';
 import yami from '../assets/image.jpeg';
 import rest from '../assets/restaurant.jpg';
 import Carousel from 'react-material-ui-carousel';
@@ -8,13 +19,30 @@ import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined';
 import BookmarkAddOutlinedIcon from '@mui/icons-material/BookmarkAddOutlined';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import ThumbDownAltOutlinedIcon from '@mui/icons-material/ThumbDownAltOutlined';
+import CleanHandsOutlinedIcon from '@mui/icons-material/CleanHandsOutlined';
+import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
+import TagFacesOutlinedIcon from '@mui/icons-material/TagFacesOutlined';
+import { useEffect, useState } from 'react';
+import { BlogSearchAPI } from '../apis/server';
+import { useRecoilState } from 'recoil';
+import { searchImageType } from '../types';
+import { searchImageState } from '../state/atom';
 const Review = () => {
   const urlparams = new URLSearchParams(location.search);
+  const [sort, setSort] = useState<string>('Newest First');
+  const [sortReview, setSortReview] = useState<string>('Based Review');
+  const [blog, setBlog] = useRecoilState<searchImageType>(searchImageState);
   const params = {
     restaurantname: urlparams.get('restaurantname'),
     address: urlparams.get('address'),
     x: urlparams.get('x'),
     y: urlparams.get('y')
+  };
+  const sortChange = (event: SelectChangeEvent) => {
+    setSort(event.target.value as string);
+  };
+  const sortReviewChange = (event: SelectChangeEvent) => {
+    setSortReview(event.target.value as string);
   };
   const data = [
     {
@@ -58,9 +86,12 @@ const Review = () => {
     return imageList;
   };
   const imageList = chunkArray(data, 2);
+  useEffect(() => {
+    BlogSearchAPI(params.restaurantname + params.address!, setBlog);
+  }, []);
   return (
     <>
-      <div className='z-0 relative'>
+      <div className='z-0 relative w-full'>
         <Carousel
           autoPlay={false}
           animation='slide'
@@ -72,20 +103,19 @@ const Review = () => {
               <div key={index} className='grid grid-cols-2 w-full h-80'>
                 {item.map((item: any) => {
                   return (
-                    <div>
-                      <img
-                        src={item.imgAddress}
-                        alt={item.imgAddress}
-                        className='w-full h-80 brightness-[0.7]'
-                      />
-                    </div>
+                    <img
+                      src={item.imgAddress}
+                      alt={item.imgAddress}
+                      className='w-screen h-80 brightness-[0.7]'
+                      key={item.id}
+                    />
                   );
                 })}
               </div>
             );
           })}
         </Carousel>
-        <div className='z-10 l absolute bottom-24 left-32'>
+        <div className='z-10 l absolute bottom-14 left-32'>
           <div className='font-extrabold text-white text-3xl'>
             {params.restaurantname}
           </div>
@@ -205,47 +235,123 @@ const Review = () => {
           </div>
           <div className='grid grid-cols-3 mt-10'>
             <div className='grid place-items-center'>
-              <div>맛</div>
+              <RestaurantOutlinedIcon fontSize='large' />
+              <div className='text-lg font-semibold'>맛</div>
               <div className='grid grid-cols-2'>
                 <div className='grid place-items-center'>
-                  <ThumbUpAltOutlinedIcon />
-                  <div>4</div>
+                  <ThumbUpAltOutlinedIcon
+                    sx={{ color: '#1E90FF' }}
+                    fontSize='medium'
+                  />
+                  <div className='font-medium text-sm'>4</div>
                 </div>
                 <div className='grid place-items-center'>
-                  <ThumbDownAltOutlinedIcon />
-                  <div>3</div>
+                  <ThumbDownAltOutlinedIcon
+                    sx={{ color: '#FF4500' }}
+                    fontSize='medium'
+                  />
+                  <div className='font-medium text-sm'>3</div>
                 </div>
               </div>
             </div>
             <div className='grid place-items-center'>
-              <div>위생</div>
+              <CleanHandsOutlinedIcon fontSize='large' />
+              <div className='text-lg font-semibold'>위생</div>
               <div className='grid grid-cols-2'>
                 <div className='grid place-items-center'>
-                  <ThumbUpAltOutlinedIcon />
-                  <div>3</div>
+                  <ThumbUpAltOutlinedIcon
+                    sx={{ color: '#1E90FF' }}
+                    fontSize='medium'
+                  />
+                  <div className='font-medium text-sm'>3</div>
                 </div>
                 <div className='grid place-items-center'>
-                  <ThumbDownAltOutlinedIcon />
-                  <div>8</div>
+                  <ThumbDownAltOutlinedIcon
+                    sx={{ color: '#FF4500' }}
+                    fontSize='medium'
+                  />
+                  <div className='font-medium text-sm'>8</div>
                 </div>
               </div>
             </div>
             <div className='grid place-items-center'>
-              <div>친절함</div>
+              <TagFacesOutlinedIcon fontSize='large' />
+              <div className='text-lg font-semibold'>친절함</div>
               <div className='grid grid-cols-2'>
                 <div className='grid place-items-center'>
-                  <ThumbUpAltOutlinedIcon />
-                  <div>1</div>
+                  <ThumbUpAltOutlinedIcon
+                    sx={{ color: '#1E90FF' }}
+                    fontSize='medium'
+                  />
+                  <div className='font-medium text-sm'>1</div>
                 </div>
                 <div className='grid place-items-center'>
-                  <ThumbDownAltOutlinedIcon />
-                  <div>0</div>
+                  <ThumbDownAltOutlinedIcon
+                    sx={{ color: '#FF4500' }}
+                    fontSize='medium'
+                  />
+                  <div className='font-medium text-sm'>0</div>
                 </div>
               </div>
             </div>
           </div>
+          <div className='mt-20 ml-8 grid grid-cols-2'>
+            <div>
+              <div>Sort by</div>
+              <FormControl>
+                <Select
+                  labelId='demo-controlled-open-select-label'
+                  id='demo-controlled-open-select'
+                  value={sort}
+                  onChange={sortChange}
+                >
+                  <MenuItem value={'Newest First'}>Newest First</MenuItem>
+                  <MenuItem value={'Oldest First'}>Oldest First</MenuItem>
+                  <MenuItem value={'Highest Rated'}>Highest Rated</MenuItem>
+                  <MenuItem value={'Lowest Rated'}>Lowest Rated</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+            <div>
+              <div>Review by</div>
+              <FormControl>
+                <Select
+                  labelId='demo-controlled-open-select-label'
+                  id='demo-controlled-open-select'
+                  value={sortReview}
+                  onChange={sortReviewChange}
+                >
+                  <MenuItem value={'Based Review'}>Based Review</MenuItem>
+                  <MenuItem value={'Only Pictures Review'}>
+                    Only Pictures Review
+                  </MenuItem>
+                  <MenuItem value={'Only Writing Review'}>
+                    Only Writing Review
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+          </div>
+          <div className='mt-10 ml-10'>리뷰</div>
         </div>
-        <div>아직미정</div>
+        {blog.length !== 0 ? (
+          <div className='grid place-items-center'>
+            <ImageList
+              sx={{ width: 500, height: 450 }}
+              cols={3}
+              rowHeight={164}
+            >
+              {blog.map((item, index) => (
+                <ImageListItem key={index}>
+                  <img
+                    srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                    src={`${item}?w=164&h=164&fit=crop&auto=format`}
+                  />
+                </ImageListItem>
+              ))}
+            </ImageList>
+          </div>
+        ) : null}
       </div>
     </>
   );
