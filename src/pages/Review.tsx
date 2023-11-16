@@ -26,12 +26,14 @@ import { useEffect, useState } from 'react';
 import { BlogSearchAPI } from '../apis/server';
 import { useRecoilState } from 'recoil';
 import { searchImageType } from '../types';
-import { searchImageState } from '../state/atom';
+import { searchImageState, writemodalState } from '../state/atom';
+import Write from '../component/Write';
 const Review = () => {
   const urlparams = new URLSearchParams(location.search);
   const [sort, setSort] = useState<string>('Newest First');
   const [sortReview, setSortReview] = useState<string>('Based Review');
   const [blog, setBlog] = useRecoilState<searchImageType>(searchImageState);
+  const [open, setOpen] = useRecoilState<boolean>(writemodalState);
   const params = {
     restaurantname: urlparams.get('restaurantname'),
     address: urlparams.get('address'),
@@ -89,8 +91,12 @@ const Review = () => {
   useEffect(() => {
     BlogSearchAPI(params.restaurantname + params.address!, setBlog);
   }, []);
+  const WriteReview = () => {
+    setOpen(true);
+  };
   return (
     <>
+      {open ? <Write /> : null}
       <div className='z-0 relative w-full'>
         <Carousel
           autoPlay={false}
@@ -160,6 +166,7 @@ const Review = () => {
                     color: 'white'
                   }
                 }}
+                onClick={WriteReview}
               >
                 <StarBorder sx={{ placeItems: 'center' }} fontSize='small' />
                 Write Review
@@ -332,7 +339,6 @@ const Review = () => {
               </FormControl>
             </div>
           </div>
-          <div className='mt-10 ml-10'>리뷰</div>
         </div>
         {blog.length !== 0 ? (
           <div className='grid place-items-center'>

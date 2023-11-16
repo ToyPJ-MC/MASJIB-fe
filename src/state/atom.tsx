@@ -42,6 +42,10 @@ const searchImageState = atom<searchImageType>({
   key: 'searchImage',
   default: []
 });
+const writemodalState = atom<boolean>({
+  key: 'writemodal',
+  default: true
+});
 
 export {
   dumydataState,
@@ -49,5 +53,6 @@ export {
   searchState,
   searchResultState,
   loginmodalState,
-  searchImageState
+  searchImageState,
+  writemodalState
 };
