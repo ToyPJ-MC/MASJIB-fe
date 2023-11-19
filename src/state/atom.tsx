@@ -44,7 +44,7 @@ const searchImageState = atom<searchImageType>({
 });
 const writemodalState = atom<boolean>({
   key: 'writemodal',
-  default: true
+  default: false
 });
 
 export {

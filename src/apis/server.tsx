@@ -33,3 +33,15 @@ export const BlogSearchAPI = async (
       console.log(err);
     });
 };
+export const LoginAPI = async (code: string) => {
+  await axios
+    .post('/login', {
+      code: code
+    })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
