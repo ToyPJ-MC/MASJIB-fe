@@ -333,15 +333,22 @@ const Review = () => {
         {blog.length !== 0 ? (
           <div className='grid place-items-center'>
             <ImageList
-              sx={{ width: 500, height: 450 }}
+              sx={{
+                width: 500,
+                height: 450,
+                border: '3px solid black'
+              }}
               cols={3}
               rowHeight={164}
             >
               {blog.map((item, index) => (
                 <ImageListItem key={index}>
                   <img
-                    srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                    src={`${item}?w=164&h=164&fit=crop&auto=format`}
+                    srcSet={`${item.imageUrl}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                    src={`${item.imageUrl}?w=164&h=164&fit=crop&auto=format`}
+                    onClick={() => {
+                      window.open(item.doc_url, '_blank');
+                    }}
                   />
                 </ImageListItem>
               ))}

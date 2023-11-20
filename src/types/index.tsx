@@ -13,6 +13,7 @@ type SearchType = {
 }[];
 type searchImageType = {
   imageUrl: string;
+  doc_url: string;
 }[];
 
-export type { dumyType, SearchType,searchImageType };
+export type { dumyType, SearchType, searchImageType };

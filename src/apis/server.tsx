@@ -25,8 +25,9 @@ export const BlogSearchAPI = async (
       }
     })
     .then((res) => {
+      console.log(res);
       res.data.documents.map((item: any) => {
-        setBlog((prev) => [...prev, item.thumbnail_url]);
+        setBlog((prev) => [...prev, { imageUrl: item.thumbnail_url, doc_url: item.doc_url }]);
       });
     })
     .catch((err) => {
