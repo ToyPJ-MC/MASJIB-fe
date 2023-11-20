@@ -1,10 +1,11 @@
-import { Button } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Button, IconButton } from '@mui/material';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import Loading from './Loading';
 import SearchModal from './SearchModal';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { modalState, searchResultState, searchState } from '../state/atom';
 import { SearchType } from '../types';
+import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 
 declare global {
   interface Window {
@@ -18,7 +19,7 @@ const Kakaomap = () => {
     new window.kakao.maps.LatLng(lat, lon)
   );
   const [modal, setModal] = useRecoilState<boolean>(modalState);
-  const search = useRecoilValue<string>(searchState);
+  const [search, setSearch] = useRecoilState<string>(searchState);
   const [searchResult, setSearchResult] =
     useRecoilState<SearchType>(searchResultState);
   const [loading, setLoading] = useState<boolean>(false);
@@ -26,6 +27,10 @@ const Kakaomap = () => {
     'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
   let imageSize = new window.kakao.maps.Size(24, 35);
   let markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+  const [currentlocation, setCurrentlocation] = useState<boolean>(false);
+  const currentbutton = () => {
+    setCurrentlocation(true);
+  };
 
   useEffect(() => {
     // 현재위치 받아오기
@@ -38,8 +43,8 @@ const Kakaomap = () => {
         setLocPosition(new window.kakao.maps.LatLng(lat, lon));
       });
     }
-  }, []);
-  useEffect(() => {
+  }, [currentlocation]);
+  useLayoutEffect(() => {
     if (lat !== 0 && lon !== 0) {
       // 현재 위치 마커 및 음식점 위치 마커 표시
       let container = document.getElementById('map');
@@ -65,7 +70,6 @@ const Kakaomap = () => {
                 map: map,
                 position: new window.kakao.maps.LatLng(result[i].y, result[i].x)
               });
-
               displayMarker(result[i]);
             }
             if (Pagination.hasNextPage) {
@@ -170,8 +174,14 @@ const Kakaomap = () => {
       marker.setMap(map);
       let zoomControl = new window.kakao.maps.ZoomControl();
       map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
+      if (currentlocation) {
+        map.setCenter(locPosition);
+        setCurrentlocation(false);
+        setSearchResult([]);
+        setSearch('Restaurant');
+      }
     }
-  }, [lat, lon, search, modal]);
+  }, [lat, lon, search, modal, currentlocation]);
 
   return (
     <>
@@ -182,23 +192,42 @@ const Kakaomap = () => {
       >
         {loading ? null : <Loading />}
         {loading && !modal ? (
-          <Button
-            className='z-10'
-            variant='outlined'
-            sx={{
-              backgroundColor: 'white',
-              marginTop: '4px',
-              marginLeft: '4px',
-              ':hover': {
-                backgroundColor: 'white'
-              }
-            }}
-            onClick={() => {
-              setModal(true);
-            }}
-          >
-            직접 등록하기
-          </Button>
+          <>
+            {' '}
+            <Button
+              className='z-10'
+              variant='outlined'
+              sx={{
+                backgroundColor: 'white',
+                marginTop: '4px',
+                marginLeft: '4px',
+                ':hover': {
+                  backgroundColor: 'white'
+                }
+              }}
+              onClick={() => {
+                setModal(true);
+              }}
+            >
+              직접 등록하기
+            </Button>
+            <IconButton
+              color='primary'
+              className='z-10'
+              sx={{
+                backgroundColor: 'white',
+                marginTop: '4px',
+                marginLeft: '4px',
+                ':hover': {
+                  backgroundColor: 'white',
+                  outlineColor: '#3B82F6'
+                },
+                outlineColor: '#3B82F6'
+              }}
+            >
+              <GpsFixedIcon onClick={currentbutton} />
+            </IconButton>
+          </>
         ) : null}
         {modal ? <SearchModal /> : null}
       </div>
