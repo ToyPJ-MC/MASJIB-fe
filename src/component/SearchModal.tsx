@@ -53,18 +53,24 @@ const SearchModal = () => {
             API, there are only 45 items in total.
           </div>
         </div>
-        <div>
-          {searchResult.map((item, index) => {
-            return (
-              <div key={index} className='ml-2'>
-                <div>{item.place_name}</div>
-                <div>{item.road_address_name}</div>
-                <div>{item.phone}</div>
-                <Divider />
-              </div>
-            );
-          })}
-        </div>
+        {searchResult.length === 0 ? (
+          <div className='grid place-items-center mt-4'>
+            검색결과가 없습니다.
+          </div>
+        ) : (
+          <div>
+            {searchResult.map((item, index) => {
+              return (
+                <div key={index} className='ml-2'>
+                  <div>{item.place_name}</div>
+                  <div>{item.road_address_name}</div>
+                  <div>{item.phone}</div>
+                  <Divider />
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </Dialog>
   );

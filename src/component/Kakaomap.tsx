@@ -44,7 +44,7 @@ const Kakaomap = () => {
       });
     }
   }, [currentlocation]);
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (lat !== 0 && lon !== 0) {
       // 현재 위치 마커 및 음식점 위치 마커 표시
       let container = document.getElementById('map');

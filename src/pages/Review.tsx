@@ -1,10 +1,9 @@
 import {
   Button,
   FormControl,
+  IconButton,
   ImageList,
   ImageListItem,
-  InputLabel,
-  Menu,
   MenuItem,
   Rating,
   Select,
@@ -151,38 +150,32 @@ const Review = () => {
         <div>
           <div className='grid grid-cols-3 place-items-center ml-4'>
             <div>
-              <Button
-                variant='outlined'
+              <IconButton
                 sx={{
-                  textAlign: 'center',
-                  color: 'white',
                   backgroundColor: '#3B82F6',
-                  placeItems: 'center',
-                  borderColor: '#3B82F6',
-                  fontFamily: 'bold',
+                  borderRadius: 5,
+                  outlineColor: '#3B82F6',
                   fontSize: '0.8em',
+                  color: 'white',
                   ':hover': {
                     backgroundColor: '#3B82F6',
-                    color: 'white'
+                    color: 'small'
                   }
                 }}
                 onClick={WriteReview}
               >
-                <StarBorder sx={{ placeItems: 'center' }} fontSize='small' />
+                <StarBorder sx={{ color: 'white' }} fontSize='medium' />
                 Write Review
-              </Button>
+              </IconButton>
             </div>
-            <div>
-              <Button
-                variant='outlined'
+            <div className='grid place-items-center'>
+              <IconButton
                 sx={{
-                  textAlign: 'center',
-                  color: 'white',
                   backgroundColor: '#3B82F6',
-                  placeItems: 'center',
-                  borderColor: '#3B82F6',
-                  fontFamily: 'bold',
+                  borderRadius: 5,
+                  outlineColor: '#3B82F6',
                   fontSize: '0.8em',
+                  color: 'white',
                   ':hover': {
                     backgroundColor: '#3B82F6',
                     color: 'white'
@@ -190,23 +183,20 @@ const Review = () => {
                 }}
               >
                 <IosShareOutlinedIcon
-                  sx={{ placeItems: 'center' }}
+                  sx={{ color: 'white' }}
                   fontSize='small'
                 />
                 Share
-              </Button>
+              </IconButton>
             </div>
-            <div>
-              <Button
-                variant='outlined'
+            <div className='grid place-items-center'>
+              <IconButton
                 sx={{
-                  textAlign: 'center',
-                  color: 'white',
                   backgroundColor: '#3B82F6',
-                  placeItems: 'center',
-                  borderColor: '#3B82F6',
-                  fontFamily: 'bold',
+                  borderRadius: 5,
+                  outlineColor: '#3B82F6',
                   fontSize: '0.8em',
+                  color: 'white',
                   ':hover': {
                     backgroundColor: '#3B82F6',
                     color: 'white'
@@ -214,11 +204,11 @@ const Review = () => {
                 }}
               >
                 <BookmarkAddOutlinedIcon
-                  sx={{ placeItems: 'center' }}
+                  sx={{ color: 'white' }}
                   fontSize='small'
                 />
                 Bookmark
-              </Button>
+              </IconButton>
             </div>
           </div>
           <div className='text-center font-bold text-xl mt-10'>
