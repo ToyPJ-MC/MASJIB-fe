@@ -6,6 +6,8 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { modalState, searchResultState, searchState } from '../state/atom';
 import { SearchType } from '../types';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
+import { AddressAPI } from '../apis/server';
+import { Console } from 'console';
 
 declare global {
   interface Window {
@@ -18,6 +20,7 @@ const Kakaomap = () => {
   const [locPosition, setLocPosition] = useState(
     new window.kakao.maps.LatLng(lat, lon)
   );
+  const [address, setAddress] = useState<string>(''); // 현재 위치 주소
   const [modal, setModal] = useRecoilState<boolean>(modalState);
   const [search, setSearch] = useRecoilState<string>(searchState);
   const [searchResult, setSearchResult] =
@@ -44,6 +47,14 @@ const Kakaomap = () => {
       });
     }
   }, [currentlocation]);
+
+  useEffect(() => {
+    // 현재 위치 좌표를 주소로 변환
+    if (lat !== 0 && lon !== 0) {
+      AddressAPI(lat, lon, setAddress);
+    }
+  }, [lat, lon]);
+
   useEffect(() => {
     if (lat !== 0 && lon !== 0) {
       // 현재 위치 마커 및 음식점 위치 마커 표시

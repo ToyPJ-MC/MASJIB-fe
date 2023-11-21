@@ -88,6 +88,10 @@ module.exports = {
       '/v2/search/image': {
         target: 'https://dapi.kakao.com',
         changeOrigin: true
+      },
+      '/v2/local/geo/coord2address.json': {
+        target: 'https://dapi.kakao.com',
+        changeOrigin: true
       }
     },
     static: {
