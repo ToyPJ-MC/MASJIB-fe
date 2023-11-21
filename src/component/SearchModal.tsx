@@ -17,6 +17,7 @@ const SearchModal = () => {
   const handleClose = () => {
     setModal(false);
   };
+  console.log(searchResult);
   return (
     <Dialog
       open={modal}
@@ -38,7 +39,6 @@ const SearchModal = () => {
               onKeyUp={(e) => {
                 if (e.key === 'Enter') {
                   setSearch(input);
-                  setSearchResult([]);
                 }
               }}
               sx={{ marginBottom: '1em', borderRadius: '50px' }}

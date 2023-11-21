@@ -7,7 +7,6 @@ import { modalState, searchResultState, searchState } from '../state/atom';
 import { SearchType } from '../types';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import { AddressAPI } from '../apis/server';
-import { Console } from 'console';
 
 declare global {
   interface Window {
@@ -235,8 +234,9 @@ const Kakaomap = () => {
                 },
                 outlineColor: '#3B82F6'
               }}
+              onClick={currentbutton}
             >
-              <GpsFixedIcon onClick={currentbutton} />
+              <GpsFixedIcon />
             </IconButton>
           </>
         ) : null}

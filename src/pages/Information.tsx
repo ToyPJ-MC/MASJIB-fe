@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Autocomplete,
   Button,
@@ -16,6 +16,14 @@ const Information = () => {
   const categoriesChange = ['한식', '중식', '일식', '양식'];
   const [modal, setModal] = useRecoilState<boolean>(loginmodalState);
   const reviewcard = useRecoilValue(dumydataState);
+  useEffect(() => {
+    const handleScroll = () => {
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    };
+  }, [reviewcard]); // scroll hide시 passive true로 변경
   return (
     <div className='h-screen w-screen overflow-hidden'>
       <div className='grid grid-cols-4 mt-8 items-center place-content-center border border-b-2 border-t-0 border-l-0 border-r-0'>
