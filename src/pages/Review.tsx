@@ -211,24 +211,32 @@ const Review = () => {
               </IconButton>
             </div>
           </div>
-          <div className='text-center font-bold text-xl mt-10'>
-            Overall Rating
-          </div>
-          <div className='grid grid-cols-3 place-items-center mt-4'>
-            <div className='text-lg font-medium'>167 Reviews</div>
-            <div className='w-fit grid items-center'>
-              <Rating
-                name='half-rating'
-                defaultValue={3.5}
-                precision={0.5}
-                readOnly
-                size='large'
-                emptyIcon={
-                  <StarIcon className='text-gray-300' fontSize='inherit' />
-                }
-              />
+          <div className='grid grid-cols-2 place-items-center'>
+            <div>
+              <div className='text-center font-bold text-xl mt-10'>
+                Overall Rating
+              </div>
+              <div className='grid place-items-center'>
+                <Rating
+                  name='half-rating'
+                  defaultValue={3.5}
+                  precision={0.5}
+                  readOnly
+                  size='large'
+                  emptyIcon={
+                    <StarIcon className='text-gray-300' fontSize='inherit' />
+                  }
+                />
+              </div>
+              <div className='grid grid-cols-2 place-items-center mt-2'>
+                <div className='text-xl font-medium text-start'>3.5</div>
+                <div className='text-lg font-normal'>167 Reviews</div>
+              </div>
             </div>
-            <div className='text-lg font-medium'>3.5</div>
+            <div className='grid place-items-center text-center font-bold text-2xl'>
+              이 음식점은 맛집입니다!!
+            </div>{' '}
+            {/* 4.0 이상일 경우 대단한 맛집, 3.5 이상일 경우 맛집, 3.5 미만일 경우 아쉬운 맛집 */}
           </div>
           <div className='grid grid-cols-3 mt-10'>
             <div className='grid place-items-center'>
