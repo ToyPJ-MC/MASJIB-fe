@@ -9,13 +9,21 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import Kakaomap from '../component/Kakaomap';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { dumydataState, loginmodalState } from '../state/atom';
+import {
+  RadiusMarkerDataState,
+  dumydataState,
+  loginmodalState
+} from '../state/atom';
 import Reviewcard from '../component/Reviewcard';
 import LoginModal from '../component/LoginModal';
+import { RadiusMarkerType } from '../types';
 const Information = () => {
   const categoriesChange = ['한식', '중식', '일식', '양식'];
   const [modal, setModal] = useRecoilState<boolean>(loginmodalState);
   const reviewcard = useRecoilValue(dumydataState);
+  const [review, setReview] = useRecoilState<RadiusMarkerType>(
+    RadiusMarkerDataState
+  );
   useEffect(() => {
     const handleScroll = () => {
       window.addEventListener('scroll', handleScroll, { passive: true });
@@ -23,7 +31,9 @@ const Information = () => {
         window.removeEventListener('scroll', handleScroll);
       };
     };
-  }, [reviewcard]); // scroll hide시 passive true로 변경
+  }, [review]); // scroll hide시 passive true로 변경
+  const imageURL = process.env.SERVER_URL + '/';
+
   return (
     <div className='h-screen w-screen overflow-hidden'>
       <div className='grid grid-cols-4 mt-8 items-center place-content-center border border-b-2 border-t-0 border-l-0 border-r-0'>
@@ -147,16 +157,16 @@ const Information = () => {
             <div className='text-2xl font-bold'>
               TOP 10 restaurants in current location
               <div className='overflow-auto h-96 scrollbar-hide mt-2'>
-                {reviewcard.map((item, index) => {
+                {review.map((item, index) => {
                   return (
                     <Reviewcard
                       key={index}
-                      review={item.review}
-                      rating={item.rating}
-                      imageUrl={item.imageUrl}
-                      restaurantname={item.restaurantname}
+                      review={item.recentReview}
+                      rating={item.totalRating}
+                      imageUrl={imageURL + item.image}
+                      restaurantname={item.name}
                       address={item.address}
-                      category={item.category}
+                      category={item.kind}
                     />
                   );
                 })}

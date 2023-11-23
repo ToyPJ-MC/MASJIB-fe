@@ -7,7 +7,8 @@ import {
   MenuItem,
   Rating,
   Select,
-  SelectChangeEvent
+  SelectChangeEvent,
+  Slider
 } from '@mui/material';
 import yami from '../assets/image.jpeg';
 import rest from '../assets/restaurant.jpg';
@@ -27,6 +28,7 @@ import { useRecoilState } from 'recoil';
 import { searchImageType } from '../types';
 import { searchImageState, writemodalState } from '../state/atom';
 import Write from '../component/Write';
+import '../styles/global.css';
 const Review = () => {
   const urlparams = new URLSearchParams(location.search);
   const [sort, setSort] = useState<string>('Newest First');
@@ -237,6 +239,95 @@ const Review = () => {
               이 음식점은 맛집입니다!!
             </div>{' '}
             {/* 4.0 이상일 경우 대단한 맛집, 3.5 이상일 경우 맛집, 3.5 미만일 경우 아쉬운 맛집 */}
+          </div>
+          <div className='grid grid-rows-5 mt-4'>
+            <div className='grid grid-cols-2'>
+              <Rating
+                name='half-rating'
+                defaultValue={5}
+                precision={0.5}
+                readOnly
+                size='small'
+                emptyIcon={
+                  <StarIcon className='text-gray-300' fontSize='small' />
+                }
+              />
+              <div>
+                <Slider
+                  aria-label='Five stars'
+                  defaultValue={44}
+                  value={44}
+                  max={100}
+                  min={0}
+                  sx={{ color: 'red' }}
+                />
+              </div>
+            </div>
+            <div className='grid grid-cols-2 w-fit gap-2 place-items-center'>
+              <Rating
+                name='half-rating'
+                defaultValue={4}
+                precision={0.5}
+                readOnly
+                size='small'
+                emptyIcon={
+                  <StarIcon className='text-gray-300' fontSize='small' />
+                }
+              />
+              <div>4점대 개수</div>
+            </div>
+            <div className='grid grid-cols-2 w-fit gap-2 place-items-center'>
+              <Rating
+                name='half-rating'
+                defaultValue={3}
+                precision={0.5}
+                readOnly
+                size='small'
+                emptyIcon={
+                  <StarIcon className='text-gray-300' fontSize='small' />
+                }
+              />
+              <div>3점대 개수</div>
+            </div>
+            <div className='grid grid-cols-2 w-fit gap-2 place-items-center'>
+              <Rating
+                name='half-rating'
+                defaultValue={2}
+                precision={0.5}
+                readOnly
+                size='small'
+                emptyIcon={
+                  <StarIcon className='text-gray-300' fontSize='small' />
+                }
+              />
+              <div>2점대 개수</div>
+            </div>
+            <div className='grid grid-cols-2 w-fit gap-2 place-items-center'>
+              <Rating
+                name='half-rating'
+                defaultValue={1}
+                precision={0.5}
+                readOnly
+                size='small'
+                emptyIcon={
+                  <StarIcon className='text-gray-300' fontSize='small' />
+                }
+              />
+              <div>1점대 개수</div>
+            </div>
+            <div className='grid grid-cols-2 w-fit gap-2 place-items-center'>
+              <Rating
+                name='half-rating'
+                defaultValue={0}
+                precision={0.5}
+                readOnly
+                size='small'
+                emptyIcon={
+                  <StarIcon className='text-gray-300' fontSize='small' />
+                }
+              />
+              <div>0점 개수</div>
+            </div>
           </div>
           <div className='grid grid-cols-3 mt-10'>
             <div className='grid place-items-center'>

@@ -127,7 +127,8 @@ module.exports = {
       'process.env.PUBLIC_URL': JSON.stringify(process.env.PUBLIC_URL),
       'process.env.KAKAO_RESTAPI_KEY': JSON.stringify(
         process.env.KAKAO_RESTAPI_KEY
-      )
+      ),
+      'process.env.SERVER_URL': JSON.stringify(process.env.SERVER_URL)
     })
   ]
 };

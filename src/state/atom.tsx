@@ -1,5 +1,10 @@
 import { atom } from 'recoil';
-import { SearchType, dumyType, searchImageType } from '../types';
+import {
+  RadiusMarkerType,
+  SearchType,
+  dumyType,
+  searchImageType
+} from '../types';
 
 const dumydataState = atom<dumyType>({
   key: 'dumydata',
@@ -46,6 +51,10 @@ const writemodalState = atom<boolean>({
   key: 'writemodal',
   default: false
 });
+const RadiusMarkerDataState = atom<RadiusMarkerType>({
+  key: 'RadiusMarkerDataState',
+  default: []
+});
 
 export {
   dumydataState,
@@ -54,5 +63,6 @@ export {
   searchResultState,
   loginmodalState,
   searchImageState,
-  writemodalState
+  writemodalState,
+  RadiusMarkerDataState
 };

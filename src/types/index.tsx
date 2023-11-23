@@ -15,5 +15,17 @@ type searchImageType = {
   imageUrl: string;
   doc_url: string;
 }[];
+type RadiusMarkerType = {
+  name: string;
+  address: string;
+  x: number;
+  y: number;
+  kind: string;
+  image: string;
+  recentReview: string;
+  reviewCount: number;
+  followCount: number;
+  totalRating: number;
+}[];
 
-export type { dumyType, SearchType, searchImageType };
+export type { dumyType, SearchType, searchImageType, RadiusMarkerType };

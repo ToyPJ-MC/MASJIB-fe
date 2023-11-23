@@ -3,16 +3,21 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 import Loading from './Loading';
 import SearchModal from './SearchModal';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { modalState, searchResultState, searchState } from '../state/atom';
-import { SearchType } from '../types';
+import {
+  RadiusMarkerDataState,
+  modalState,
+  searchResultState,
+  searchState
+} from '../state/atom';
+import { RadiusMarkerType, SearchType } from '../types';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
-import { AddressAPI } from '../apis/server';
-
+import { AddressAPI, RadiusMakerAPI } from '../apis/server';
 declare global {
   interface Window {
     kakao: any;
   }
 }
+
 const Kakaomap = () => {
   const [lat, setLat] = useState(0);
   const [lon, setLon] = useState(0);
@@ -30,6 +35,9 @@ const Kakaomap = () => {
   let imageSize = new window.kakao.maps.Size(24, 35);
   let markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
   const [currentlocation, setCurrentlocation] = useState<boolean>(false);
+  const [radiusMarker, setRadiusMarker] = useRecoilState<RadiusMarkerType>(
+    RadiusMarkerDataState
+  ); // 반경 내 음식점 마커
   const currentbutton = () => {
     setCurrentlocation(true);
   };
@@ -38,21 +46,25 @@ const Kakaomap = () => {
     // 현재위치 받아오기
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
+        console.log(position);
         let lat = position.coords.latitude;
         let lon = position.coords.longitude;
         setLat(lat);
         setLon(lon);
         setLocPosition(new window.kakao.maps.LatLng(lat, lon));
       });
+      if (lat !== 0 && lon !== 0) {
+        AddressAPI(lat, lon, setAddress);
+      }
     }
-  }, [currentlocation]);
+  }, [currentlocation, lat, lon]);
 
   useEffect(() => {
-    // 현재 위치 좌표를 주소로 변환
-    if (lat !== 0 && lon !== 0) {
-      AddressAPI(lat, lon, setAddress);
+    console.log(address, lat, lon);
+    if (lat !== 0 && lon !== 0 && address !== '') {
+      RadiusMakerAPI('rating', address, lon, lat, 1, setRadiusMarker);
     }
-  }, [lat, lon]);
+  }, [address]);
 
   useEffect(() => {
     if (lat !== 0 && lon !== 0) {
@@ -65,58 +77,30 @@ const Kakaomap = () => {
       let map = new window.kakao.maps.Map(container, options);
       let ps = new window.kakao.maps.services.Places(map);
       let place = new window.kakao.maps.services.Places();
-
-      if (search === 'Restaurant') {
-        const placesSearchCB = function (
-          // 음식점 마커 표시
-          result: any,
-          status: any,
-          Pagination: any
-        ) {
-          if (status === window.kakao.maps.services.Status.OK) {
-            setLoading(true);
-            for (let i = 0; i < result.length; i++) {
-              let marker = new window.kakao.maps.Marker({
-                map: map,
-                position: new window.kakao.maps.LatLng(result[i].y, result[i].x)
-              });
-              displayMarker(result[i]);
-            }
-            if (Pagination.hasNextPage) {
-              Pagination.nextPage(); // 다음 페이지로 요청
-            }
-            function displayMarker(place: any) {
-              let marker = new window.kakao.maps.Marker({
-                map: map,
-                position: new window.kakao.maps.LatLng(place.y, place.x)
-              });
-              let infowindow = new window.kakao.maps.InfoWindow({
-                content: place.place_name
-              });
-              window.kakao.maps.event.addListener(marker, 'click', function () {
-                window.open(
-                  `/review?restaurantname=${place.place_name}&address=${place.road_address_name}&x=${place.x}&y=${place.y}`,
-                  '_blank'
-                );
-              });
-              window.kakao.maps.event.addListener(
-                marker,
-                'mouseover',
-                function () {
-                  infowindow.open(map, marker);
-                }
-              );
-              window.kakao.maps.event.addListener(
-                marker,
-                'mouseout',
-                function () {
-                  infowindow.close();
-                }
-              );
-            }
-          }
-        };
-        ps.categorySearch('FD6', placesSearchCB, { useMapBounds: true });
+      if (search === 'Restaurant' && radiusMarker.length !== 0) {
+        // 반경 내 음식점 마커 표시
+        setLoading(true);
+        radiusMarker.map((item, index) => {
+          let marker = new window.kakao.maps.Marker({
+            map: map,
+            position: new window.kakao.maps.LatLng(item.y, item.x)
+          });
+          let infowindow = new window.kakao.maps.InfoWindow({
+            content: item.name
+          });
+          window.kakao.maps.event.addListener(marker, 'click', function () {
+            window.open(
+              `/review?restaurantname=${item.name}&address=${item.address}&x=${item.x}&y=${item.y}`,
+              '_blank'
+            );
+          });
+          window.kakao.maps.event.addListener(marker, 'mouseover', function () {
+            infowindow.open(map, marker);
+          });
+          window.kakao.maps.event.addListener(marker, 'mouseout', function () {
+            infowindow.close();
+          });
+        });
       }
       if (search !== 'Restaurant') {
         place.keywordSearch(search, modalSearchCB);
@@ -191,7 +175,7 @@ const Kakaomap = () => {
         setSearch('Restaurant');
       }
     }
-  }, [lat, lon, search, modal, currentlocation]);
+  }, [lat, lon, search, modal, currentlocation, radiusMarker]);
 
   return (
     <>
