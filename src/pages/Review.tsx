@@ -126,7 +126,7 @@ const Review = () => {
           <div className='font-extrabold text-white text-3xl'>
             {params.restaurantname}
           </div>
-          <div className='grid grid-cols-2 w-fit'>
+          <div className='grid grid-cols-2'>
             <div className='w-fit grid items-center'>
               <Rating
                 name='half-rating'
@@ -142,9 +142,9 @@ const Review = () => {
             <div className='text-sm font-medium grid items-center text-white'>
               3.5 (167reviews)
             </div>
-            <div className='text-sm font-medium grid items-center text-white mt-2'>
-              {params.address}
-            </div>
+          </div>
+          <div className='text-sm font-medium grid items-center text-white mt-2'>
+            {params.address}
           </div>
         </div>
       </div>
@@ -235,99 +235,108 @@ const Review = () => {
                 <div className='text-lg font-normal'>167 Reviews</div>
               </div>
             </div>
-            <div className='grid place-items-center text-center font-bold text-2xl'>
-              이 음식점은 맛집입니다!!
-            </div>{' '}
-            {/* 4.0 이상일 경우 대단한 맛집, 3.5 이상일 경우 맛집, 3.5 미만일 경우 아쉬운 맛집 */}
-          </div>
-          <div className='grid grid-rows-5 mt-4'>
-            <div className='grid grid-cols-2'>
-              <Rating
-                name='half-rating'
-                defaultValue={5}
-                precision={0.5}
-                readOnly
-                size='small'
-                emptyIcon={
-                  <StarIcon className='text-gray-300' fontSize='small' />
-                }
-              />
-              <div>
-                <Slider
-                  aria-label='Five stars'
-                  defaultValue={44}
-                  value={44}
-                  max={100}
-                  min={0}
-                  sx={{ color: 'red' }}
-                />
+            <div className='grid grid-rows-5 mt-4 w-full'>
+              <div className='grid grid-cols-2'>
+                <div className='grid place-items-center text-sm text-gray-600'>
+                  5 Stars
+                </div>
+                <div className='grid items-center'>
+                  <Slider
+                    aria-label='Five stars'
+                    defaultValue={44}
+                    value={44}
+                    max={100}
+                    min={0}
+                    sx={{ color: '#3B82F6' }}
+                    componentsProps={{ thumb: { style: { display: 'none' } } }}
+                  />
+                </div>
+              </div>
+              <div className='grid grid-cols-2'>
+                <div className='grid place-items-center text-sm text-gray-600'>
+                  4 Stars
+                </div>
+                <div className='grid items-center'>
+                  <Slider
+                    aria-label='Four stars'
+                    defaultValue={86}
+                    value={86}
+                    max={100}
+                    min={0}
+                    sx={{ color: '#3B82F6' }}
+                    componentsProps={{ thumb: { style: { display: 'none' } } }}
+                  />
+                </div>
+              </div>
+              <div className='grid grid-cols-2'>
+                <div className='grid place-items-center text-sm text-gray-600'>
+                  3 Stars
+                </div>
+                <div className='grid items-center'>
+                  <Slider
+                    aria-label='Three stars'
+                    defaultValue={50}
+                    value={50}
+                    max={100}
+                    min={0}
+                    sx={{ color: '#3B82F6' }}
+                    componentsProps={{ thumb: { style: { display: 'none' } } }}
+                  />
+                </div>
+              </div>
+              <div className='grid grid-cols-2'>
+                <div className='grid place-items-center text-sm text-gray-600'>
+                  2 Stars
+                </div>
+                <div className='grid items-center'>
+                  <Slider
+                    aria-label='Two stars'
+                    defaultValue={27}
+                    value={27}
+                    max={100}
+                    min={0}
+                    sx={{ color: '#3B82F6' }}
+                    componentsProps={{ thumb: { style: { display: 'none' } } }}
+                  />
+                </div>
+              </div>
+              <div className='grid grid-cols-2'>
+                <div className='grid place-items-center text-sm text-gray-600'>
+                  1 Stars
+                </div>
+                <div className='w-full'>
+                  <Slider
+                    aria-label='One stars'
+                    defaultValue={30}
+                    value={30}
+                    max={100}
+                    min={0}
+                    sx={{ color: '#3B82F6' }}
+                    componentsProps={{ thumb: { style: { display: 'none' } } }}
+                  />
+                </div>
+              </div>
+              <div className='grid grid-cols-2'>
+                <div className='grid place-items-center text-sm text-gray-600'>
+                  0 Stars
+                </div>
+                <div className='grid items-center'>
+                  <Slider
+                    aria-label='Zero stars'
+                    defaultValue={10}
+                    value={10}
+                    max={100}
+                    min={0}
+                    sx={{ color: '#3B82F6' }}
+                    componentsProps={{ thumb: { style: { display: 'none' } } }}
+                  />
+                </div>
               </div>
             </div>
-            <div className='grid grid-cols-2 w-fit gap-2 place-items-center'>
-              <Rating
-                name='half-rating'
-                defaultValue={4}
-                precision={0.5}
-                readOnly
-                size='small'
-                emptyIcon={
-                  <StarIcon className='text-gray-300' fontSize='small' />
-                }
-              />
-              <div>4점대 개수</div>
-            </div>
-            <div className='grid grid-cols-2 w-fit gap-2 place-items-center'>
-              <Rating
-                name='half-rating'
-                defaultValue={3}
-                precision={0.5}
-                readOnly
-                size='small'
-                emptyIcon={
-                  <StarIcon className='text-gray-300' fontSize='small' />
-                }
-              />
-              <div>3점대 개수</div>
-            </div>
-            <div className='grid grid-cols-2 w-fit gap-2 place-items-center'>
-              <Rating
-                name='half-rating'
-                defaultValue={2}
-                precision={0.5}
-                readOnly
-                size='small'
-                emptyIcon={
-                  <StarIcon className='text-gray-300' fontSize='small' />
-                }
-              />
-              <div>2점대 개수</div>
-            </div>
-            <div className='grid grid-cols-2 w-fit gap-2 place-items-center'>
-              <Rating
-                name='half-rating'
-                defaultValue={1}
-                precision={0.5}
-                readOnly
-                size='small'
-                emptyIcon={
-                  <StarIcon className='text-gray-300' fontSize='small' />
-                }
-              />
-              <div>1점대 개수</div>
-            </div>
-            <div className='grid grid-cols-2 w-fit gap-2 place-items-center'>
-              <Rating
-                name='half-rating'
-                defaultValue={0}
-                precision={0.5}
-                readOnly
-                size='small'
-                emptyIcon={
-                  <StarIcon className='text-gray-300' fontSize='small' />
-                }
-              />
-              <div>0점 개수</div>
-            </div>
+            {/* <div className='grid place-items-center text-center font-bold text-2xl'>
+              이 음식점은 맛집입니다!!
+            </div>{' '} */}
+            {/* 4.0 이상일 경우 대단한 맛집, 3.5 이상일 경우 맛집, 3.5 미만일 경우 아쉬운 맛집 */}
           </div>
           <div className='grid grid-cols-3 mt-10'>
             <div className='grid place-items-center'>
