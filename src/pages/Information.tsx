@@ -23,6 +23,7 @@ import {
 import Reviewcard from '../component/Reviewcard';
 import LoginModal from '../component/LoginModal';
 import { RadiusMarkerType } from '../types';
+import SortLoading from '../component/SortLoading';
 const Information = () => {
   const categoriesChange = ['한식', '중식', '일식', '양식'];
   const [modal, setModal] = useRecoilState<boolean>(loginmodalState);
@@ -194,21 +195,25 @@ const Information = () => {
                   </Select>
                 </FormControl>
               </div>
-              <div className='overflow-auto h-96 scrollbar-hide mt-2 mr-4'>
-                {review.map((item, index) => {
-                  return (
-                    <Reviewcard
-                      key={index}
-                      review={item.recentReview}
-                      rating={item.totalRating}
-                      imageUrl={imageURL + item.image}
-                      restaurantname={item.name}
-                      address={item.address}
-                      category={item.kind}
-                    />
-                  );
-                })}
-              </div>
+              {review.length === 0 ? (
+                <SortLoading />
+              ) : (
+                <div className='overflow-auto h-96 scrollbar-hide mt-2 mr-4'>
+                  {review.map((item, index) => {
+                    return (
+                      <Reviewcard
+                        key={index}
+                        review={item.recentReview}
+                        rating={item.totalRating}
+                        imageUrl={imageURL + item.image}
+                        restaurantname={item.name}
+                        address={item.address}
+                        category={item.kind}
+                      />
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
         </div>
