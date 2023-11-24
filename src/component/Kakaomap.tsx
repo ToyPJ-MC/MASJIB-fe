@@ -13,6 +13,7 @@ import {
 import { RadiusMarkerType, SearchType } from '../types';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import { AddressAPI, RadiusMakerAPI } from '../apis/server';
+import '../styles/global.css';
 declare global {
   interface Window {
     kakao: any;
@@ -20,6 +21,7 @@ declare global {
 }
 
 const Kakaomap = () => {
+  const imageURL = process.env.SERVER_URL + '/';
   const [lat, setLat] = useState(0);
   const [lon, setLon] = useState(0);
   const [locPosition, setLocPosition] = useState(
@@ -77,18 +79,31 @@ const Kakaomap = () => {
         level: 4
       };
       let map = new window.kakao.maps.Map(container, options);
-      let ps = new window.kakao.maps.services.Places(map);
+      //let ps = new window.kakao.maps.services.Places(map);
       let place = new window.kakao.maps.services.Places();
       if (search === 'Restaurant' && radiusMarker.length !== 0) {
         // 반경 내 음식점 마커 표시
         setLoading(true);
         radiusMarker.map((item, index) => {
+          let content =
+            '<div class="wrap">' +
+            '    <div class="info">' +
+            '        <div class="title">' +
+            `            ${item.name}` +
+            '        </div>' +
+            '        <div class="body">' +
+            '            <div class="img">' +
+            `            <img src='${imageURL}${item.image}' width="200" height="70">` +
+            '           </div>' +
+            '        </div>' +
+            '    </div>' +
+            '</div>';
           let marker = new window.kakao.maps.Marker({
             map: map,
             position: new window.kakao.maps.LatLng(item.y, item.x)
           });
           let infowindow = new window.kakao.maps.InfoWindow({
-            content: item.name
+            content: content
           });
           window.kakao.maps.event.addListener(marker, 'click', function () {
             window.open(

@@ -1,8 +1,4 @@
-import {
-  Card,
-  Rating,
-  Typography
-} from '@mui/material';
+import { Card, Rating, Typography } from '@mui/material';
 import { Button } from 'evergreen-ui';
 interface ReviewcardProps {
   review: string;
@@ -24,7 +20,7 @@ const Reviewcard = (props: ReviewcardProps) => {
           />
         </div>
         <div>
-          <div className='text-2xl font-bold'>{props.restaurantname}</div>
+          <div className='text-2xl font-bold mt-2'>{props.restaurantname}</div>
           <div>
             <Button size='small'>{props.category}</Button>
           </div>
@@ -41,7 +37,11 @@ const Reviewcard = (props: ReviewcardProps) => {
               {props.rating}
             </div>
           </div>
-          <Typography variant='body2' color='text.secondary'>
+          <Typography
+            variant='body2'
+            color='text.secondary'
+            sx={{ marginTop: '4px' }}
+          >
             {props.review}
           </Typography>
         </div>

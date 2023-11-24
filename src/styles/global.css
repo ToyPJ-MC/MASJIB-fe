@@ -19,3 +19,8 @@ html {
 .MuiSlider-thumb:is(:hover, .Mui-active) {
   display: none;
 }
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+}
