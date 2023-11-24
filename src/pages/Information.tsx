@@ -1,9 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Autocomplete,
   Button,
   ButtonGroup,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Rating,
+  Select,
+  SelectChangeEvent,
   TextField
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -11,6 +16,7 @@ import Kakaomap from '../component/Kakaomap';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   RadiusMarkerDataState,
+  RadiusSortState,
   dumydataState,
   loginmodalState
 } from '../state/atom';
@@ -20,7 +26,8 @@ import { RadiusMarkerType } from '../types';
 const Information = () => {
   const categoriesChange = ['한식', '중식', '일식', '양식'];
   const [modal, setModal] = useRecoilState<boolean>(loginmodalState);
-  const reviewcard = useRecoilValue(dumydataState);
+  const [sort, setSort] = useRecoilState<string>(RadiusSortState);
+  const [sortby, setSortby] = useState<string>('Rating');
   const [review, setReview] = useRecoilState<RadiusMarkerType>(
     RadiusMarkerDataState
   );
@@ -34,6 +41,21 @@ const Information = () => {
   }, [review]); // scroll hide시 passive true로 변경
   const imageURL = process.env.SERVER_URL + '/';
 
+  const SortByhandleChange = (event: SelectChangeEvent) => {
+    if (event.target.value === 'Rating') {
+      setSortby(event.target.value as string);
+      setSort('rating');
+      setReview([]);
+    } else if (event.target.value === 'Review') {
+      setSortby(event.target.value as string);
+      setSort('reviewCount');
+      setReview([]);
+    } else if (event.target.value === 'Dibs') {
+      setSortby(event.target.value as string);
+      setSort('FollowCount');
+      setReview([]);
+    }
+  };
   return (
     <div className='h-screen w-screen overflow-hidden'>
       <div className='grid grid-cols-4 mt-8 items-center place-content-center border border-b-2 border-t-0 border-l-0 border-r-0'>
@@ -156,6 +178,22 @@ const Information = () => {
           <div>
             <div className='text-2xl font-bold'>
               TOP 10 restaurants in current location
+              <div className='grid place-items-end mr-4'>
+                <FormControl>
+                  <InputLabel id='sortby-select-label'>Sort By</InputLabel>
+                  <Select
+                    labelId='Sort By'
+                    id='sort'
+                    value={sortby}
+                    label='Sort-By'
+                    onChange={SortByhandleChange}
+                  >
+                    <MenuItem value={'Rating'}>Rating</MenuItem>
+                    <MenuItem value={'Review'}>Review</MenuItem>
+                    <MenuItem value={'Dibs'}>Dibs</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
               <div className='overflow-auto h-96 scrollbar-hide mt-2 mr-4'>
                 {review.map((item, index) => {
                   return (

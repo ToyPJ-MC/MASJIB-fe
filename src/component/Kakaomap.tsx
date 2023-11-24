@@ -5,6 +5,7 @@ import SearchModal from './SearchModal';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   RadiusMarkerDataState,
+  RadiusSortState,
   modalState,
   searchResultState,
   searchState
@@ -30,6 +31,7 @@ const Kakaomap = () => {
   const [searchResult, setSearchResult] =
     useRecoilState<SearchType>(searchResultState);
   const [loading, setLoading] = useState<boolean>(false);
+  const sort = useRecoilValue<string>(RadiusSortState);
   let imageSrc =
     'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
   let imageSize = new window.kakao.maps.Size(24, 35);
@@ -62,9 +64,9 @@ const Kakaomap = () => {
   useEffect(() => {
     console.log(address, lat, lon);
     if (lat !== 0 && lon !== 0 && address !== '') {
-      RadiusMakerAPI('rating', address, lon, lat, 1, setRadiusMarker);
+      RadiusMakerAPI(sort, address, lon, lat, 1, setRadiusMarker);
     }
-  }, [address]);
+  }, [address, sort]);
 
   useEffect(() => {
     if (lat !== 0 && lon !== 0) {
