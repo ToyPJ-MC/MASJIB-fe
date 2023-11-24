@@ -15,6 +15,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Kakaomap from '../component/Kakaomap';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
+  RadiusMarkerAPIStatus,
   RadiusMarkerDataState,
   RadiusSortState,
   dumydataState,
@@ -32,6 +33,7 @@ const Information = () => {
   const [review, setReview] = useRecoilState<RadiusMarkerType>(
     RadiusMarkerDataState
   );
+  const markerAPI = useRecoilValue<boolean>(RadiusMarkerAPIStatus);
   useEffect(() => {
     const handleScroll = () => {
       window.addEventListener('scroll', handleScroll, { passive: true });
@@ -195,24 +197,40 @@ const Information = () => {
                   </Select>
                 </FormControl>
               </div>
-              {review.length === 0 ? (
+              {markerAPI === false ? (
+                <SortLoading />
+              ) : markerAPI === true && review.length === 0 ? (
                 <SortLoading />
               ) : (
-                <div className='overflow-auto h-96 scrollbar-hide mt-2 mr-4'>
+                <>
                   {review.map((item, index) => {
-                    return (
-                      <Reviewcard
-                        key={index}
-                        review={item.recentReview}
-                        rating={item.totalRating}
-                        imageUrl={imageURL + item.image}
-                        restaurantname={item.name}
-                        address={item.address}
-                        category={item.kind}
-                      />
-                    );
+                    if (item.recentReview === '등록된 리뷰가 없습니다.') {
+                      return (
+                        <div key={index}>
+                          {item.name} 등록된 리뷰가 없습니다.
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div className='overflow-auto h-96 scrollbar-hide mt-2 mr-4'>
+                          {review.map((item, index) => {
+                            return (
+                              <Reviewcard
+                                key={index}
+                                review={item.recentReview}
+                                rating={item.totalRating}
+                                imageUrl={imageURL + item.image}
+                                restaurantname={item.name}
+                                address={item.address}
+                                category={item.kind}
+                              />
+                            );
+                          })}
+                        </div>
+                      );
+                    }
                   })}
-                </div>
+                </>
               )}
             </div>
           </div>

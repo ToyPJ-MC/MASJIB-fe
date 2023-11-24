@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { SetterOrUpdater } from 'recoil';
 import { RadiusMarkerType, searchImageType } from '../types';
 import { API_URL } from '../Constants/Constants';
@@ -41,6 +41,7 @@ export const AddressAPI = async (
   lon: number,
   setAddress: SetterOrUpdater<string>
 ) => {
+  console.log('위도,경도 ' + lat, lon);
   await axios
     .get('/v2/local/geo/coord2address.json', {
       headers: {
@@ -81,8 +82,10 @@ export const RadiusMakerAPI = async (
   x: number,
   y: number,
   page: number,
-  setRadiusRestaurant: SetterOrUpdater<RadiusMarkerType>
+  setRadiusRestaurant: SetterOrUpdater<RadiusMarkerType>,
+  setMarkerAPIStatus: SetterOrUpdater<boolean>
 ) => {
+  console.log('Here=> ' + address, x, y);
   axios
     .get(API_URL + '/shop/radius', {
       params: {
@@ -94,8 +97,11 @@ export const RadiusMakerAPI = async (
       },
       headers: headerConfig
     })
-    .then((res) => {
+    .then(async (res: AxiosResponse) => {
       console.log(res);
+      if (res.status === 200) {
+        setMarkerAPIStatus(true);
+      }
       console.log(Object.values(res.data[0]));
       Object.values(res.data[0]).map((item: any) => {
         setRadiusRestaurant((prev) => [
@@ -115,7 +121,10 @@ export const RadiusMakerAPI = async (
         ]);
       });
     })
-    .catch((err) => {
-      console.log(err);
+    .catch((err: AxiosError) => {
+      console.log(err.response?.data);
+      if (err.response?.status === 400) {
+        setMarkerAPIStatus(false);
+      }
     });
 };

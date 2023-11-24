@@ -59,6 +59,10 @@ const RadiusSortState = atom<string>({
   key: 'RadiusSortState',
   default: 'rating'
 });
+const RadiusMarkerAPIStatus = atom<boolean>({
+  key: 'RadiusMarkerAPIStatus',
+  default: false
+});
 
 export {
   dumydataState,
@@ -69,5 +73,6 @@ export {
   searchImageState,
   writemodalState,
   RadiusMarkerDataState,
-  RadiusSortState
+  RadiusSortState,
+  RadiusMarkerAPIStatus
 };

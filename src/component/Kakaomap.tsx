@@ -4,6 +4,7 @@ import Loading from './Loading';
 import SearchModal from './SearchModal';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
+  RadiusMarkerAPIStatus,
   RadiusMarkerDataState,
   RadiusSortState,
   modalState,
@@ -42,31 +43,48 @@ const Kakaomap = () => {
   const [radiusMarker, setRadiusMarker] = useRecoilState<RadiusMarkerType>(
     RadiusMarkerDataState
   ); // 반경 내 음식점 마커
+  const [markerAPIStatus, setMarkerAPIStatus] = useRecoilState<boolean>(
+    RadiusMarkerAPIStatus
+  ); // 반경 내 음식점 마커
   const currentbutton = () => {
     setCurrentlocation(true);
   };
 
   useEffect(() => {
     // 현재위치 받아오기
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        console.log(position);
-        let lat = position.coords.latitude;
-        let lon = position.coords.longitude;
-        setLat(lat);
-        setLon(lon);
-        setLocPosition(new window.kakao.maps.LatLng(lat, lon));
-      });
-      if (lat !== 0 && lon !== 0) {
-        AddressAPI(lat, lon, setAddress);
+    const fetchUserLocation = async () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          console.log(position);
+          let lat = position.coords.latitude;
+          let lon = position.coords.longitude;
+          setLat(lat);
+          setLon(lon);
+          setLocPosition(new window.kakao.maps.LatLng(lat, lon));
+        });
+        if (lat === -1 || lon === -1) {
+          fetchUserLocation(); // 37.5003814558941 127.026897372123
+        }
+        if (lat !== 0 && lon !== 0) {
+          AddressAPI(lat, lon, setAddress);
+        }
       }
-    }
+    };
+    fetchUserLocation();
   }, [currentlocation, lat, lon]);
 
   useEffect(() => {
     console.log(address, lat, lon);
     if (lat !== 0 && lon !== 0 && address !== '') {
-      RadiusMakerAPI(sort, address, lon, lat, 1, setRadiusMarker);
+      RadiusMakerAPI(
+        sort,
+        address,
+        lon,
+        lat,
+        1,
+        setRadiusMarker,
+        setMarkerAPIStatus
+      );
     }
   }, [address, sort]);
 
