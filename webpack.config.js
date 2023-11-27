@@ -37,7 +37,10 @@ module.exports = {
   },
   resolve: {
     plugins: [new TsConfigPathsPlugin()],
-    extensions: ['.ts', '.tsx', '.js', '.json']
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    alias: {
+      '@': path.resolve(__dirname, 'src') // 예시: 별칭(alias) 설정
+    }
   },
   module: {
     rules: [
@@ -64,16 +67,33 @@ module.exports = {
       // css loader 설정
       {
         test: /\.(s*)css$/,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader', 'postcss-loader']
+      },
+      // image loader 설정
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        use: ['file-loader']
+      },
+      // html loader 설정
+      {
+        test: /\.html$/,
+        use: [{ loader: 'html-loader' }]
       }
     ]
   },
   // proxy 설정
   devServer: {
     historyApiFallback: true,
-    // proxy: {
-    //   "/api": "http://localhost:5000",
-    // },
+    proxy: {
+      '/v2/search/image': {
+        target: 'https://dapi.kakao.com',
+        changeOrigin: true
+      },
+      '/v2/local/geo/coord2address.json': {
+        target: 'https://dapi.kakao.com',
+        changeOrigin: true
+      }
+    },
     static: {
       directory: path.resolve(__dirname, 'dist')
     },
@@ -88,7 +108,8 @@ module.exports = {
     // 기본 html 위치 설정.
     new HtmlWebpackPlugin({
       template: './public/index.html',
-      filename: 'index.html'
+      filename: 'index.html',
+      env: process.env
     }),
     // Typescript(타입스크립트)의 컴파일 속도 향상을 위한 플러그인을 설정
     new ForkTsCheckerWebpackPlugin(),
@@ -97,15 +118,17 @@ module.exports = {
     new CompressionPlugin({
       algorithm: 'gzip'
     }),
-
+    new TsConfigPathsPlugin({
+      configFile: './tsconfig.json'
+    }),
     // env 변수 사용을 위한 플러그인
     new webpack.DefinePlugin({
-      'process.env.REACT_APP_S3_ACCESS_KEY': JSON.stringify(
-        process.env.REACT_APP_S3_ACCESS_KEY
+      'process.env.KAKAO_KEY': JSON.stringify(process.env.KAKAO_KEY),
+      'process.env.PUBLIC_URL': JSON.stringify(process.env.PUBLIC_URL),
+      'process.env.KAKAO_RESTAPI_KEY': JSON.stringify(
+        process.env.KAKAO_RESTAPI_KEY
       ),
-      'process.env.REACT_APP_S3_SECRET_ACCESS_KEY': JSON.stringify(
-        process.env.REACT_APP_S3_SECRET_ACCESS_KEY
-      )
+      'process.env.SERVER_URL': JSON.stringify(process.env.SERVER_URL)
     })
   ]
 };
