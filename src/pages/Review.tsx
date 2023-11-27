@@ -462,7 +462,11 @@ const Review = () => {
               ))}
             </ImageList>
           </div>
-        ) : null}
+        ) : (
+          <div className='grid place-items-center font-bold text-lg'>
+            현재 등록된 블로그가 없습니다.
+          </div>
+        )}
       </div>
     </>
   );
