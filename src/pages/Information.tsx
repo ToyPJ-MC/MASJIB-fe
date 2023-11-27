@@ -18,20 +18,22 @@ import {
   RadiusMarkerAPIStatus,
   RadiusMarkerDataState,
   RadiusSortState,
+  SortingRestaurantDataState,
   dumydataState,
   loginmodalState
 } from '../state/atom';
 import Reviewcard from '../component/Reviewcard';
 import LoginModal from '../component/LoginModal';
-import { RadiusMarkerType } from '../types';
+import { RadiusMarkerType, SortingRestaurantType } from '../types';
 import SortLoading from '../component/SortLoading';
+import { SortingRestaurantAPI } from '../apis/server';
 const Information = () => {
   const categoriesChange = ['한식', '중식', '일식', '양식'];
   const [modal, setModal] = useRecoilState<boolean>(loginmodalState);
   const [sort, setSort] = useRecoilState<string>(RadiusSortState);
   const [sortby, setSortby] = useState<string>('Rating');
-  const [review, setReview] = useRecoilState<RadiusMarkerType>(
-    RadiusMarkerDataState
+  const [review, setReview] = useRecoilState<SortingRestaurantType>(
+    SortingRestaurantDataState
   );
   const markerAPI = useRecoilValue<boolean>(RadiusMarkerAPIStatus);
   useEffect(() => {
@@ -159,7 +161,9 @@ const Information = () => {
                 </ButtonGroup>
               </div>
               <div>
-                <div className='text-base font-semibold'>Favorite</div>
+                <div className='text-base font-semibold'>
+                  Sort by numbers Dibs
+                </div>
                 <ButtonGroup
                   variant='outlined'
                   aria-label='outlined button group'
@@ -174,7 +178,7 @@ const Information = () => {
                 <div className='text-base font-semibold'>
                   Sort by star rating
                 </div>
-                <Rating name='half-rating' defaultValue={2.5} precision={0.5} />
+                <Rating name='half-rating' defaultValue={0} precision={0.5} />
               </div>
             </div>
           </div>

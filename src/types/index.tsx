@@ -22,10 +22,26 @@ type RadiusMarkerType = {
   y: number;
   kind: string;
   image: string;
+  totalRating: number;
+}[];
+type SortingRestaurantType = {
+  name: string;
+  address: string;
+  x: number;
+  y: number;
+  kind: string;
+  image: string;
   recentReview: string;
   reviewCount: number;
   followCount: number;
   totalRating: number;
+  shopId: number;
 }[];
 
-export type { dumyType, SearchType, searchImageType, RadiusMarkerType };
+export type {
+  dumyType,
+  SearchType,
+  searchImageType,
+  RadiusMarkerType,
+  SortingRestaurantType
+};

@@ -2,18 +2,23 @@ import { Button, IconButton } from '@mui/material';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import Loading from './Loading';
 import SearchModal from './SearchModal';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   RadiusMarkerAPIStatus,
   RadiusMarkerDataState,
   RadiusSortState,
+  SortingRestaurantDataState,
   modalState,
   searchResultState,
   searchState
 } from '../state/atom';
-import { RadiusMarkerType, SearchType } from '../types';
+import { RadiusMarkerType, SearchType, SortingRestaurantType } from '../types';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
-import { AddressAPI, RadiusMakerAPI } from '../apis/server';
+import {
+  AddressAPI,
+  RadiusMakerAPI,
+  SortingRestaurantAPI
+} from '../apis/server';
 import '../styles/global.css';
 declare global {
   interface Window {
@@ -45,9 +50,14 @@ const Kakaomap = () => {
   ); // 반경 내 음식점 마커
   const [markerAPIStatus, setMarkerAPIStatus] = useRecoilState<boolean>(
     RadiusMarkerAPIStatus
-  ); // 반경 내 음식점 마커
+  ); // 반경 내 음식점 마커 API 상태
+  const SetSortRestaurant = useSetRecoilState<SortingRestaurantType>(
+    SortingRestaurantDataState
+  );
   const currentbutton = () => {
     setCurrentlocation(true);
+    setRadiusMarker([]);
+    SetSortRestaurant([]);
   };
 
   useEffect(() => {
@@ -63,10 +73,10 @@ const Kakaomap = () => {
           setLocPosition(new window.kakao.maps.LatLng(lat, lon));
         });
         if (lat === -1 || lon === -1) {
-          fetchUserLocation(); // 37.5003814558941 127.026897372123
+          fetchUserLocation(); // 37.5012350392984 127.026630556235
         }
-        if (lat !== 0 && lon !== 0) {
-          AddressAPI(lat, lon, setAddress);
+        if ((lat !== -1 && lon !== -1) || (lat !== 0 && lon !== 0)) {
+          AddressAPI(lon, lat, setAddress);
         }
       }
     };
@@ -74,19 +84,14 @@ const Kakaomap = () => {
   }, [currentlocation, lat, lon]);
 
   useEffect(() => {
-    console.log(address, lat, lon);
-    if (lat !== 0 && lon !== 0 && address !== '') {
-      RadiusMakerAPI(
-        sort,
-        address,
-        lon,
-        lat,
-        1,
-        setRadiusMarker,
-        setMarkerAPIStatus
-      );
+    if (
+      (lat !== 0 && lon !== 0 && address !== '') ||
+      (lat !== -1 && lon !== -1 && address !== '')
+    ) {
+      RadiusMakerAPI(address, lon, lat, setRadiusMarker, setMarkerAPIStatus);
+      SortingRestaurantAPI(address, lon, lat, sort, 1, SetSortRestaurant);
     }
-  }, [address, sort]);
+  }, [sort, currentlocation, address]);
 
   useEffect(() => {
     if (lat !== 0 && lon !== 0) {
@@ -97,7 +102,6 @@ const Kakaomap = () => {
         level: 4
       };
       let map = new window.kakao.maps.Map(container, options);
-      //let ps = new window.kakao.maps.services.Places(map);
       let place = new window.kakao.maps.services.Places();
       if (search === 'Restaurant' && radiusMarker.length !== 0) {
         // 반경 내 음식점 마커 표시
@@ -110,8 +114,15 @@ const Kakaomap = () => {
             `            ${item.name}` +
             '        </div>' +
             '        <div class="body">' +
+            '            <div>' +
+            `               ${item.kind} ${item.totalRating}` +
+            '            </div>' +
+            '            <div>' +
+            `               ${item.address}` +
+            '            </div>' +
+            '        <div class="body">' +
             '            <div class="img">' +
-            `            <img src='${imageURL}${item.image}' width="200" height="70">` +
+            `            <img src='${imageURL}${item.image}'>` +
             '           </div>' +
             '        </div>' +
             '    </div>' +
@@ -175,7 +186,7 @@ const Kakaomap = () => {
         function displayMarker(place: any) {
           let marker = new window.kakao.maps.Marker({
             map: map,
-            position: new window.kakao.maps.LatLng(place.y, place.x)
+            position: new window.kakao.maps.LatLng(place.x, place.y)
           });
           let infowindow = new window.kakao.maps.InfoWindow({
             content: place.place_name
@@ -200,7 +211,6 @@ const Kakaomap = () => {
         position: locPosition,
         image: markerImage
       });
-      marker.setMap(map);
       let zoomControl = new window.kakao.maps.ZoomControl();
       map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
       if (currentlocation) {
@@ -209,9 +219,9 @@ const Kakaomap = () => {
         setSearchResult([]);
         setSearch('Restaurant');
       }
+      marker.setMap(map);
     }
   }, [lat, lon, search, modal, currentlocation, radiusMarker]);
-
   return (
     <>
       <div

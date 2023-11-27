@@ -1,6 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { SetterOrUpdater } from 'recoil';
-import { RadiusMarkerType, searchImageType } from '../types';
+import {
+  RadiusMarkerType,
+  SortingRestaurantType,
+  searchImageType
+} from '../types';
 import { API_URL } from '../Constants/Constants';
 const headerConfig = {
   'Content-Type': 'application/json',
@@ -50,8 +54,8 @@ export const AddressAPI = async (
       },
       params: {
         input_coord: 'WGS84',
-        y: lat,
-        x: lon
+        x: lat,
+        y: lon
       }
     })
     .then((res) => {
@@ -77,13 +81,44 @@ export const LoginAPI = async (code: string) => {
     });
 };
 export const RadiusMakerAPI = async (
-  sort: string,
   address: string,
   x: number,
   y: number,
-  page: number,
   setRadiusRestaurant: SetterOrUpdater<RadiusMarkerType>,
   setMarkerAPIStatus: SetterOrUpdater<boolean>
+) => {
+  console.log(address, x, y);
+  axios
+    .get(API_URL + '/shop/radius/all', {
+      params: {
+        address: address,
+        x: x,
+        y: y
+      },
+      headers: headerConfig
+    })
+    .then(async (res: AxiosResponse) => {
+      console.log(res);
+      if (res.status === 200) {
+        setMarkerAPIStatus(true);
+      }
+      console.log(res.data);
+      setRadiusRestaurant(res.data);
+    })
+    .catch((err: AxiosError) => {
+      console.log(err.response?.data);
+      if (err.response?.status === 400) {
+        setMarkerAPIStatus(false);
+      }
+    });
+};
+export const SortingRestaurantAPI = async (
+  address: string,
+  x: number,
+  y: number,
+  sort: string,
+  page: number,
+  setSortingRestaurant: SetterOrUpdater<SortingRestaurantType>
 ) => {
   console.log('Here=> ' + address, x, y);
   axios
@@ -99,12 +134,8 @@ export const RadiusMakerAPI = async (
     })
     .then(async (res: AxiosResponse) => {
       console.log(res);
-      if (res.status === 200) {
-        setMarkerAPIStatus(true);
-      }
-      console.log(Object.values(res.data[0]));
       Object.values(res.data[0]).map((item: any) => {
-        setRadiusRestaurant((prev) => [
+        setSortingRestaurant((prev) => [
           ...prev,
           {
             name: item.name,
@@ -116,15 +147,13 @@ export const RadiusMakerAPI = async (
             recentReview: item.recentReview,
             reviewCount: item.reviewCount,
             followCount: item.followCount,
-            totalRating: item.totalRating
+            totalRating: item.totalRating,
+            shopId: item.shopId
           }
         ]);
       });
     })
     .catch((err: AxiosError) => {
       console.log(err.response?.data);
-      if (err.response?.status === 400) {
-        setMarkerAPIStatus(false);
-      }
     });
 };
