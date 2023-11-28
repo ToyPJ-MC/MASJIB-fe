@@ -24,9 +24,8 @@ import {
 } from '../state/atom';
 import Reviewcard from '../component/Reviewcard';
 import LoginModal from '../component/LoginModal';
-import { RadiusMarkerType, SortingRestaurantType } from '../types';
+import {SortingRestaurantType } from '../types';
 import SortLoading from '../component/SortLoading';
-import { SortingRestaurantAPI } from '../apis/server';
 const Information = () => {
   const categoriesChange = ['한식', '중식', '일식', '양식'];
   const [modal, setModal] = useRecoilState<boolean>(loginmodalState);

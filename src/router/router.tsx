@@ -2,6 +2,8 @@ import Main from '../pages/Main/Main';
 import React from 'react';
 import Information from '../pages/Information';
 import Review from '../pages/Review';
+import KakaoLogin from '../component/KakaoLogin';
+import Profile from '../pages/Profile';
 
 const Router = [
   {
@@ -21,6 +23,16 @@ const Router = [
   {
     url: '/review',
     component: <Review />
+  },
+  {
+    title: '카카오로그인',
+    url: '/KakaoLogin',
+    component: <KakaoLogin />
+  },
+  {
+    title: '프로필',
+    url: '/profile',
+    component: <Profile />
   }
 ];
 export default Router;

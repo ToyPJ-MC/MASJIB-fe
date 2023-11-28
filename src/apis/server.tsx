@@ -6,6 +6,7 @@ import {
   searchImageType
 } from '../types';
 import { API_URL } from '../Constants/Constants';
+import { setCookie } from '../util/Cookie';
 const headerConfig = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*'
@@ -68,16 +69,39 @@ export const AddressAPI = async (
       console.log(err);
     });
 };
-export const LoginAPI = async (code: string) => {
+export const RefreshTokenAPI = async (code: string) => {
   await axios
-    .post('/login', {
+    .post(API_URL + '/login', {
       code: code
     })
     .then((res) => {
       console.log(res);
+      setCookie('access_token', res.data.accessToken, { path: '/' });
+      setCookie('refresh_token', res.data.refreshToken, { path: '/' });
+      if (res.data.accessToken) {
+        window.location.href = '/profile';
+      }
     })
     .catch((err) => {
       console.log(err);
+    });
+};
+export const LoginAPI = async (refreshtoken: string, nickname: string) => {
+  await axios
+    .post(API_URL + '/login', null, {
+      params: { nickname: nickname },
+      headers: {
+        Authorization: `Bearer ${refreshtoken}`
+      }
+    })
+    .then((res) => {
+      console.log(res);
+      if (res.status === 200) {
+        window.location.href = '/';
+      }
+    })
+    .catch((err) => {
+      console.log(err.response?.data);
     });
 };
 export const RadiusMakerAPI = async (

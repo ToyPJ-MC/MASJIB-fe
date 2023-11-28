@@ -4,6 +4,9 @@ import { loginmodalState } from '../state/atom';
 
 const LoadingModal = () => {
   const [open, setOpen] = useRecoilState<boolean>(loginmodalState);
+  const kakaoLogin = () => {
+    location.href = 'http://192.168.0.16:18080/login/oauth2/code/kakao';
+  };
   return (
     <Dialog
       open={open}
@@ -14,8 +17,8 @@ const LoadingModal = () => {
       maxWidth='md'
       sx={{ height: '50vh' }}
     >
-      <div className='grid grid-cols-2'>
-        <div>카카오</div>
+      <div className='grid grid-cols-2 gap-2'>
+        <div onClick={kakaoLogin}>카카오</div>
         <div>구글</div>
       </div>
     </Dialog>
