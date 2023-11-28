@@ -6,8 +6,19 @@ export const getCookie = (name: string) => {
   return cookies.get(name);
 };
 
-export const setCookie = (name: string, value: string, option?: any) => {
-  cookies.set(name, value, option);
+export const setRefreshToken = (name: string, value: string) => {
+  cookies.set(name, value, {
+    path: '/',
+    expires: new Date(Date.now() + 60 * 60 * 1000)
+  });
+};
+export const setAccessToken = (name: string, value: string) => {
+  cookies.set(name, value, {
+    path: '/',
+    httpOnly: true,
+    secure: true,
+    expires: new Date(Date.now() + 60 * 60 * 1000)
+  });
 };
 
 export const removeCookie = (name: string, option?: any) => {

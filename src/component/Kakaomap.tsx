@@ -55,39 +55,48 @@ const Kakaomap = () => {
     SortingRestaurantDataState
   );
   const currentbutton = () => {
-    setCurrentlocation(true);
     setRadiusMarker([]);
     SetSortRestaurant([]);
+    setCurrentlocation(true);
   };
 
   useEffect(() => {
     // 현재위치 받아오기
     const fetchUserLocation = async () => {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          console.log(position);
+        navigator.geolocation.watchPosition((position) => {
+          //console.log(position);
           let lat = position.coords.latitude;
           let lon = position.coords.longitude;
           setLat(lat);
           setLon(lon);
           setLocPosition(new window.kakao.maps.LatLng(lat, lon));
         });
-        if (lat === -1 || lon === -1) {
+        if (lat === -1 || lon === -1 || lat === 0 || lon === 0) {
           fetchUserLocation(); // 37.5012350392984 127.026630556235
-        }
-        if ((lat !== -1 && lon !== -1) || (lat !== 0 && lon !== 0)) {
-          AddressAPI(lon, lat, setAddress);
         }
       }
     };
     fetchUserLocation();
-  }, [currentlocation, lat, lon]);
+  }, [currentlocation]);
+
+  useEffect(() => {
+    if ((lat !== -1 && lon !== -1) || (lat !== 0 && lon !== 0)) {
+      AddressAPI(lon, lat, setAddress);
+    }
+  }, [lon, lat]);
 
   useEffect(() => {
     if (
-      (lat !== 0 && lon !== 0 && address !== '') ||
-      (lat !== -1 && lon !== -1 && address !== '')
+      lat !== 0 &&
+      lon !== 0 &&
+      lat !== -1 &&
+      lon !== -1 &&
+      address !== '' &&
+      (sort || currentlocation || address)
     ) {
+      setRadiusMarker([]);
+      SetSortRestaurant([]);
       RadiusMakerAPI(address, lon, lat, setRadiusMarker, setMarkerAPIStatus);
       SortingRestaurantAPI(address, lon, lat, sort, 1, SetSortRestaurant);
     }
@@ -174,7 +183,7 @@ const Kakaomap = () => {
               if (result[i].category_group_code !== 'FD6') continue;
               displayMarker(result[i]);
               bounds.extend(
-                new window.kakao.maps.LatLng(result[i].y, result[i].x)
+                new window.kakao.maps.LatLng(result[i].x, result[i].y)
               );
             }
             map.setBounds(bounds);
@@ -214,12 +223,12 @@ const Kakaomap = () => {
       let zoomControl = new window.kakao.maps.ZoomControl();
       map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
       if (currentlocation) {
-        map.setCenter(locPosition);
+        map.setCenter(new window.kakao.maps.LatLng(lat, lon));
         setCurrentlocation(false);
         setSearchResult([]);
         setSearch('Restaurant');
+        marker.setMap(map);
       }
-      marker.setMap(map);
     }
   }, [lat, lon, search, modal, currentlocation, radiusMarker]);
   return (

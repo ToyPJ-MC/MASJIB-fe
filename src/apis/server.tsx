@@ -6,7 +6,7 @@ import {
   searchImageType
 } from '../types';
 import { API_URL } from '../Constants/Constants';
-import { setCookie } from '../util/Cookie';
+import { setAccessToken, setRefreshToken } from '../util/Cookie';
 const headerConfig = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*'
@@ -71,13 +71,13 @@ export const AddressAPI = async (
 };
 export const RefreshTokenAPI = async (code: string) => {
   await axios
-    .post(API_URL + '/login', {
-      code: code
+    .post(API_URL + '/oauth/login', code, {
+      headers: headerConfig
     })
     .then((res) => {
       console.log(res);
-      setCookie('access_token', res.data.accessToken, { path: '/' });
-      setCookie('refresh_token', res.data.refreshToken, { path: '/' });
+      setAccessToken('access_token', res.data.accessToken);
+      setRefreshToken('refresh_token', res.data.refreshToken);
       if (res.data.accessToken) {
         window.location.href = '/profile';
       }

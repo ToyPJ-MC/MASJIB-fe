@@ -25,7 +25,6 @@ const Router = [
     component: <Review />
   },
   {
-    title: '카카오로그인',
     url: '/KakaoLogin',
     component: <KakaoLogin />
   },

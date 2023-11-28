@@ -5,7 +5,7 @@ import { loginmodalState } from '../state/atom';
 const LoadingModal = () => {
   const [open, setOpen] = useRecoilState<boolean>(loginmodalState);
   const kakaoLogin = () => {
-    location.href = 'http://192.168.0.16:18080/login/oauth2/code/kakao';
+    location.href = 'http://192.168.0.16:18080/oauth2/authorization/kakao';
   };
   return (
     <Dialog
