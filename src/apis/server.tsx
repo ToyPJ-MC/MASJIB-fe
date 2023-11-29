@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { SetterOrUpdater } from 'recoil';
 import {
+  GeolocationType,
   RadiusMarkerType,
   SortingRestaurantType,
   searchImageType
@@ -60,7 +61,7 @@ export const AddressAPI = async (
       }
     })
     .then((res) => {
-      console.log(res);
+      console.log(res.data.documents[0]);
       setAddress(
         res.data.documents[0].road_address.address_name.replace(/[1-9]/g, '')
       );

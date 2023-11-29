@@ -37,11 +37,16 @@ type SortingRestaurantType = {
   totalRating: number;
   shopId: number;
 }[];
+type GeolocationType = {
+  latitude: number;
+  longitude: number;
+};
 
 export type {
   dumyType,
   SearchType,
   searchImageType,
   RadiusMarkerType,
-  SortingRestaurantType
+  SortingRestaurantType,
+  GeolocationType
 };

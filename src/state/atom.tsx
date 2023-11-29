@@ -1,5 +1,6 @@
 import { atom } from 'recoil';
 import {
+  GeolocationType,
   RadiusMarkerType,
   SearchType,
   SortingRestaurantType,
@@ -68,6 +69,13 @@ const SortingRestaurantDataState = atom<SortingRestaurantType>({
   key: 'SortingRestaurantType',
   default: []
 });
+const GeolocationDataState = atom<GeolocationType>({
+  key: 'GeolocationDataState',
+  default: {
+    latitude: 0,
+    longitude: 0
+  }
+});
 
 export {
   dumydataState,
@@ -80,5 +88,6 @@ export {
   RadiusMarkerDataState,
   RadiusSortState,
   RadiusMarkerAPIStatus,
-  SortingRestaurantDataState
+  SortingRestaurantDataState,
+  GeolocationDataState
 };

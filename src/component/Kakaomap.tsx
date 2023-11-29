@@ -64,17 +64,25 @@ const Kakaomap = () => {
     // 현재위치 받아오기
     const fetchUserLocation = async () => {
       if (navigator.geolocation) {
-        navigator.geolocation.watchPosition((position) => {
-          //console.log(position);
-          let lat = position.coords.latitude;
-          let lon = position.coords.longitude;
+        const successCallback = (position: any) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
           setLat(lat);
           setLon(lon);
           setLocPosition(new window.kakao.maps.LatLng(lat, lon));
-        });
-        if (lat === -1 || lon === -1 || lat === 0 || lon === 0) {
-          fetchUserLocation(); // 37.5012350392984 127.026630556235
-        }
+        };
+        const errorCallback = (error: any) => {
+          console.error('유저 현재 위치 오류:', error);
+        };
+        const options = {
+          enableHighAccuracy: true,
+          maximumAge: 0
+        };
+        navigator.geolocation.watchPosition(
+          successCallback,
+          errorCallback,
+          options
+        );
       }
     };
     fetchUserLocation();
