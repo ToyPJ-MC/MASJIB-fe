@@ -55,8 +55,6 @@ const Kakaomap = () => {
     SortingRestaurantDataState
   );
   const currentbutton = () => {
-    setRadiusMarker([]);
-    SetSortRestaurant([]);
     setCurrentlocation(true);
   };
 
@@ -64,6 +62,7 @@ const Kakaomap = () => {
     // 현재위치 받아오기
     const fetchUserLocation = async () => {
       if (navigator.geolocation) {
+        // 위치 정보를 성공적으로 가져온 경우의 콜백 함수
         const successCallback = (position: any) => {
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
@@ -72,13 +71,15 @@ const Kakaomap = () => {
           setLocPosition(new window.kakao.maps.LatLng(lat, lon));
         };
         const errorCallback = (error: any) => {
+          // 위치 정보를 가져오는 도중 에러가 발생한 경우의 콜백 함수
           console.error('유저 현재 위치 오류:', error);
         };
         const options = {
-          enableHighAccuracy: true,
-          maximumAge: 0
+          enableHighAccuracy: true, // 가능한 정확한 위치를 요청하는 옵션
+          maximumAge: 0 // 최신 위치 정보를 요청하는 옵션
         };
-        navigator.geolocation.watchPosition(
+        // 사용자의 위치를 실시간으로 추적하는 watchPosition() 메소드
+        navigator.geolocation.getCurrentPosition(
           successCallback,
           errorCallback,
           options
@@ -92,7 +93,7 @@ const Kakaomap = () => {
     if ((lat !== -1 && lon !== -1) || (lat !== 0 && lon !== 0)) {
       AddressAPI(lon, lat, setAddress);
     }
-  }, [lon, lat]);
+  }, [currentlocation, lat, lon]);
 
   useEffect(() => {
     if (
@@ -191,7 +192,7 @@ const Kakaomap = () => {
               if (result[i].category_group_code !== 'FD6') continue;
               displayMarker(result[i]);
               bounds.extend(
-                new window.kakao.maps.LatLng(result[i].x, result[i].y)
+                new window.kakao.maps.LatLng(result[i].y, result[i].x)
               );
             }
             map.setBounds(bounds);
@@ -203,10 +204,10 @@ const Kakaomap = () => {
         function displayMarker(place: any) {
           let marker = new window.kakao.maps.Marker({
             map: map,
-            position: new window.kakao.maps.LatLng(place.x, place.y)
+            position: new window.kakao.maps.LatLng(place.y, place.x)
           });
           let infowindow = new window.kakao.maps.InfoWindow({
-            content: place.place_name
+            content: place.place_name + '<br>' + place.road_address_name
           });
           window.kakao.maps.event.addListener(marker, 'click', function () {
             window.open(
@@ -228,17 +229,16 @@ const Kakaomap = () => {
         position: locPosition,
         image: markerImage
       });
+      marker.setMap(map);
       let zoomControl = new window.kakao.maps.ZoomControl();
       map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
       if (currentlocation) {
         map.setCenter(new window.kakao.maps.LatLng(lat, lon));
         setCurrentlocation(false);
-        setSearchResult([]);
         setSearch('Restaurant');
-        marker.setMap(map);
       }
     }
-  }, [lat, lon, search, modal, currentlocation, radiusMarker]);
+  }, [address, search, radiusMarker]);
   return (
     <>
       <div

@@ -19,7 +19,6 @@ import {
   RadiusMarkerDataState,
   RadiusSortState,
   SortingRestaurantDataState,
-  dumydataState,
   loginmodalState
 } from '../state/atom';
 import Reviewcard from '../component/Reviewcard';

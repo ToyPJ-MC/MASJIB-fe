@@ -47,7 +47,6 @@ export const AddressAPI = async (
   lon: number,
   setAddress: SetterOrUpdater<string>
 ) => {
-  console.log('위도,경도 ' + lat, lon);
   await axios
     .get('/v2/local/geo/coord2address.json', {
       headers: {
@@ -112,7 +111,6 @@ export const RadiusMakerAPI = async (
   setRadiusRestaurant: SetterOrUpdater<RadiusMarkerType>,
   setMarkerAPIStatus: SetterOrUpdater<boolean>
 ) => {
-  console.log(address, x, y);
   axios
     .get(API_URL + '/shop/radius/all', {
       params: {
@@ -159,6 +157,7 @@ export const SortingRestaurantAPI = async (
     })
     .then(async (res: AxiosResponse) => {
       console.log(res);
+      setSortingRestaurant([]);
       Object.values(res.data[0]).map((item: any) => {
         setSortingRestaurant((prev) => [
           ...prev,
