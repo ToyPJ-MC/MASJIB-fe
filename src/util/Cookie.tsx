@@ -11,9 +11,13 @@ export const setRefreshToken = (
   value: string,
   refreshexpires: number
 ) => {
+  const date = new Date(Date.now() + refreshexpires);
+  const UTCDate = new Date(
+    date.getTime() + date.getTimezoneOffset() * 60 * 1000
+  );
   cookies.set(name, value, {
     path: '/',
-    expires: new Date(Date.now() + refreshexpires)
+    expires: UTCDate
   });
 };
 export const setAccessToken = (
@@ -21,9 +25,13 @@ export const setAccessToken = (
   value: string,
   accessexpires: number
 ) => {
+  const date = new Date(Date.now() + accessexpires);
+  const UTCDate = new Date(
+    date.getTime() + date.getTimezoneOffset() * 60 * 1000
+  );
   cookies.set(name, value, {
     path: '/',
-    expires: new Date(Date.now() + accessexpires)
+    expires: UTCDate
   });
 };
 

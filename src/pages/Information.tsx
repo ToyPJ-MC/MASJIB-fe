@@ -59,7 +59,6 @@ const Information = () => {
       setReview([]);
     }
   };
-  console.log(review);
   return (
     <div className='h-screen w-screen overflow-hidden'>
       <div className='grid grid-cols-4 mt-8 items-center place-content-center border border-b-2 border-t-0 border-l-0 border-r-0'>

@@ -77,7 +77,7 @@ export const RefreshTokenAPI = async (code: string) => {
       }
     })
     .then((res) => {
-      //console.log(res);
+      console.log(res);
       setAccessToken(
         'access_token',
         res.data.accessToken,
