@@ -6,18 +6,24 @@ export const getCookie = (name: string) => {
   return cookies.get(name);
 };
 
-export const setRefreshToken = (name: string, value: string) => {
+export const setRefreshToken = (
+  name: string,
+  value: string,
+  refreshexpires: number
+) => {
   cookies.set(name, value, {
     path: '/',
-    expires: new Date(Date.now() + 60 * 60 * 1000)
+    expires: new Date(Date.now() + refreshexpires)
   });
 };
-export const setAccessToken = (name: string, value: string) => {
+export const setAccessToken = (
+  name: string,
+  value: string,
+  accessexpires: number
+) => {
   cookies.set(name, value, {
     path: '/',
-    httpOnly: true,
-    secure: true,
-    expires: new Date(Date.now() + 60 * 60 * 1000)
+    expires: new Date(Date.now() + accessexpires)
   });
 };
 

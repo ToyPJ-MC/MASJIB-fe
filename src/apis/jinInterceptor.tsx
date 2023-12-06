@@ -19,7 +19,7 @@ const headerConfig = {
 
 jinInterceptor.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access_token');
+    const token = access_token;
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -38,14 +38,12 @@ jinInterceptor.interceptors.response.use(
       originalRequest._retry = true;
       const refreshToken = refresh_token;
       return axios
-        .post(
-          `${API_URL}/auth/refresh`,
-          { refreshToken: refreshToken },
-          { headers: headerConfig }
-        )
+        .post(`${API_URL}/oauth/login`, refreshToken, {
+          headers: { 'Content-Type': 'text/plain' }
+        })
         .then((res) => {
-          if (res.status === 201) {
-            setAccessToken('access_token', res.data.accessToken);
+          if (res.status === 200) {
+            //setAccessToken('access_token', res.data.accessToken);
             console.log('Access token refreshed!');
             return jinInterceptor(originalRequest);
           }

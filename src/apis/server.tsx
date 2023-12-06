@@ -71,13 +71,23 @@ export const AddressAPI = async (
 };
 export const RefreshTokenAPI = async (code: string) => {
   await axios
-    .post(API_URL + '/oauth/login', code, {
-      headers: headerConfig
+    .post(API_URL + '/oauth/login', code as string, {
+      headers: {
+        'Content-Type': 'text/plain'
+      }
     })
     .then((res) => {
-      console.log(res);
-      setAccessToken('access_token', res.data.accessToken);
-      setRefreshToken('refresh_token', res.data.refreshToken);
+      //console.log(res);
+      setAccessToken(
+        'access_token',
+        res.data.accessToken,
+        res.data.accessTokenExpiresIn
+      );
+      setRefreshToken(
+        'refresh_token',
+        res.data.refreshToken,
+        res.data.refreshTokenExpiresIn
+      );
       if (res.data.accessToken) {
         window.location.href = '/profile';
       }

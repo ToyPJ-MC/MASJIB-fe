@@ -5,7 +5,7 @@ import { setRefreshToken } from '../util/Cookie';
 const KakaoLogin = () => {
   const code = new URL(window.location.href).searchParams.get('code');
   console.log(code);
-  setRefreshToken('refresh_token', code as string);
+  setRefreshToken('refresh_token', code as string, 1);
   useEffect(() => {
     RefreshTokenAPI(code as string);
   }, []);
