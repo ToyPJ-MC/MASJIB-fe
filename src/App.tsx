@@ -5,6 +5,7 @@ import Information from './pages/Information';
 import Review from './pages/Review';
 import KakaoLogin from './component/KakaoLogin';
 import Profile from './pages/Profile';
+import Errorpage from './pages/Errorpage';
 
 const router = createBrowserRouter([
   {
@@ -20,8 +21,8 @@ const router = createBrowserRouter([
     element: <Review />
   },
   {
-    path: '/review',
-    element: <Review />
+    path: '*',
+    element: <Errorpage />
   },
   {
     path: '/oauth2/redirect',

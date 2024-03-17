@@ -4,6 +4,7 @@ import Information from '../pages/Information';
 import Review from '../pages/Review';
 import KakaoLogin from '../component/KakaoLogin';
 import Profile from '../pages/Profile';
+import Errorpage from '../pages/Errorpage';
 
 const Router = [
   {
@@ -21,8 +22,9 @@ const Router = [
     component: <Review />
   },
   {
-    url: '/review',
-    component: <Review />
+    title: 'Errorpage',
+    url: '/errorpage',
+    component: <Errorpage />,
   },
   {
     url: '/KakaoLogin',
