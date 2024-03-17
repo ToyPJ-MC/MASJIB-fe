@@ -21,8 +21,7 @@ const Main = () => {
       className='z-0 relative'
     >
       <div className='z-10 text-white'>
-        <div className='grid grid-cols-3 ml-8 absolute bottom-6'>
-          <div>
+        <div className='ml-8 absolute bottom-6'>
             <div className='text-6xl'>MASJIB</div>
             <Button
               variant='outlined'
@@ -46,15 +45,14 @@ const Main = () => {
             >
               Review
             </Button>
-          </div>
-          <div></div>
-          <div className='text-3xl'>
+          
+        </div>
+        <div className='text-4xl absolute bottom-6 right-10'>
             <div>This is a service to share your</div>
             <div>own delicious restaurants.</div>
             <div>We introduce various</div>
             <div>restaurants.</div>
           </div>
-        </div>
       </div>
     </div>
   );
