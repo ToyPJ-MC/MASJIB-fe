@@ -21,7 +21,7 @@ const Main = () => {
       className='z-0 relative'
     >
       <div className='z-10 text-white'>
-        <div className='ml-8 absolute bottom-6'>
+        <div className='absolute bottom-6 left-4 md:left-8'>
             <div className='text-6xl'>MASJIB</div>
             <Button
               variant='outlined'
@@ -45,9 +45,8 @@ const Main = () => {
             >
               Review
             </Button>
-          
         </div>
-        <div className='text-4xl absolute bottom-6 right-10'>
+        <div className='text-2xl md:text-4xl absolute bottom-[80%] right-4 md:bottom-6 md:right-10'>
             <div>This is a service to share your</div>
             <div>own delicious restaurants.</div>
             <div>We introduce various</div>
