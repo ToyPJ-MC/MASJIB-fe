@@ -6,6 +6,7 @@ import Review from './pages/Review';
 import KakaoLogin from './component/KakaoLogin';
 import Profile from './pages/Profile';
 import Errorpage from './pages/Errorpage';
+import M_Information from './pages/M_Information';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
   {
     path: '/profile',
     element: <Profile />
+  },
+  {
+    path: '/m_information',
+    element: <M_Information />
   }
 ]);
 const App = () => <RouterProvider router={router} />;

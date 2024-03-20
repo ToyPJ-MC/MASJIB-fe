@@ -5,6 +5,7 @@ import Review from '../pages/Review';
 import KakaoLogin from '../component/KakaoLogin';
 import Profile from '../pages/Profile';
 import Errorpage from '../pages/Errorpage';
+import M_Information from '../pages/M_Information';
 
 const Router = [
   {
@@ -34,6 +35,11 @@ const Router = [
     title: '프로필',
     url: '/profile',
     component: <Profile />
-  }
+  },
+  {
+    title: 'MASJIB Information',
+    url: '/m_information',
+    component: <M_Information />
+  },
 ];
 export default Router;
