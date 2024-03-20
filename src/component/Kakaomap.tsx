@@ -243,7 +243,7 @@ const Kakaomap = () => {
     <>
       <div
         id='map'
-        style={{ width: '50vw', height: '100vh' }}
+        style={{ width: '100w', height: '100vh' }}
         className='z-0 relative'
       >
         {loading ? null : <Loading />}
