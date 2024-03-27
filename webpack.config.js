@@ -31,7 +31,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, '/dist'),
     publicPath: '/',
-    filename: 'build.[chunkhash].js',
+    filename: 'build.js',
     clean: true, // 빌드 이전 결과물 제거
     assetModuleFilename: 'assets/[name][ext]' // asset 폴더에 있던 파일들은 dist 내부에 asset 폴더 생성후 이름과 확장자를 그대로 사용하여 저장
   },
@@ -67,7 +67,8 @@ module.exports = {
       // css loader 설정
       {
         test: /\.(s*)css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader']
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
+        exclude: /node_modules/
       },
       // image loader 설정
       {
@@ -107,7 +108,7 @@ module.exports = {
   plugins: [
     // 기본 html 위치 설정.
     new HtmlWebpackPlugin({
-      template: './public/index.html',
+      template: path.resolve(__dirname, './public/index.html'),
       filename: 'index.html',
       env: process.env
     }),
