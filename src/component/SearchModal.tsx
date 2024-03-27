@@ -17,7 +17,6 @@ const SearchModal = () => {
   const handleClose = () => {
     setModal(false);
   };
-  console.log(searchResult);
   return (
     <Dialog
       open={modal}

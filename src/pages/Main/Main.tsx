@@ -5,8 +5,14 @@ import { useNavigate } from 'react-router-dom';
 
 const Main = () => {
   const navigate = useNavigate();
+  const userAgent = window.navigator.userAgent;
   const mapbtn = () => {
-    navigate('/information');
+    if(userAgent.includes('iPhone') || userAgent.includes('Android')){
+      navigate('/m_information');
+    }
+    else {
+      navigate('/information');
+    }
   };
   return (
     <div
@@ -21,8 +27,7 @@ const Main = () => {
       className='z-0 relative'
     >
       <div className='z-10 text-white'>
-        <div className='grid grid-cols-3 ml-8 absolute bottom-6'>
-          <div>
+        <div className='absolute bottom-6 left-4 md:left-8'>
             <div className='text-6xl'>MASJIB</div>
             <Button
               variant='outlined'
@@ -46,15 +51,13 @@ const Main = () => {
             >
               Review
             </Button>
-          </div>
-          <div></div>
-          <div className='text-3xl'>
+        </div>
+        <div className='text-2xl md:text-4xl absolute bottom-[75%] right-4 md:bottom-6 md:right-10'>
             <div>This is a service to share your</div>
             <div>own delicious restaurants.</div>
             <div>We introduce various</div>
             <div>restaurants.</div>
           </div>
-        </div>
       </div>
     </div>
   );

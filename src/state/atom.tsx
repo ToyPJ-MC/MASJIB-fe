@@ -1,7 +1,9 @@
 import { atom } from 'recoil';
 import {
+  GeolocationType,
   RadiusMarkerType,
   SearchType,
+  SortingRestaurantType,
   dumyType,
   searchImageType
 } from '../types';
@@ -63,6 +65,17 @@ const RadiusMarkerAPIStatus = atom<boolean>({
   key: 'RadiusMarkerAPIStatus',
   default: false
 });
+const SortingRestaurantDataState = atom<SortingRestaurantType>({
+  key: 'SortingRestaurantType',
+  default: []
+});
+const GeolocationDataState = atom<GeolocationType>({
+  key: 'GeolocationDataState',
+  default: {
+    latitude: 0,
+    longitude: 0
+  }
+});
 
 export {
   dumydataState,
@@ -74,5 +87,7 @@ export {
   writemodalState,
   RadiusMarkerDataState,
   RadiusSortState,
-  RadiusMarkerAPIStatus
+  RadiusMarkerAPIStatus,
+  SortingRestaurantDataState,
+  GeolocationDataState
 };

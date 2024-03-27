@@ -18,20 +18,20 @@ import {
   RadiusMarkerAPIStatus,
   RadiusMarkerDataState,
   RadiusSortState,
-  dumydataState,
+  SortingRestaurantDataState,
   loginmodalState
 } from '../state/atom';
 import Reviewcard from '../component/Reviewcard';
 import LoginModal from '../component/LoginModal';
-import { RadiusMarkerType } from '../types';
+import { SortingRestaurantType } from '../types';
 import SortLoading from '../component/SortLoading';
 const Information = () => {
   const categoriesChange = ['한식', '중식', '일식', '양식'];
   const [modal, setModal] = useRecoilState<boolean>(loginmodalState);
   const [sort, setSort] = useRecoilState<string>(RadiusSortState);
   const [sortby, setSortby] = useState<string>('Rating');
-  const [review, setReview] = useRecoilState<RadiusMarkerType>(
-    RadiusMarkerDataState
+  const [review, setReview] = useRecoilState<SortingRestaurantType>(
+    SortingRestaurantDataState
   );
   const markerAPI = useRecoilValue<boolean>(RadiusMarkerAPIStatus);
   useEffect(() => {
@@ -61,18 +61,18 @@ const Information = () => {
   };
   return (
     <div className='h-screen w-screen overflow-hidden'>
-      <div className='grid grid-cols-4 mt-8 items-center place-content-center border border-b-2 border-t-0 border-l-0 border-r-0'>
-        <div className='font-bold text-4xl text-blue-500 text-center mb-2'>
+      <div className='grid grid-cols-4 mt-4 items-center place-content-center border border-b-2 border-t-0 border-l-0 border-r-0'>
+        <div className='font-bold text-4xl text-blue-500 mb-2 text-start ml-2'>
           MASJIB
         </div>
-        <div className='col-span-2 grid grid-cols-2 mb-2 items-center'>
+        <div className='col-span-2 grid grid-cols-3 mb-2 items-center'>
           <div>
             <Autocomplete
               disablePortal
               id='category'
               options={categoriesChange}
               sx={{
-                width: '100%'
+                width: '100%',
               }}
               renderInput={(params) => (
                 <TextField {...params} label='Categories' />
@@ -85,23 +85,25 @@ const Information = () => {
               label='Location'
               variant='outlined'
               sx={{
-                width: '80%'
+                width: '100%',
               }}
             />
-            <Button variant='outlined' sx={{ height: '3.55em' }}>
-              <SearchIcon />
-            </Button>
           </div>
+          <Button variant='outlined' sx={{
+            width: 'fit-content',
+            height: '100%'
+          }}>
+            <SearchIcon />
+          </Button>
         </div>
-        <div>
+        <div className='text-end mr-8'>
           <Button
             className='place-items-center'
             variant='outlined'
             sx={{
               textAlign: 'center',
-              width: '25%',
               color: 'white',
-              marginLeft: '30%',
+              height: '2.5rem',
               backgroundColor: '#3B82F6',
               borderColor: '#3B82F6',
               fontFamily: 'bold',
@@ -159,7 +161,9 @@ const Information = () => {
                 </ButtonGroup>
               </div>
               <div>
-                <div className='text-base font-semibold'>Favorite</div>
+                <div className='text-base font-semibold'>
+                  Sort by numbers Dibs
+                </div>
                 <ButtonGroup
                   variant='outlined'
                   aria-label='outlined button group'
@@ -174,7 +178,7 @@ const Information = () => {
                 <div className='text-base font-semibold'>
                   Sort by star rating
                 </div>
-                <Rating name='half-rating' defaultValue={2.5} precision={0.5} />
+                <Rating name='half-rating' defaultValue={0} precision={0.5} />
               </div>
             </div>
           </div>
@@ -197,7 +201,7 @@ const Information = () => {
                   </Select>
                 </FormControl>
               </div>
-              {markerAPI === false ? (
+              {/* {markerAPI === false ? (
                 <SortLoading />
               ) : markerAPI === true && review.length === 0 ? (
                 <SortLoading />
@@ -231,7 +235,7 @@ const Information = () => {
                     }
                   })}
                 </>
-              )}
+              )} */}
             </div>
           </div>
         </div>

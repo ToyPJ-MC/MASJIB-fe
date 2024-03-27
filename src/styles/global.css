@@ -24,3 +24,14 @@ html {
   font-weight: 600;
   text-align: center;
 }
+.body {
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: center;
+  width: 300px;
+}
+.img {
+  width: fit-content;
+  height: fit-content;
+  object-fit: cover;
+}
