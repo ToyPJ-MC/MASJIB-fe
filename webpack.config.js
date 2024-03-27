@@ -26,21 +26,17 @@ dotenv.config();
 module.exports = {
   entry: {
     // 번들 파일(bundle)의 시작 파일(Entry)을 jsx에서 tsx로 변경
-    app: './src/index.tsx'
+    app: ['./src/index.tsx']
   },
   output: {
-    path: path.join(__dirname, '/dist'),
-    publicPath: '/',
+    path: path.join(__dirname, 'dist'),
     filename: 'build.js',
     clean: true, // 빌드 이전 결과물 제거
     assetModuleFilename: 'assets/[name][ext]' // asset 폴더에 있던 파일들은 dist 내부에 asset 폴더 생성후 이름과 확장자를 그대로 사용하여 저장
   },
   resolve: {
     plugins: [new TsConfigPathsPlugin()],
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
-    alias: {
-      '@': path.resolve(__dirname, 'src') // 예시: 별칭(alias) 설정
-    }
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', 'cjs']
   },
   module: {
     rules: [
@@ -108,7 +104,7 @@ module.exports = {
   plugins: [
     // 기본 html 위치 설정.
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './public/index.html'),
+      template: path.resolve(__dirname, './index.html'),
       filename: 'index.html',
       env: process.env
     }),
