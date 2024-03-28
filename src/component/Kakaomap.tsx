@@ -64,6 +64,7 @@ const Kakaomap = () => {
       if (navigator.geolocation) {
         // 위치 정보를 성공적으로 가져온 경우의 콜백 함수
         const successCallback = (position: any) => {
+          console.log('유저 현재 위치:', position.coords);
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
           setLat(lat);
@@ -72,7 +73,7 @@ const Kakaomap = () => {
         };
         const errorCallback = (error: any) => {
           // 위치 정보를 가져오는 도중 에러가 발생한 경우의 콜백 함수
-          console.error('유저 현재 위치 오류:', error);
+          console.log('유저 현재 위치 오류:', error);
         };
         const options = {
           enableHighAccuracy: true, // 가능한 정확한 위치를 요청하는 옵션
