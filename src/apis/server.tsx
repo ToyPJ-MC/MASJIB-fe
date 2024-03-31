@@ -60,6 +60,7 @@ export const AddressAPI = async (
       }
     })
     .then((res) => {
+      console.log(res.data);
       console.log(res.data.documents[0]);
       setAddress(
         res.data.documents[0].road_address.address_name.replace(/[1-9]/g, '')

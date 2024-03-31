@@ -7,10 +7,9 @@ const Main = () => {
   const navigate = useNavigate();
   const userAgent = window.navigator.userAgent;
   const mapbtn = () => {
-    if(userAgent.includes('iPhone') || userAgent.includes('Android')){
+    if (userAgent.includes('iPhone') || userAgent.includes('Android')) {
       navigate('/m_information');
-    }
-    else {
+    } else {
       navigate('/information');
     }
   };
@@ -28,36 +27,36 @@ const Main = () => {
     >
       <div className='z-10 text-white'>
         <div className='absolute bottom-6 left-4 md:left-8'>
-            <div className='text-6xl'>MASJIB</div>
-            <Button
-              variant='outlined'
-              size='large'
-              sx={{
-                color: 'white',
-                outlineColor: 'white',
+          <div className='text-6xl'>MASJIB</div>
+          <Button
+            variant='outlined'
+            size='large'
+            sx={{
+              color: 'white',
+              outlineColor: 'white',
+              border: 3,
+              ':hover': {
+                borderColor: 'white',
                 border: 3,
-                ':hover': {
-                  borderColor: 'white',
-                  border: 3,
-                  backgroundColor: 'whitesmoke',
-                  color: 'black'
-                },
-                marginTop: 3,
-                borderRadius: 30,
-                textAlign: 'center',
-                fontWeight: 'bold'
-              }}
-              onClick={mapbtn}
-            >
-              Review
-            </Button>
+                backgroundColor: 'whitesmoke',
+                color: 'black'
+              },
+              marginTop: 3,
+              borderRadius: 30,
+              textAlign: 'center',
+              fontWeight: 'bold'
+            }}
+            onClick={mapbtn}
+          >
+            Review
+          </Button>
         </div>
-        <div className='text-2xl md:text-4xl absolute bottom-[75%] right-4 md:bottom-6 md:right-10'>
-            <div>This is a service to share your</div>
-            <div>own delicious restaurants.</div>
-            <div>We introduce various</div>
-            <div>restaurants.</div>
-          </div>
+        <div className='text-xl left-2 md:text-4xl absolute md:bottom-6 md:left-[85rem]'>
+          <div>This is a service to share your</div>
+          <div>own delicious restaurants.</div>
+          <div>We introduce various</div>
+          <div>restaurants.</div>
+        </div>
       </div>
     </div>
   );
