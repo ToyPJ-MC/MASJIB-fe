@@ -64,7 +64,6 @@ const Kakaomap = () => {
       if (navigator.geolocation) {
         // 위치 정보를 성공적으로 가져온 경우의 콜백 함수
         const successCallback = (position: any) => {
-          console.log('유저 현재 위치:', position.coords);
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
           setLat(lat);
@@ -247,7 +246,7 @@ const Kakaomap = () => {
         style={{ width: '100w', height: '100vh' }}
         className='z-0 relative'
       >
-        {loading ? null : <Loading />}
+        {/* {loading ? null : <Loading />} */}
         {loading && !modal ? (
           <>
             {' '}
