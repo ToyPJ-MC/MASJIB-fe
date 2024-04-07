@@ -8,6 +8,7 @@ import {
 import { useRecoilState } from 'recoil';
 import { modalState, searchResultState, searchState } from '../state/atom';
 import { useState } from 'react';
+import React from 'react';
 
 const SearchModal = () => {
   const [modal, setModal] = useRecoilState<boolean>(modalState);

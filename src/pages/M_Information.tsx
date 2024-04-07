@@ -3,6 +3,7 @@ import { useRecoilState } from 'recoil';
 import { loginmodalState } from '../state/atom';
 import Kakaomap from '../component/Kakaomap';
 import { useState } from 'react';
+import React from 'react';
 
 const M_Information = () => {
   const [modal, setModal] = useRecoilState<boolean>(loginmodalState);

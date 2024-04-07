@@ -25,10 +25,11 @@ const Router = [
   {
     title: 'Errorpage',
     url: '/errorpage',
-    component: <Errorpage />,
+    component: <Errorpage />
   },
   {
-    url: '/KakaoLogin',
+    title: 'KakaoLogin',
+    url: '/kakologin',
     component: <KakaoLogin />
   },
   {
@@ -40,6 +41,6 @@ const Router = [
     title: 'MASJIB Information',
     url: '/m_information',
     component: <M_Information />
-  },
+  }
 ];
 export default Router;

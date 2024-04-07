@@ -10,6 +10,7 @@ import {
   SelectChangeEvent,
   Slider
 } from '@mui/material';
+import React from 'react';
 import yami from '../assets/image.jpeg';
 import rest from '../assets/restaurant.jpg';
 import Carousel from 'react-material-ui-carousel';

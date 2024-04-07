@@ -1,5 +1,5 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import React from 'react';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Main from './pages/Main/Main';
 import Information from './pages/Information';
 import Review from './pages/Review';
@@ -38,6 +38,7 @@ const router = createBrowserRouter([
     element: <M_Information />
   }
 ]);
+
 const App = () => <RouterProvider router={router} />;
 
 export default App;

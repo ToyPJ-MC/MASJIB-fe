@@ -1,54 +1,41 @@
-const path = require('path');
-const webpack = require('webpack');
-// .env
-const dotenv = require('dotenv');
-
-// 웹팩에서 html을 파싱하기 위함.
+const { join, resolve: _resolve } = require('path');
+const { config } = require('dotenv');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-// tsconfig에서 baseUrl을 받아오기 위함
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-
-// gzip
 const CompressionPlugin = require('compression-webpack-plugin');
-
-// 번들 점유 용량 확인
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-
-// Typescript(타입스크립트)를 빌드할 때 성능을 향상시키기 위한 플러그인를 불러오기
+const { DefinePlugin } = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-
-// uglify
 const TerserPlugin = require('terser-webpack-plugin');
 
-dotenv.config();
+config();
 
 module.exports = {
-  entry: {
-    // 번들 파일(bundle)의 시작 파일(Entry)을 jsx에서 tsx로 변경
-    app: ['./src/index.tsx']
-  },
+  mode: 'development',
+  entry: './src/index.tsx',
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'build.js',
-    clean: true, // 빌드 이전 결과물 제거
-    assetModuleFilename: 'assets/[name][ext]' // asset 폴더에 있던 파일들은 dist 내부에 asset 폴더 생성후 이름과 확장자를 그대로 사용하여 저장
+    path: join(__dirname, 'dist'),
+    filename: 'bundle.js',
+    clean: true,
+    publicPath: '/'
   },
   resolve: {
     plugins: [new TsConfigPathsPlugin()],
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', 'cjs']
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
   },
   module: {
     rules: [
-      // Webpack(웹팩)에서 Typescript(타입스크립트)를 사용하기 위해 js|jsx를 ts|tsx로 수정 후 ts-loader를 추가
-      // ts-loader의 옵션은 성능 향상을 위해서
       {
-        test: /\.(ts|tsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         use: [
           {
             loader: 'babel-loader',
             options: {
-              plugins: ['@babel/transform-runtime']
+              presets: [
+                '@babel/preset-env',
+                '@babel/preset-react',
+                '@babel/preset-typescript'
+              ],
+              plugins: ['@babel/plugin-transform-runtime']
             }
           },
           {
@@ -62,7 +49,7 @@ module.exports = {
       },
       // css loader 설정
       {
-        test: /\.(s*)css$/,
+        test: /\.(s*)css$/, // scss, css 둘다 적용
         use: ['style-loader', 'css-loader', 'postcss-loader'],
         exclude: /node_modules/
       },
@@ -70,17 +57,14 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         use: ['file-loader']
-      },
-      // html loader 설정
-      {
-        test: /\.html$/,
-        use: [{ loader: 'html-loader' }]
       }
     ]
   },
-  // proxy 설정
   devServer: {
     historyApiFallback: true,
+    static: {
+      directory: _resolve(__dirname, 'dist')
+    },
     proxy: {
       '/v2/search/image': {
         target: 'https://dapi.kakao.com',
@@ -91,35 +75,25 @@ module.exports = {
         changeOrigin: true
       }
     },
-    static: {
-      directory: path.resolve(__dirname, 'dist')
-    },
     port: 3000
   },
-  // uglify
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin()]
   },
   plugins: [
-    // 기본 html 위치 설정.
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './index.html'),
-      filename: 'index.html',
+      template: _resolve(__dirname, './index.html'),
       env: process.env
     }),
-    // Typescript(타입스크립트)의 컴파일 속도 향상을 위한 플러그인을 설정
     new ForkTsCheckerWebpackPlugin(),
-    // new BundleAnalyzerPlugin(),
-    // gzip (압축)
     new CompressionPlugin({
       algorithm: 'gzip'
     }),
     new TsConfigPathsPlugin({
       configFile: './tsconfig.json'
     }),
-    // env 변수 사용을 위한 플러그인
-    new webpack.DefinePlugin({
+    new DefinePlugin({
       'process.env.KAKAO_KEY': JSON.stringify(process.env.KAKAO_KEY),
       'process.env.PUBLIC_URL': JSON.stringify(process.env.PUBLIC_URL),
       'process.env.KAKAO_RESTAPI_KEY': JSON.stringify(

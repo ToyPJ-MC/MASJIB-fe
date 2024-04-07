@@ -11,6 +11,7 @@ import { useRecoilState } from 'recoil';
 import { Button, IconButton, Rating, TextareaAutosize } from '@mui/material';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import ThumbDownAltOutlinedIcon from '@mui/icons-material/ThumbDownAltOutlined';
+import React from 'react';
 
 const Write = () => {
   const [open, setOpen] = useRecoilState<boolean>(writemodalState);

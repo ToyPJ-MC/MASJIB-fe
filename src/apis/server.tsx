@@ -54,14 +54,15 @@ export const AddressAPI = async (
         Authorization: `KakaoAK ${process.env.KAKAO_RESTAPI_KEY}`
       },
       params: {
-        input_coord: 'WGS84',
         x: lat,
-        y: lon
+        y: lon,
+        input_coord: 'WGS84'
       }
     })
     .then((res) => {
-      //console.log(res.data);
-      //console.log(res.data.documents[0]);
+      const contentType = res.headers['content-type'];
+      console.log(contentType);
+      console.log(res.data.documents[0]);
       setAddress(
         res.data.documents[0].road_address.address_name.replace(/[1-9]/g, '')
       );
@@ -72,9 +73,12 @@ export const AddressAPI = async (
 };
 export const RefreshTokenAPI = async (code: string) => {
   await axios
-    .post(API_URL + '/oauth/login', code as string, {
+    .get(API_URL + '/oauth/refresh', {
       headers: {
         'Content-Type': 'text/plain'
+      },
+      params: {
+        refreshToken: code
       }
     })
     .then((res) => {

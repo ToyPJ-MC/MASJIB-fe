@@ -4,10 +4,8 @@ import './styles/global.css';
 import App from './App';
 import { RecoilRoot } from 'recoil';
 import reportWebVitals from './reportWebVitals';
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <RecoilRoot>
     <App />
   </RecoilRoot>
