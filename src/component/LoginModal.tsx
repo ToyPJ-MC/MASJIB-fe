@@ -11,7 +11,6 @@ const LoadingModal = () => {
   const [open, setOpen] = useRecoilState<boolean>(loginmodalState);
   const kakaoLogin = () => {
     location.href = 'http://34.64.33.188:18080/oauth2/authorization/kakao';
-    //window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${'	ec9eeca1e981e1b73b756c7f14f1935f'}&redirect_uri=${'http://localhost:3000/login/oauth2/'}&response_type=code`;
   };
 
   return (

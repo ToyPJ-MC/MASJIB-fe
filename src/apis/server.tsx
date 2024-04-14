@@ -60,9 +60,6 @@ export const AddressAPI = async (
       }
     })
     .then((res) => {
-      const contentType = res.headers['content-type'];
-      console.log(contentType);
-      console.log(res.data.documents[0]);
       setAddress(
         res.data.documents[0].road_address.address_name.replace(/[1-9]/g, '')
       );

@@ -36,7 +36,7 @@ const router = createBrowserRouter([
   {
     path: '/m_information',
     element: <M_Information />
-  }
+  },
 ]);
 
 const App = () => <RouterProvider router={router} />;
