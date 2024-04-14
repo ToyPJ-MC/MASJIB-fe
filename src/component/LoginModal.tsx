@@ -1,12 +1,18 @@
 import { Dialog } from '@mui/material';
 import { useRecoilState } from 'recoil';
 import { loginmodalState } from '../state/atom';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import React from 'react';
 
 const LoadingModal = () => {
+  const navigate = useNavigate();
   const [open, setOpen] = useRecoilState<boolean>(loginmodalState);
   const kakaoLogin = () => {
-    location.href = 'http://192.168.0.16:18080/oauth2/authorization/kakao';
+    location.href = 'http://34.64.33.188:18080/oauth2/authorization/kakao';
   };
+
   return (
     <Dialog
       open={open}

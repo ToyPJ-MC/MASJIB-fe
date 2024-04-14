@@ -5,6 +5,7 @@ import {
   ButtonGroup,
   FormControl,
   InputLabel,
+  Menu,
   MenuItem,
   Rating,
   Select,
@@ -59,6 +60,14 @@ const Information = () => {
       setReview([]);
     }
   };
+  // categories menu
+  const [open, setOpen] = useState<boolean>(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <div className='h-screen w-screen overflow-hidden'>
       <div className='grid grid-cols-4 mt-4 items-center place-content-center border border-b-2 border-t-0 border-l-0 border-r-0'>
@@ -72,7 +81,7 @@ const Information = () => {
               id='category'
               options={categoriesChange}
               sx={{
-                width: '100%',
+                width: '100%'
               }}
               renderInput={(params) => (
                 <TextField {...params} label='Categories' />
@@ -85,14 +94,17 @@ const Information = () => {
               label='Location'
               variant='outlined'
               sx={{
-                width: '100%',
+                width: '100%'
               }}
             />
           </div>
-          <Button variant='outlined' sx={{
-            width: 'fit-content',
-            height: '100%'
-          }}>
+          <Button
+            variant='outlined'
+            sx={{
+              width: 'fit-content',
+              height: '100%'
+            }}
+          >
             <SearchIcon />
           </Button>
         </div>
@@ -125,25 +137,20 @@ const Information = () => {
       <div className='grid grid-cols-2'>
         <div className='ml-4'>
           <div className='grid grid-cols-2'>
-            <div>
-              <div className='text-base font-semibold'>Categories</div>
-              <ButtonGroup
-                variant='outlined'
-                aria-label='outlined button group'
-                size='small'
-                sx={{ borderColor: 'black' }}
-              >
-                <Button>Korean</Button>
-                <Button>Chinese</Button>
-              </ButtonGroup>
-              <ButtonGroup
-                variant='outlined'
-                aria-label='outlined button group'
-                size='small'
-              >
-                <Button>Japanese</Button>
-                <Button>Western food</Button>
-              </ButtonGroup>
+            <div
+              className='text-xl font-bold w-fit'
+              onMouseEnter={handleOpen}
+              onMouseLeave={handleClose}
+            >
+              Categories
+              {open ? (
+                <div className='grid grid-cols-3'>
+                  <MenuItem>한식</MenuItem>
+                  <MenuItem>중식</MenuItem>
+                  <MenuItem>일식</MenuItem>
+                  <MenuItem>양식</MenuItem>
+                </div>
+              ) : null}
             </div>
             <div className='grid grid-rows-3'>
               <div>
@@ -239,9 +246,7 @@ const Information = () => {
             </div>
           </div>
         </div>
-        <div>
-          <Kakaomap />
-        </div>
+        <div>{/* <Kakaomap /> */}</div>
       </div>
     </div>
   );

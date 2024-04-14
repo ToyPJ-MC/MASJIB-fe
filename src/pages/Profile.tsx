@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { LoginAPI } from '../apis/server';
 import { getCookie } from '../util/Cookie';
 import { Button } from '@mui/material';
+import React from 'react';
 
 const Profile = () => {
   const [nickname, setNickname] = useState<string>('');
