@@ -76,6 +76,10 @@ const GeolocationDataState = atom<GeolocationType>({
     longitude: 0
   }
 });
+const m_SearchModalState = atom<boolean>({
+  key: 'm_SearchModalState',
+  default: false
+});
 
 export {
   dumydataState,
@@ -89,5 +93,6 @@ export {
   RadiusSortState,
   RadiusMarkerAPIStatus,
   SortingRestaurantDataState,
-  GeolocationDataState
+  GeolocationDataState,
+  m_SearchModalState
 };

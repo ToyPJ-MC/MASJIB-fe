@@ -1,13 +1,17 @@
 import { Box, Button, Tab, Tabs, tabsClasses } from '@mui/material';
 import { useRecoilState } from 'recoil';
-import { loginmodalState } from '../state/atom';
+import { m_SearchModalState } from '../state/atom';
 import Kakaomap from '../component/Kakaomap';
 import { useState } from 'react';
+import React from 'react';
+import M_SearchModal from '../component/M_SearchModal';
 
 const M_Information = () => {
-  const [modal, setModal] = useRecoilState<boolean>(loginmodalState);
+  const [modal, setModal] = useRecoilState<boolean>(m_SearchModalState);
   const [value, setValue] = useState(0);
-
+  const searchmodal = () => {
+    setModal(true);
+  };
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -35,7 +39,8 @@ const M_Information = () => {
               }
             }}
             onClick={() => {
-              setModal(true);
+              location.href =
+                'http://34.64.33.188:18080/oauth2/authorization/kakao';
             }}
           >
             Log In
@@ -58,13 +63,14 @@ const M_Information = () => {
                 }
               }}
             >
-              <Tab label='Item One' />
-              <Tab label='Item Two' />
-              <Tab label='Item Three' />
-              <Tab label='Item Four' />
-              <Tab label='Item Five' />
-              <Tab label='Item Six' />
-              <Tab label='Item Seven' />
+              <Tab label='내 주변 맛집' />
+              <Tab label='검색' onClick={searchmodal} />
+              <Tab label='최고의 맛집' />
+              <Tab label='등록' />
+              <Tab label='한식' />
+              <Tab label='중식' />
+              <Tab label='일식' />
+              <Tab label='양식' />
             </Tabs>
           </Box>
         </div>
@@ -72,6 +78,8 @@ const M_Information = () => {
           <Kakaomap />
         </div>
       </div>
+      {/* {modal ? <M_SearchModal /> : null} */}
+      <M_SearchModal />
     </div>
   );
 };

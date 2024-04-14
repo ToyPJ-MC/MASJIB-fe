@@ -1,17 +1,15 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  TextField
-} from '@mui/material';
+import { Dialog, DialogContent, Divider, TextField } from '@mui/material';
 import { useRecoilState } from 'recoil';
-import { modalState, searchResultState, searchState } from '../state/atom';
+import {
+  m_SearchModalState,
+  searchResultState,
+  searchState
+} from '../state/atom';
 import { useState } from 'react';
 import React from 'react';
 
-const SearchModal = () => {
-  const [modal, setModal] = useRecoilState<boolean>(modalState);
+const M_SearchModal = () => {
+  const [modal, setModal] = useRecoilState<boolean>(m_SearchModalState);
   const [input, setInput] = useState<string>('');
   const [search, setSearch] = useRecoilState<string>(searchState);
   const [searchResult, setSearchResult] = useRecoilState(searchResultState);
@@ -19,19 +17,15 @@ const SearchModal = () => {
     setModal(false);
   };
   return (
-    <Dialog
-      open={modal}
-      onClose={handleClose}
-      aria-labelledby='alert-dialog-title'
-      maxWidth='md'
-      sx={{ height: '50vh' }}
-    >
-      <div className='grid grid-cols-2'>
+    <Dialog open={modal} onClose={handleClose}>
+      <div className='grid grid-rows-2 h-80'>
         <div className='border border-l-0 border-t-0 border-b-0'>
-          <DialogTitle id='alert-dialog-title'>{'등록할 음식점'}</DialogTitle>
+          <div className='grid place-items-center text-xl mt-1 font-bold'>
+            등록할 음식점
+          </div>
           <DialogContent>
             <TextField
-              id='Restuarant-basic'
+              id='Restuarant'
               label='Restuarant'
               variant='standard'
               value={input}
@@ -44,14 +38,6 @@ const SearchModal = () => {
               sx={{ marginBottom: '1em', borderRadius: '50px' }}
             />
           </DialogContent>
-          <div className='ml-2 font-extralight sticky top-10'>
-            Kakao API를 사용하는 서비스라 최대 45개밖에 <br></br>안 나오는 점
-            양해부탁드립니다.
-          </div>
-          <div className='ml-2 text-slate-400 font-extralight sticky top-24'>
-            Please understand that since this is a service that uses the Kakao
-            API, there are only 45 items in total.
-          </div>
         </div>
         {searchResult.length === 0 ? (
           <div className='grid place-items-center mt-4'>
@@ -75,4 +61,4 @@ const SearchModal = () => {
     </Dialog>
   );
 };
-export default SearchModal;
+export default M_SearchModal;

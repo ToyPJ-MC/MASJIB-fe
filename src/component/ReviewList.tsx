@@ -1,5 +1,6 @@
 import { Rating } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
+import React from 'react';
 const ReviewList = () => {
   return (
     <div>
