@@ -7,11 +7,12 @@ import {
   searchImageType
 } from '../types';
 import { API_URL } from '../Constants/Constants';
-import { setAccessToken, setRefreshToken } from '../util/Cookie';
+import { setCookie } from '../util/Cookie';
 const headerConfig = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*'
 };
+
 export const BlogSearchAPI = async (
   search: string,
   setBlog: SetterOrUpdater<searchImageType>
@@ -72,25 +73,28 @@ export const RefreshTokenAPI = async (code: string) => {
   await axios
     .get(API_URL + '/oauth/refresh', {
       headers: {
-        'Content-Type': 'text/plain'
+        'Content-Type': 'text/plain',
+        withCredentials: true
       },
       params: {
         refreshToken: code
       }
     })
     .then((res) => {
-      setAccessToken(
-        'access_token',
-        res.data.accessToken,
-        res.data.accessTokenExpiresIn
+      const accessTokenExpiration = new Date(
+        Date.now() + res.data.accessTokenExpiresIn * 10
       );
-      setRefreshToken(
-        'refresh_token',
-        res.data.refreshToken,
-        res.data.refreshTokenExpiresIn
+      const refreshTokenExpiration = new Date(
+        Date.now() + res.data.refreshTokenExpiresIn * 6
       );
+      setCookie('refresh_token', res.data.refreshToken, {
+        expires: refreshTokenExpiration
+      });
+      setCookie('access_token', res.data.accessToken, {
+        expires: accessTokenExpiration
+      });
       if (res.data.accessToken) {
-        window.location.href = '/profile';
+        location.href = '/profile';
       }
     })
     .catch((err) => {
@@ -108,7 +112,7 @@ export const LoginAPI = async (refreshtoken: string, nickname: string) => {
     .then((res) => {
       console.log(res);
       if (res.status === 200) {
-        window.location.href = '/';
+        window.location.href = '/information';
       }
     })
     .catch((err) => {

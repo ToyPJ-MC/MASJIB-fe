@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '../Constants/Constants';
-import { getCookie, setAccessToken } from '../util/Cookie';
+import { getCookie } from '../util/Cookie';
 
 const jinInterceptor = axios.create({
   baseURL: API_URL,

@@ -1,12 +1,18 @@
-import { useState } from 'react';
-import { LoginAPI } from '../apis/server';
+import { useEffect, useState } from 'react';
+import { LoginAPI, RefreshTokenAPI } from '../apis/server';
 import { getCookie } from '../util/Cookie';
 import { Button } from '@mui/material';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   const [nickname, setNickname] = useState<string>('');
+  const navigate = useNavigate();
   const accesstoken = getCookie('access_token');
+
+  const Homebtn = () => {
+    navigate('/information');
+  };
   const Nicknamebtn = () => {
     LoginAPI(accesstoken as string, nickname);
   };
@@ -28,6 +34,7 @@ const Profile = () => {
       ) : (
         <div>{nickname}</div>
       )}
+      <Button onClick={Homebtn}>Home</Button>
     </div>
   );
 };

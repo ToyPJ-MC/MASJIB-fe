@@ -4,11 +4,13 @@ import './styles/global.css';
 import App from './App';
 import { RecoilRoot } from 'recoil';
 import reportWebVitals from './reportWebVitals';
+import { CookiesProvider } from 'react-cookie';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  // Use ReactDOM.createRoot
   <RecoilRoot>
-    <App />
+    <CookiesProvider>
+      <App />
+    </CookiesProvider>
   </RecoilRoot>
 );
 
