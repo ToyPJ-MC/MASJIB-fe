@@ -27,7 +27,9 @@ import LoginModal from '../component/LoginModal';
 import { SortingRestaurantType } from '../types';
 import SortLoading from '../component/SortLoading';
 import { getCookie } from '../util/Cookie';
+import { useNavigate } from 'react-router-dom';
 const Information = () => {
+  const navigate = useNavigate();
   const categoriesChange = ['한식', '중식', '일식', '양식'];
   const [modal, setModal] = useRecoilState<boolean>(loginmodalState);
   const [sort, setSort] = useRecoilState<string>(RadiusSortState);
@@ -112,25 +114,34 @@ const Information = () => {
         </div>
         <div className='text-end mr-8'>
           {getCookie('access_token') ? (
-            <Button
-              className='place-items-center'
-              variant='outlined'
-              sx={{
-                textAlign: 'center',
-                color: 'white',
-                height: '2.5rem',
-                backgroundColor: '#3B82F6',
-                borderColor: '#3B82F6',
-                fontFamily: 'bold',
-                fontSize: '1.0em',
-                ':hover': {
+            <div className='grid grid-cols-2'>
+              <Button
+                className='place-items-center'
+                variant='outlined'
+                sx={{
+                  textAlign: 'center',
+                  color: 'white',
+                  height: '2.5rem',
                   backgroundColor: '#3B82F6',
-                  color: 'white'
-                }
-              }}
-            >
-              Logout
-            </Button>
+                  borderColor: '#3B82F6',
+                  fontFamily: 'bold',
+                  fontSize: '1.0em',
+                  ':hover': {
+                    backgroundColor: '#3B82F6',
+                    color: 'white'
+                  }
+                }}
+              >
+                Logout
+              </Button>
+              <Button
+                onClick={() => {
+                  navigate('/profile');
+                }}
+              >
+                Profile
+              </Button>
+            </div>
           ) : (
             <Button
               className='place-items-center'
