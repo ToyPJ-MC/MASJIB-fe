@@ -26,6 +26,7 @@ import Reviewcard from '../component/Reviewcard';
 import LoginModal from '../component/LoginModal';
 import { SortingRestaurantType } from '../types';
 import SortLoading from '../component/SortLoading';
+import { getCookie } from '../util/Cookie';
 const Information = () => {
   const categoriesChange = ['한식', '중식', '일식', '양식'];
   const [modal, setModal] = useRecoilState<boolean>(loginmodalState);
@@ -68,10 +69,11 @@ const Information = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
   return (
     <div className='h-screen w-screen overflow-hidden'>
       <div className='grid grid-cols-4 mt-4 items-center place-content-center border border-b-2 border-t-0 border-l-0 border-r-0'>
-        <div className='font-bold text-4xl text-blue-500 mb-2 text-start ml-2'>
+        <div className='font-bold text-4xl text-blue-500 mb-2 text-start ml-4'>
           MASJIB
         </div>
         <div className='col-span-2 grid grid-cols-3 mb-2 items-center'>
@@ -109,28 +111,50 @@ const Information = () => {
           </Button>
         </div>
         <div className='text-end mr-8'>
-          <Button
-            className='place-items-center'
-            variant='outlined'
-            sx={{
-              textAlign: 'center',
-              color: 'white',
-              height: '2.5rem',
-              backgroundColor: '#3B82F6',
-              borderColor: '#3B82F6',
-              fontFamily: 'bold',
-              fontSize: '1.0em',
-              ':hover': {
+          {getCookie('access_token') ? (
+            <Button
+              className='place-items-center'
+              variant='outlined'
+              sx={{
+                textAlign: 'center',
+                color: 'white',
+                height: '2.5rem',
                 backgroundColor: '#3B82F6',
-                color: 'white'
-              }
-            }}
-            onClick={() => {
-              setModal(true);
-            }}
-          >
-            Log In
-          </Button>
+                borderColor: '#3B82F6',
+                fontFamily: 'bold',
+                fontSize: '1.0em',
+                ':hover': {
+                  backgroundColor: '#3B82F6',
+                  color: 'white'
+                }
+              }}
+            >
+              Logout
+            </Button>
+          ) : (
+            <Button
+              className='place-items-center'
+              variant='outlined'
+              sx={{
+                textAlign: 'center',
+                color: 'white',
+                height: '2.5rem',
+                backgroundColor: '#3B82F6',
+                borderColor: '#3B82F6',
+                fontFamily: 'bold',
+                fontSize: '1.0em',
+                ':hover': {
+                  backgroundColor: '#3B82F6',
+                  color: 'white'
+                }
+              }}
+              onClick={() => {
+                setModal(true);
+              }}
+            >
+              Log In
+            </Button>
+          )}
         </div>
       </div>
       {modal ? <LoginModal /> : null}
