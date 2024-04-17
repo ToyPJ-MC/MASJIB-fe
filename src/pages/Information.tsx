@@ -158,7 +158,7 @@ const Information = () => {
         </div>
       </div>
       {modal ? <LoginModal /> : null}
-      <div className='grid grid-cols-2'>
+      <div className='grid grid-cols-2 mt-2'>
         <div className='ml-4'>
           <div className='grid grid-cols-2'>
             <div
@@ -213,8 +213,8 @@ const Information = () => {
               </div>
             </div>
           </div>
-          <div>
-            <div className='text-2xl font-bold'>
+          <div className='mt-2'>
+            <div className='text-3xl font-bold'>
               TOP 10 restaurants in current location
               <div className='grid place-items-end mr-4'>
                 <FormControl>

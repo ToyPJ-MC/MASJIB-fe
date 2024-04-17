@@ -9,9 +9,14 @@ const Profile = () => {
   const [nickname, setNickname] = useState<string>('');
   const navigate = useNavigate();
   const accesstoken = getCookie('access_token');
-
+  const pageWidth = window.innerWidth;
+  console.log(pageWidth);
   const Homebtn = () => {
-    navigate('/information');
+    if (pageWidth < 450) {
+      navigate('/m_information');
+    } else {
+      navigate('/information');
+    }
   };
   const Nicknamebtn = () => {
     LoginAPI(accesstoken as string, nickname);
