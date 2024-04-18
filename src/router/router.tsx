@@ -6,6 +6,7 @@ import KakaoLogin from '../component/KakaoLogin';
 import Profile from '../pages/Profile';
 import Errorpage from '../pages/Errorpage';
 import M_Information from '../pages/M_Information';
+import { url } from 'inspector';
 
 const Router = [
   {
@@ -18,8 +19,12 @@ const Router = [
     url: '/information',
     component: <Information />
   },
+  // {
+  //   url: '/review/:restaurantname/:address/:x/:y',
+  //   component: <Review />
+  // },
   {
-    url: '/review/:restaurantname/:address/:x/:y',
+    url: '/review',
     component: <Review />
   },
   {

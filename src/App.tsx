@@ -17,8 +17,12 @@ const router = createBrowserRouter([
     path: '/information',
     element: <Information />
   },
+  // {
+  //   path: '/review/:restaurantname/:address/:x/:y',
+  //   element: <Review />
+  // },
   {
-    path: '/review/:restaurantname/:address/:x/:y',
+    path: '/review',
     element: <Review />
   },
   {
@@ -36,7 +40,7 @@ const router = createBrowserRouter([
   {
     path: '/m_information',
     element: <M_Information />
-  },
+  }
 ]);
 
 const App = () => <RouterProvider router={router} />;
