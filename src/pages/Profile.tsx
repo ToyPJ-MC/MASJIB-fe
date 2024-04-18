@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LoginAPI, RefreshTokenAPI } from '../apis/server';
 import { getCookie } from '../util/Cookie';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,7 +10,6 @@ const Profile = () => {
   const navigate = useNavigate();
   const accesstoken = getCookie('access_token');
   const pageWidth = window.innerWidth;
-  console.log(pageWidth);
   const Homebtn = () => {
     if (pageWidth < 450) {
       navigate('/m_information');
@@ -22,24 +21,33 @@ const Profile = () => {
     LoginAPI(accesstoken as string, nickname);
   };
   return (
-    <div>
-      <h1>Profile</h1>
-      <div>닉네임</div>
+    <div className='grid place-items-center'>
+      <div className='mt-4 font-bold text-2xl'>
+        {'임시닉네임'}가 가장 좋아하는 음식 카테고리
+      </div>
+      <div>음식 카테고리 이미지나 애니메이션 예정</div>
       {nickname === '' ? (
-        <div>
-          <input
-            type='text'
-            placeholder='닉네임을 입력해주세요'
+        <div className='text-lg mt-2'>
+          <TextField
+            id='nickname'
+            defaultValue='닉네임을 입력해주세요'
             onChange={(e) => {
               setNickname(e.target.value);
             }}
+            size='small'
           />
-          <Button onClick={Nicknamebtn}>확인</Button>
+          <Button onClick={Nicknamebtn} variant='contained'>
+            확인
+          </Button>
         </div>
-      ) : (
-        <div>{nickname}</div>
-      )}
-      <Button onClick={Homebtn}>Home</Button>
+      ) : null}
+      <div className='grid grid-cols-2 gap-2 mt-2'>
+        <Button onClick={Homebtn} variant='contained'>
+          Home
+        </Button>
+        <Button variant='contained'>탈퇴하기</Button>
+      </div>
+      <div className='mt-2'>리뷰 개수, 찜 개수, 가본 음식점 수</div>
     </div>
   );
 };
