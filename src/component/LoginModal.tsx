@@ -7,7 +7,7 @@ import kakaologo from '../assets/kakaologo.png';
 const LoadingModal = () => {
   const [open, setOpen] = useRecoilState<boolean>(loginmodalState);
   const kakaoLogin = () => {
-    location.href = 'http://34.64.33.188:18080/oauth2/authorization/kakao';
+    location.href = 'http://34.64.74.15:18080/oauth2/authorization/kakao';
   };
 
   return (
