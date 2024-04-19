@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import restaurantimg from '../../assets/restaurant.jpg';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { getCookie } from '@/src/util/Cookie';
 
 const Main = () => {
   const navigate = useNavigate();
   const userAgent = window.navigator.userAgent;
+  const pageWidth = window.innerWidth;
+
+  useEffect(() => {
+    if (getCookie('access_token') !== undefined) {
+      if (pageWidth < 450) {
+        navigate('/information');
+      } else {
+        navigate('/m_information');
+      }
+    }
+  }, []);
+
   const mapbtn = () => {
     if (userAgent.includes('iPhone') || userAgent.includes('Android')) {
       navigate('/m_information');
@@ -13,6 +26,7 @@ const Main = () => {
       navigate('/information');
     }
   };
+
   return (
     <div
       style={{

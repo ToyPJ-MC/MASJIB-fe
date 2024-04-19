@@ -37,7 +37,7 @@ const Profile = () => {
             size='small'
           />
           <Button onClick={Nicknamebtn} variant='contained'>
-            확인
+            변경
           </Button>
         </div>
       ) : null}

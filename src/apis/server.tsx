@@ -8,6 +8,7 @@ import {
 } from '../types';
 import { API_URL } from '../Constants/Constants';
 import { setCookie } from '../util/Cookie';
+import jinInterceptor from './jinInterceptor';
 const headerConfig = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*'
@@ -126,7 +127,7 @@ export const RadiusMakerAPI = async (
   setRadiusRestaurant: SetterOrUpdater<RadiusMarkerType>,
   setMarkerAPIStatus: SetterOrUpdater<boolean>
 ) => {
-  axios
+  jinInterceptor
     .get(API_URL + '/shop/radius/all', {
       params: {
         address: address,
@@ -158,8 +159,8 @@ export const SortingRestaurantAPI = async (
   page: number,
   setSortingRestaurant: SetterOrUpdater<SortingRestaurantType>
 ) => {
-  console.log('Here=> ' + address, x, y);
-  axios
+  //console.log('Here=> ' + address, x, y);
+  jinInterceptor
     .get(API_URL + '/shop/radius', {
       params: {
         sort: sort,
@@ -171,7 +172,7 @@ export const SortingRestaurantAPI = async (
       headers: headerConfig
     })
     .then(async (res: AxiosResponse) => {
-      console.log(res);
+      //console.log(res);
       setSortingRestaurant([]);
       Object.values(res.data[0]).map((item: any) => {
         setSortingRestaurant((prev) => [
