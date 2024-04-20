@@ -98,8 +98,8 @@ export const RefreshTokenAPI = async (code: string) => {
         location.href = '/profile';
       }
     })
-    .catch((err) => {
-      console.log(err);
+    .catch((error) => {
+      console.log(error);
     });
 };
 export const LoginAPI = async (refreshtoken: string, nickname: string) => {

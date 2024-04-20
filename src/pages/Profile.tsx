@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { LoginAPI, RefreshTokenAPI } from '../apis/server';
+import { LoginAPI } from '../apis/server';
 import { getCookie } from '../util/Cookie';
 import { Button, TextField } from '@mui/material';
 import React from 'react';
