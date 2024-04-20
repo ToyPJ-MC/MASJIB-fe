@@ -1,9 +1,11 @@
 {
   //compilerOptions 속성은 생략될 수 있으며 생략하면 컴파일러의 기본 값이 사용됨.
   "compilerOptions": {
-    "target": "ES2022", //타입스크립트 파일을 어떤 버전의 자바스크립트로 바꿔줄지 정하는 부분(기본값)
+    "types": ["node", "react"], //컴파일러가 이해할 수 있는 타입 선언 파일을 지정
+    "useDefineForClassFields": true, //클래스 필드에 대한 정의를 사용할 지에 대한 여부
+    "target": "ESNext", //타입스크립트 파일을 어떤 버전의 자바스크립트로 바꿔줄지 정하는 부분(기본값)
     // 커스텀하게 라이브러리를 쓰려고 할 때 lib 정의. 여기에 항목을 정하지 않았다면 target에서 지정한 기본값 버전에 따라 정의됨.
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": true, //true 라면 파일의 확장자가 .js, .jsx 사용 가능. 기본은 .ts, .tsx 및 .d.ts
     "skipLibCheck": true, // 선언 파일의 유형 검사를 건너뛰어 컴파일하는 동안 시간을 절약할 수 있음.
     "esModuleInterop": true, // ES6 모듈 사양을 준수하여 CommonJS 모듈을 가져올 수 있게 됨. (import 를 require로 사용할 수 있음. 아니면 import * as 로도 사용 가능.)
@@ -36,7 +38,8 @@
     "react-app-env.d.ts",
     "postcss.config.cjs",
     "tailwind.config.cjs",
-    "webpack.config.cjs"
+    "webpack.config.cjs",
+    "Babel.config.cjs"
   ], // 프로그램에 포함할 파일 이름 또는 패턴의 배열을 지정. (src/**/*, tests/**/*) 예시처럼 해당 파일이 가진 디렉토리를 기준으로 확인됨.
   "exclude": ["node_modules"] // 프로그램에 포함하지 않을 파일 이름 또는 패턴의 배열을 지정. (node_modules)
 }

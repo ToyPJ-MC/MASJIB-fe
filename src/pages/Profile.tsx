@@ -4,6 +4,7 @@ import { getCookie } from '../util/Cookie';
 import { Button, TextField } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 const Profile = () => {
   const [nickname, setNickname] = useState<string>('');
@@ -27,6 +28,8 @@ const Profile = () => {
       } else {
         navigate('/information');
       }
+    } else {
+      toast.success('로그인 되었습니다!');
     }
   }, []);
   return (

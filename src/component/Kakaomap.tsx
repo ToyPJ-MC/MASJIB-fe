@@ -21,6 +21,7 @@ import {
   SortingRestaurantAPI
 } from '../apis/server';
 import '../styles/global.css';
+import { toast } from 'react-hot-toast';
 declare global {
   interface Window {
     kakao: any;
@@ -65,16 +66,17 @@ const Kakaomap = () => {
       if (navigator.geolocation) {
         // 위치 정보를 성공적으로 가져온 경우의 콜백 함수
         const successCallback = (position: any) => {
-          console.log('유저 현재 위치:', position);
+          //console.log('유저 현재 위치:', position);
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
           setLat(lat);
           setLon(lon);
           setLocPosition(new window.kakao.maps.LatLng(lat, lon));
+          toast.success('현재 위치를 가져왔습니다.');
         };
         const errorCallback = (error: any) => {
           // 위치 정보를 가져오는 도중 에러가 발생한 경우의 콜백 함수
-          console.log('유저 현재 위치 오류:', error);
+          toast.error('위치 정보를 가져오는데 실패했습니다.');
         };
         const options = {
           enableHighAccuracy: true, // 가능한 정확한 위치를 요청하는 옵션
