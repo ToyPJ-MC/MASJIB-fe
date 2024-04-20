@@ -5,10 +5,13 @@ import Kakaomap from '../component/Kakaomap';
 import { useState } from 'react';
 import React from 'react';
 import M_SearchModal from '../component/M_SearchModal';
+import { getCookie } from '../util/Cookie';
+import { useNavigate } from 'react-router-dom';
 
 const M_Information = () => {
   const [modal, setModal] = useRecoilState<boolean>(m_SearchModalState);
   const [value, setValue] = useState(0);
+  const navigate = useNavigate();
   const searchmodal = () => {
     setModal(true);
   };
@@ -22,29 +25,60 @@ const M_Information = () => {
           MASJIB
         </div>
         <div className='text-end mr-2 mb-2'>
-          <Button
-            className='place-items-center'
-            variant='outlined'
-            sx={{
-              textAlign: 'center',
-              color: 'white',
-              height: '2.5rem',
-              backgroundColor: '#3B82F6',
-              borderColor: '#3B82F6',
-              fontFamily: 'bold',
-              fontSize: '1.0em',
-              ':hover': {
+          {getCookie('access_token') ? (
+            <div className='grid grid-cols-2'>
+              <Button
+                onClick={() => {
+                  navigate('/profile');
+                }}
+              >
+                Profile
+              </Button>
+              <Button
+                className='place-items-center'
+                variant='outlined'
+                sx={{
+                  textAlign: 'center',
+                  color: 'white',
+                  height: '2.5rem',
+                  backgroundColor: '#3B82F6',
+                  borderColor: '#3B82F6',
+                  fontFamily: 'bold',
+                  fontSize: '1.0em',
+                  ':hover': {
+                    backgroundColor: '#3B82F6',
+                    color: 'white'
+                  }
+                }}
+              >
+                Logout
+              </Button>
+            </div>
+          ) : (
+            <Button
+              className='place-items-center'
+              variant='outlined'
+              sx={{
+                textAlign: 'center',
+                color: 'white',
+                height: '2.5rem',
                 backgroundColor: '#3B82F6',
-                color: 'white'
-              }
-            }}
-            onClick={() => {
-              location.href =
-                'http://35.216.61.47:18080/oauth2/authorization/kakao';
-            }}
-          >
-            Log In
-          </Button>
+                borderColor: '#3B82F6',
+                fontFamily: 'bold',
+                fontSize: '1.0em',
+                ':hover': {
+                  backgroundColor: '#3B82F6',
+                  color: 'white'
+                }
+              }}
+              onClick={() => {
+                location.href =
+                  'http://35.216.61.47:18080/oauth2/authorization/kakao';
+              }}
+            >
+              Log In
+            </Button>
+          )}
         </div>
       </div>
       <div className='h-full'>
