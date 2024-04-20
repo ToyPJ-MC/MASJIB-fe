@@ -169,8 +169,8 @@ const Information = () => {
         </div>
       </div>
       {modal ? <LoginModal /> : null}
-      <div className='grid grid-cols-2 mt-2'>
-        <div className='ml-4'>
+      <div className='grid grid-cols-2'>
+        <div className='ml-4 mt-2'>
           <div className='grid grid-cols-2'>
             <div
               className='text-xl font-bold w-fit'

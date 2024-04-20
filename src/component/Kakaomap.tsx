@@ -72,6 +72,7 @@ const Kakaomap = () => {
           setLat(lat);
           setLon(lon);
           setLocPosition(new window.kakao.maps.LatLng(lat, lon));
+          setLoading(true);
           toast.success('현재 위치를 가져왔습니다.');
         };
         const errorCallback = (error: any) => {
@@ -133,6 +134,10 @@ const Kakaomap = () => {
       let zoomControl = new window.kakao.maps.ZoomControl();
       map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
       map.setCenter(new window.kakao.maps.LatLng(lat, lon));
+      if (currentlocation) {
+        map.setCenter(new window.kakao.maps.LatLng(lat, lon));
+        setCurrentlocation(false);
+      }
     }
   }, [lat, lon]);
 
@@ -271,8 +276,26 @@ const Kakaomap = () => {
         style={{ width: '100w', height: '100vh' }}
         className='z-0 relative'
       >
-        {loading ? null : <Loading />}
-        {loading && !modal ? (
+        {loading ? (
+          <IconButton
+            color='primary'
+            className='z-10 top-2 left-2 absolute'
+            sx={{
+              backgroundColor: 'white',
+              ':hover': {
+                backgroundColor: 'white',
+                outlineColor: '#3B82F6'
+              },
+              outlineColor: '#3B82F6'
+            }}
+            onClick={currentbutton}
+          >
+            <GpsFixedIcon />
+          </IconButton>
+        ) : (
+          <Loading />
+        )}
+        {/* {loading && !modal ? (
           <>
             {' '}
             <Button
@@ -292,25 +315,9 @@ const Kakaomap = () => {
             >
               직접 등록하기
             </Button>
-            <IconButton
-              color='primary'
-              className='z-10'
-              sx={{
-                backgroundColor: 'white',
-                marginTop: '4px',
-                marginLeft: '4px',
-                ':hover': {
-                  backgroundColor: 'white',
-                  outlineColor: '#3B82F6'
-                },
-                outlineColor: '#3B82F6'
-              }}
-              onClick={currentbutton}
-            >
-              <GpsFixedIcon />
-            </IconButton>
           </>
-        ) : null}
+        ) : null} */}
+
         {modal ? <SearchModal /> : null}
       </div>
     </>
