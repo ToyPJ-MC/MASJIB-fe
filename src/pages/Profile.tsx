@@ -20,6 +20,15 @@ const Profile = () => {
   const Nicknamebtn = () => {
     LoginAPI(accesstoken as string, nickname);
   };
+  useEffect(() => {
+    if (accesstoken === undefined) {
+      if (pageWidth < 450) {
+        navigate('/m_information');
+      } else {
+        navigate('/information');
+      }
+    }
+  }, []);
   return (
     <div className='grid place-items-center'>
       <div className='mt-4 font-bold text-2xl'>
