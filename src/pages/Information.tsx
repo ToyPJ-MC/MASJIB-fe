@@ -179,7 +179,7 @@ const Information = () => {
             >
               Categories
               {open ? (
-                <div className='grid grid-cols-3'>
+                <div className='grid grid-cols-3 border-2 border-black'>
                   <MenuItem>한식</MenuItem>
                   <MenuItem>중식</MenuItem>
                   <MenuItem>일식</MenuItem>

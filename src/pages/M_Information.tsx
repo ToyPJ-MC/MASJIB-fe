@@ -40,7 +40,7 @@ const M_Information = () => {
             }}
             onClick={() => {
               location.href =
-                'http://34.64.33.188:18080/oauth2/authorization/kakao';
+                'http://35.216.61.47:18080/oauth2/authorization/kakao';
             }}
           >
             Log In
