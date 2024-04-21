@@ -74,6 +74,7 @@ const Kakaomap = () => {
           setLocPosition(new window.kakao.maps.LatLng(lat, lon));
           setLoading(true);
           toast.success('현재 위치를 가져왔습니다.');
+          console.log('Here');
         };
         const errorCallback = (error: any) => {
           // 위치 정보를 가져오는 도중 에러가 발생한 경우의 콜백 함수
@@ -139,7 +140,7 @@ const Kakaomap = () => {
         setCurrentlocation(false);
       }
     }
-  }, [lat, lon]);
+  }, [lat, lon, currentlocation]);
 
   // useEffect(() => {
   //   if (lat !== 0 && lon !== 0) {
