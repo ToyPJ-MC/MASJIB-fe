@@ -12,7 +12,8 @@ import jinInterceptor from './jinInterceptor';
 import toast from 'react-hot-toast';
 const headerConfig = {
   'Content-Type': 'application/json',
-  'Access-Control-Allow-Origin': '*'
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Credentials': true
 };
 
 export const BlogSearchAPI = async (
@@ -124,7 +125,12 @@ export const LoginAPI = async (refreshtoken: string, nickname: string) => {
 
 export const LogoutAPI = async () => {
   await axios
-    .post(API_URL + '/oauth/logout')
+    .post(API_URL + '/oauth/logout', null, {
+      headers: {
+        ...headerConfig
+      },
+      withCredentials: true
+    })
     .then((res) => {
       console.log('Success');
       console.log(res);
