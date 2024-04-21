@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Autocomplete,
+  Box,
   Button,
   ButtonGroup,
   FormControl,
   InputLabel,
-  Menu,
   MenuItem,
   Rating,
   Select,
   SelectChangeEvent,
-  TextField
+  Slider,
+  TextField,
+  Typography
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import Kakaomap from '../component/Kakaomap';
@@ -28,6 +30,11 @@ import { SortingRestaurantType } from '../types';
 import SortLoading from '../component/SortLoading';
 import { getCookie } from '../util/Cookie';
 import { useNavigate } from 'react-router-dom';
+
+interface CustomMarkProps {
+  value: string;
+}
+
 const Information = () => {
   const navigate = useNavigate();
   const categoriesChange = ['한식', '중식', '일식', '양식'];
@@ -38,14 +45,15 @@ const Information = () => {
     SortingRestaurantDataState
   );
   const markerAPI = useRecoilValue<boolean>(RadiusMarkerAPIStatus);
-  useEffect(() => {
-    const handleScroll = () => {
-      window.addEventListener('scroll', handleScroll, { passive: true });
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
-    };
-  }, [review]); // scroll hide시 passive true로 변경
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     window.addEventListener('scroll', handleScroll, { passive: true });
+  //     return () => {
+  //       window.removeEventListener('scroll', handleScroll);
+  //     };
+  //   };
+  // }, [review]); // scroll hide시 passive true로 변경
+
   const imageURL = process.env.SERVER_URL + '/';
 
   const SortByhandleChange = (event: SelectChangeEvent) => {
@@ -63,14 +71,84 @@ const Information = () => {
       setReview([]);
     }
   };
-  // categories menu
-  const [open, setOpen] = useState<boolean>(false);
-  const handleOpen = () => {
-    setOpen(true);
+  // #region restaurants menu
+  const [resopen, resSetOpen] = useState<boolean>(false);
+  const reshandleOpen = () => {
+    resSetOpen(true);
   };
-  const handleClose = () => {
-    setOpen(false);
+  const reshandleClose = () => {
+    resSetOpen(false);
   };
+  // #endregion
+  // #region sort by number of reviews
+  const [reviewopen, reviewSetOpen] = useState<boolean>(false);
+  const CustomReviewMark: React.FC<CustomMarkProps> = ({ value }) => {
+    return <Typography style={{ fontSize: '0.7rem' }}>{value}</Typography>;
+  };
+  const reviewhandleOpen = () => {
+    reviewSetOpen(true);
+  };
+  const reviewhandleClose = () => {
+    reviewSetOpen(false);
+  };
+  const reviewmarks = [
+    {
+      value: 0,
+      label: <CustomReviewMark value='0' />
+    },
+    {
+      value: 10,
+      label: <CustomReviewMark value='10+' />
+    },
+    {
+      value: 50,
+      label: <CustomReviewMark value='50+' />
+    },
+    {
+      value: 100,
+      label: <CustomReviewMark value='100+' />
+    }
+  ];
+  // #endregion
+  // #region sort by number of Dimbs
+  const [dimopen, dimSetOpen] = useState<boolean>(false);
+  const CustomDimbMark: React.FC<CustomMarkProps> = ({ value }) => {
+    return <Typography style={{ fontSize: '0.7rem' }}>{value}</Typography>;
+  };
+  const dimhandleOpen = () => {
+    dimSetOpen(true);
+  };
+  const dimhandleClose = () => {
+    dimSetOpen(false);
+  };
+  const dimmarks = [
+    {
+      value: 0,
+      label: <CustomDimbMark value='0' />
+    },
+    {
+      value: 10,
+      label: <CustomDimbMark value='10+' />
+    },
+    {
+      value: 50,
+      label: <CustomDimbMark value='50+' />
+    },
+    {
+      value: 100,
+      label: <CustomDimbMark value='100+' />
+    }
+  ];
+  // #endregion
+  // #region sort by Ration
+  const [ratopen, ratSetOpen] = useState<boolean>(false);
+  const rathandleOpen = () => {
+    ratSetOpen(true);
+  };
+  const rathandleClose = () => {
+    ratSetOpen(false);
+  };
+  // #endregion
 
   return (
     <div className='h-screen w-screen overflow-hidden'>
@@ -171,15 +249,15 @@ const Information = () => {
       {modal ? <LoginModal /> : null}
       <div className='grid grid-cols-2'>
         <div className='ml-4 mt-2'>
-          <div className='grid grid-cols-2'>
+          <div className='grid md:grid-cols-4'>
             <div
               className='text-xl font-bold w-fit'
-              onMouseEnter={handleOpen}
-              onMouseLeave={handleClose}
+              onMouseEnter={reshandleOpen}
+              onMouseLeave={reshandleClose}
             >
-              Categories
-              {open ? (
-                <div className='grid grid-cols-3 border-2 border-black'>
+              Restaurants
+              {resopen ? (
+                <div className='grid grid-cols-3 shadow-lg rounded-md'>
                   <MenuItem>한식</MenuItem>
                   <MenuItem>중식</MenuItem>
                   <MenuItem>일식</MenuItem>
@@ -187,41 +265,51 @@ const Information = () => {
                 </div>
               ) : null}
             </div>
-            <div className='grid grid-rows-3'>
-              <div>
-                <div className='text-base font-semibold'>
-                  Sort by number of reviews
+            <div
+              className='text-xl font-bold'
+              onMouseEnter={reviewhandleOpen}
+              onMouseLeave={reviewhandleClose}
+            >
+              Reviews
+              {reviewopen ? (
+                <div className='grid place-items-center shadow-lg rounded-md w-40 h-12 pl-4 pr-4'>
+                  <Slider
+                    aria-label='Reviews'
+                    defaultValue={10}
+                    step={null}
+                    marks={reviewmarks}
+                  />
                 </div>
-                <ButtonGroup
-                  variant='outlined'
-                  aria-label='outlined button group'
-                  size='small'
-                >
-                  <Button>10+</Button>
-                  <Button>50+</Button>
-                  <Button>100+</Button>
-                </ButtonGroup>
-              </div>
-              <div>
-                <div className='text-base font-semibold'>
-                  Sort by numbers Dibs
+              ) : null}
+            </div>
+            <div
+              className='text-xl font-bold'
+              onMouseEnter={dimhandleOpen}
+              onMouseLeave={dimhandleClose}
+            >
+              Dimbs
+              {dimopen ? (
+                <div className='grid place-items-center shadow-lg rounded-md w-40 h-12 pl-4 pr-4'>
+                  <Slider
+                    aria-label='Dimbs'
+                    defaultValue={10}
+                    step={null}
+                    marks={dimmarks}
+                  />
                 </div>
-                <ButtonGroup
-                  variant='outlined'
-                  aria-label='outlined button group'
-                  size='small'
-                >
-                  <Button>10+</Button>
-                  <Button>50+</Button>
-                  <Button>100+</Button>
-                </ButtonGroup>
-              </div>
-              <div>
-                <div className='text-base font-semibold'>
-                  Sort by star rating
+              ) : null}
+            </div>
+            <div
+              className='text-xl font-bold w-fit'
+              onMouseEnter={rathandleOpen}
+              onMouseLeave={rathandleClose}
+            >
+              Rating
+              {ratopen ? (
+                <div className='grid place-items-center shadow-lg rounded-md w-40 h-12 pl-4 pr-4'>
+                  <Rating name='half-rating' defaultValue={0} precision={0.5} />
                 </div>
-                <Rating name='half-rating' defaultValue={0} precision={0.5} />
-              </div>
+              ) : null}
             </div>
           </div>
           <div className='mt-2'>
@@ -281,9 +369,9 @@ const Information = () => {
             </div>
           </div>
         </div>
-        <div>
+        {/* <div>
           <Kakaomap />
-        </div>
+        </div> */}
       </div>
     </div>
   );
