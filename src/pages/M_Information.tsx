@@ -1,4 +1,12 @@
-import { Box, Button, Tab, Tabs, tabsClasses } from '@mui/material';
+import {
+  Box,
+  Button,
+  Drawer,
+  MenuItem,
+  Tab,
+  Tabs,
+  tabsClasses
+} from '@mui/material';
 import { useRecoilState } from 'recoil';
 import { m_SearchModalState } from '../state/atom';
 import Kakaomap from '../component/Kakaomap';
@@ -7,9 +15,12 @@ import React from 'react';
 import M_SearchModal from '../component/M_SearchModal';
 import { getCookie } from '../util/Cookie';
 import { useNavigate } from 'react-router-dom';
+import { IconButton } from 'evergreen-ui';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const M_Information = () => {
   const [modal, setModal] = useRecoilState<boolean>(m_SearchModalState);
+  const [open, setOpen] = useState<boolean>(false);
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
   const searchmodal = () => {
@@ -18,42 +29,55 @@ const M_Information = () => {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+  const menuDrawer = (newOpen: boolean) => () => {
+    setOpen(newOpen);
+  };
   return (
     <div className='h-screen w-screen overflow-hidden'>
-      <div className='grid grid-cols-2 mt-2 items-center place-content-center border border-b-2 border-t-0 border-l-0 border-r-0'>
-        <div className='font-bold text-3xl text-blue-500 mb-2 text-start ml-2'>
+      <div className='grid grid-cols-3 mt-2 border border-b-2 border-t-0 border-l-0 border-r-0 mb-2'>
+        <div className='w-fit grid place-items-start'>
+          <Button>
+            <MoreVertIcon onClick={menuDrawer(true)} />
+          </Button>
+          {
+            <Drawer anchor='left' open={open} onClose={menuDrawer(false)}>
+              <div className='grid place-items-center'>
+                <MenuItem
+                  onClick={() => {
+                    navigate('/profile');
+                  }}
+                >
+                  Profile
+                </MenuItem>
+                <MenuItem>검색</MenuItem>
+              </div>
+            </Drawer>
+          }
+        </div>
+        <div className='font-bold text-3xl text-blue-500 grid place-items-center'>
           MASJIB
         </div>
-        <div className='text-end mr-2 mb-2'>
+        <div className='text-end grid place-items-center'>
           {getCookie('access_token') ? (
-            <div className='grid grid-cols-2'>
-              <Button
-                onClick={() => {
-                  navigate('/profile');
-                }}
-              >
-                Profile
-              </Button>
-              <Button
-                className='place-items-center'
-                variant='outlined'
-                sx={{
-                  textAlign: 'center',
-                  color: 'white',
-                  height: '2.5rem',
+            <Button
+              className='place-items-center'
+              variant='outlined'
+              sx={{
+                textAlign: 'center',
+                color: 'white',
+                height: '1.8rem',
+                backgroundColor: '#3B82F6',
+                borderColor: '#3B82F6',
+                fontFamily: 'bold',
+                fontSize: '0.8rem',
+                ':hover': {
                   backgroundColor: '#3B82F6',
-                  borderColor: '#3B82F6',
-                  fontFamily: 'bold',
-                  fontSize: '1.0em',
-                  ':hover': {
-                    backgroundColor: '#3B82F6',
-                    color: 'white'
-                  }
-                }}
-              >
-                Logout
-              </Button>
-            </div>
+                  color: 'white'
+                }
+              }}
+            >
+              Logout
+            </Button>
           ) : (
             <Button
               className='place-items-center'
@@ -61,11 +85,11 @@ const M_Information = () => {
               sx={{
                 textAlign: 'center',
                 color: 'white',
-                height: '2.5rem',
+                height: '1.8rem',
                 backgroundColor: '#3B82F6',
                 borderColor: '#3B82F6',
                 fontFamily: 'bold',
-                fontSize: '1.0em',
+                fontSize: '0.8rem',
                 ':hover': {
                   backgroundColor: '#3B82F6',
                   color: 'white'

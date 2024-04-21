@@ -28,20 +28,20 @@ const Profile = () => {
   const nicknamechangebtn = () => {
     setNicknamemodal(true);
   };
-  // useEffect(() => {
-  //   if (accesstoken === undefined) {
-  //     toast.error('로그인이 필요합니다!');
-  //     if (pageWidth < 450) {
-  //       navigate('/m_information');
-  //     } else {
-  //       navigate('/information');
-  //     }
-  //   } else {
-  //     toast.success('로그인 되었습니다!');
-  //   }
-  // }, []);
   useEffect(() => {
-    if (nickname === '') {
+    if (accesstoken === undefined) {
+      toast.error('로그인이 필요합니다!');
+      if (pageWidth < 450) {
+        navigate('/m_information');
+      } else {
+        navigate('/information');
+      }
+    } else {
+      toast.success('로그인 성공!');
+    }
+  }, []);
+  useEffect(() => {
+    if (nickname === '' && accesstoken !== undefined) {
       toast('닉네임을 정해주세요!', {
         icon: '👋'
       });

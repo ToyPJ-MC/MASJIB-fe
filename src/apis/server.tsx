@@ -7,8 +7,9 @@ import {
   searchImageType
 } from '../types';
 import { API_URL } from '../Constants/Constants';
-import { setCookie } from '../util/Cookie';
+import { getCookie, setCookie } from '../util/Cookie';
 import jinInterceptor from './jinInterceptor';
+import toast from 'react-hot-toast';
 const headerConfig = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*'
@@ -120,6 +121,23 @@ export const LoginAPI = async (refreshtoken: string, nickname: string) => {
       console.log(err.response?.data);
     });
 };
+
+export const LogoutAPI = async () => {
+  await axios
+    .post(API_URL + '/oauth/logout')
+    .then((res) => {
+      console.log('Success');
+      console.log(res);
+      // if (res.status === 200) {
+      //   window.location.href = '/';
+      // }
+    })
+    .catch((err) => {
+      console.log('Error');
+      console.log(err.response.data);
+    });
+};
+
 export const RadiusMakerAPI = async (
   address: string,
   x: number,
@@ -127,7 +145,7 @@ export const RadiusMakerAPI = async (
   setRadiusRestaurant: SetterOrUpdater<RadiusMarkerType>,
   setMarkerAPIStatus: SetterOrUpdater<boolean>
 ) => {
-  jinInterceptor
+  axios
     .get(API_URL + '/shop/radius/all', {
       params: {
         address: address,
@@ -160,7 +178,7 @@ export const SortingRestaurantAPI = async (
   setSortingRestaurant: SetterOrUpdater<SortingRestaurantType>
 ) => {
   //console.log('Here=> ' + address, x, y);
-  jinInterceptor
+  axios
     .get(API_URL + '/shop/radius', {
       params: {
         sort: sort,

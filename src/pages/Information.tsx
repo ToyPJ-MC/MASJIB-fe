@@ -28,6 +28,7 @@ import { SortingRestaurantType } from '../types';
 import SortLoading from '../component/SortLoading';
 import { getCookie } from '../util/Cookie';
 import { useNavigate } from 'react-router-dom';
+import { LogoutAPI } from '../apis/server';
 
 interface CustomMarkProps {
   value: string;
@@ -148,6 +149,10 @@ const Information = () => {
   };
   // #endregion
 
+  const logoutbtn = () => {
+    LogoutAPI();
+  };
+
   return (
     <div className='h-screen w-screen overflow-hidden'>
       <div className='grid grid-cols-4 mt-4 items-center place-content-center border border-b-2 border-t-0 border-l-0 border-r-0'>
@@ -207,6 +212,7 @@ const Information = () => {
                     color: 'white'
                   }
                 }}
+                onClick={logoutbtn}
               >
                 Logout
               </Button>
