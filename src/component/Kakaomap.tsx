@@ -46,7 +46,7 @@ const Kakaomap = () => {
     'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
   let imageSize = new window.kakao.maps.Size(24, 35);
   let markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
-  const [currentlocation, setCurrentlocation] = useState<boolean>(false);
+  const [currentlocation, setCurrentlocation] = useState<boolean>(true);
   const [radiusMarker, setRadiusMarker] = useRecoilState<RadiusMarkerType>(
     RadiusMarkerDataState
   ); // 반경 내 음식점 마커
@@ -74,7 +74,6 @@ const Kakaomap = () => {
           setLocPosition(new window.kakao.maps.LatLng(lat, lon));
           setLoading(true);
           toast.success('현재 위치를 가져왔습니다.');
-          console.log('Here');
         };
         const errorCallback = (error: any) => {
           // 위치 정보를 가져오는 도중 에러가 발생한 경우의 콜백 함수
@@ -92,7 +91,9 @@ const Kakaomap = () => {
         );
       }
     };
-    fetchUserLocation();
+    if (currentlocation) {
+      fetchUserLocation();
+    }
   }, [currentlocation]);
 
   useEffect(() => {
