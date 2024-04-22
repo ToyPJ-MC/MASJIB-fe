@@ -80,6 +80,10 @@ const m_SearchModalState = atom<boolean>({
   key: 'm_SearchModalState',
   default: false
 });
+const logoutstate = atom<boolean>({
+  key: 'logoutstate',
+  default: false
+});
 
 export {
   dumydataState,
@@ -94,5 +98,6 @@ export {
   RadiusMarkerAPIStatus,
   SortingRestaurantDataState,
   GeolocationDataState,
-  m_SearchModalState
+  m_SearchModalState,
+  logoutstate
 };

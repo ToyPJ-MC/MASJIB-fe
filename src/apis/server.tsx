@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { SetterOrUpdater } from 'recoil';
+import { SetterOrUpdater, useSetRecoilState } from 'recoil';
 import {
   GeolocationType,
   RadiusMarkerType,
@@ -7,15 +7,13 @@ import {
   searchImageType
 } from '../types';
 import { API_URL } from '../Constants/Constants';
-import { getCookie, setCookie } from '../util/Cookie';
+import { getCookie, removeCookie, setCookie } from '../util/Cookie';
 import jinInterceptor from './jinInterceptor';
-import toast from 'react-hot-toast';
 const headerConfig = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Credentials': true
 };
-
 export const BlogSearchAPI = async (
   search: string,
   setBlog: SetterOrUpdater<searchImageType>
@@ -76,9 +74,9 @@ export const RefreshTokenAPI = async (code: string) => {
   await axios
     .get(API_URL + '/oauth/refresh', {
       headers: {
-        'Content-Type': 'text/plain',
-        withCredentials: true
+        'Content-Type': 'text/plain'
       },
+      withCredentials: true,
       params: {
         refreshToken: code
       }
@@ -123,20 +121,26 @@ export const LoginAPI = async (refreshtoken: string, nickname: string) => {
     });
 };
 
-export const LogoutAPI = async () => {
+export const LogoutAPI = async (
+  setLogout: SetterOrUpdater<boolean>
+) => {
   await axios
-    .post(API_URL + '/oauth/logout', null, {
-      headers: {
-        ...headerConfig
-      },
-      withCredentials: true
-    })
+    .post(
+      API_URL + '/oauth/logout',
+      {},
+      {
+        withCredentials: true,
+        headers: {
+          ...headerConfig,
+          Authorization: `Bearer ${getCookie('access_token')}`
+        }
+      }
+    )
     .then((res) => {
-      console.log('Success');
-      console.log(res);
-      // if (res.status === 200) {
-      //   window.location.href = '/';
-      // }
+      res.status === 200 ? (window.location.href = '/information') : null;
+      removeCookie('access_token');
+      removeCookie('refresh_token');
+      setLogout(true);
     })
     .catch((err) => {
       console.log('Error');

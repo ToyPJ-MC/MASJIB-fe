@@ -17,16 +17,17 @@ const headerConfig = {
   'Access-Control-Allow-Origin': '*'
 };
 
-// jinInterceptor.interceptors.request.use(
-//   (config) => {
-//     const token = access_token;
-//     if (token) {
-//       config.headers['Authorization'] = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   (error) => Promise.reject(error)
-// );
+jinInterceptor.interceptors.request.use(
+  (config) => {
+    const token = access_token;
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 jinInterceptor.interceptors.response.use(
   (response) => response,
   async (error) => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Autocomplete,
   Button,
@@ -20,7 +20,8 @@ import {
   RadiusMarkerDataState,
   RadiusSortState,
   SortingRestaurantDataState,
-  loginmodalState
+  loginmodalState,
+  logoutstate
 } from '../state/atom';
 import Reviewcard from '../component/Reviewcard';
 import LoginModal from '../component/LoginModal';
@@ -29,6 +30,7 @@ import SortLoading from '../component/SortLoading';
 import { getCookie } from '../util/Cookie';
 import { useNavigate } from 'react-router-dom';
 import { LogoutAPI } from '../apis/server';
+import toast from 'react-hot-toast';
 
 interface CustomMarkProps {
   value: string;
@@ -43,6 +45,7 @@ const Information = () => {
   const [review, setReview] = useRecoilState<SortingRestaurantType>(
     SortingRestaurantDataState
   );
+  const [logout, setLogout] = useRecoilState<boolean>(logoutstate);
   const markerAPI = useRecoilValue<boolean>(RadiusMarkerAPIStatus);
   // useEffect(() => {
   //   const handleScroll = () => {
@@ -150,8 +153,15 @@ const Information = () => {
   // #endregion
 
   const logoutbtn = () => {
-    LogoutAPI();
+    LogoutAPI(setLogout);
   };
+
+  useEffect(() => {
+    if (logout) {
+      toast.success('로그아웃 되었습니다.');
+      setLogout(false);
+    }
+  }, [logout]);
 
   return (
     <div className='h-screen w-screen overflow-hidden'>
