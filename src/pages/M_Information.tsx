@@ -8,15 +8,17 @@ import {
   tabsClasses
 } from '@mui/material';
 import { useRecoilState } from 'recoil';
-import { m_SearchModalState } from '../state/atom';
+import { logoutstate, m_SearchModalState } from '../state/atom';
 import Kakaomap from '../component/Kakaomap';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
 import M_SearchModal from '../component/M_SearchModal';
 import { getCookie } from '../util/Cookie';
 import { useNavigate } from 'react-router-dom';
 import { IconButton } from 'evergreen-ui';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { LogoutAPI } from '../apis/server';
+import toast from 'react-hot-toast';
 
 const M_Information = () => {
   const [modal, setModal] = useRecoilState<boolean>(m_SearchModalState);
@@ -32,6 +34,20 @@ const M_Information = () => {
   const menuDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
+  //#region logout
+  const [logout, setLogout] = useRecoilState<boolean>(logoutstate);
+  const logoutbtn = () => {
+    LogoutAPI(setLogout);
+  };
+
+  useEffect(() => {
+    if (logout) {
+      toast.success('로그아웃 되었습니다.');
+      setLogout(false);
+    }
+  }, [logout]);
+  //#endregion
+
   return (
     <div className='h-screen w-screen overflow-hidden'>
       <div className='grid grid-cols-3 mt-2 border border-b-2 border-t-0 border-l-0 border-r-0 mb-2'>
@@ -75,6 +91,7 @@ const M_Information = () => {
                   color: 'white'
                 }
               }}
+              onClick={logoutbtn}
             >
               Logout
             </Button>
