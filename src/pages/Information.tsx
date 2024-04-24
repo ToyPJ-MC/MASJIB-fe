@@ -21,7 +21,8 @@ import {
   RadiusSortState,
   SortingRestaurantDataState,
   loginmodalState,
-  logoutstate
+  logoutstate,
+  serverstatus
 } from '../state/atom';
 import Reviewcard from '../component/Reviewcard';
 import LoginModal from '../component/LoginModal';
@@ -29,7 +30,7 @@ import { SortingRestaurantType } from '../types';
 import SortLoading from '../component/SortLoading';
 import { getCookie } from '../util/Cookie';
 import { useNavigate } from 'react-router-dom';
-import { LogoutAPI } from '../apis/server';
+import { LogoutAPI, ServerStatusAPI } from '../apis/server';
 import toast from 'react-hot-toast';
 
 interface CustomMarkProps {
@@ -163,6 +164,17 @@ const Information = () => {
     }
   }, [logout]);
 
+  //#region server status
+  const [status, setStatus] = useRecoilState<string>(serverstatus);
+  useEffect(() => {
+    ServerStatusAPI(setStatus);
+  }, []);
+  useEffect(() => {
+    if (status === 'Server Error') {
+      toast.error('서버 점검중입니다.');
+    }
+  }, [status]);
+  //#endregion
   return (
     <div className='h-screen w-screen overflow-hidden'>
       <div className='grid grid-cols-4 mt-4 items-center place-content-center border border-b-2 border-t-0 border-l-0 border-r-0'>

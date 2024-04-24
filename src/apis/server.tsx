@@ -121,9 +121,7 @@ export const LoginAPI = async (refreshtoken: string, nickname: string) => {
     });
 };
 
-export const LogoutAPI = async (
-  setLogout: SetterOrUpdater<boolean>
-) => {
+export const LogoutAPI = async (setLogout: SetterOrUpdater<boolean>) => {
   await axios
     .post(
       API_URL + '/oauth/logout',
@@ -222,6 +220,20 @@ export const SortingRestaurantAPI = async (
       });
     })
     .catch((err: AxiosError) => {
+      console.log(err.response?.data);
+    });
+};
+export const ServerStatusAPI = async (setStatus: SetterOrUpdater<string>) => {
+  await axios
+    .get(API_URL + '/ping', {
+      headers: headerConfig
+    })
+    .then((res) => {
+      if (res.status === 500) {
+        setStatus('Server Error');
+      }
+    })
+    .catch((err) => {
       console.log(err.response?.data);
     });
 };

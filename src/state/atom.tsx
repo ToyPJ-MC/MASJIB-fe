@@ -84,6 +84,10 @@ const logoutstate = atom<boolean>({
   key: 'logoutstate',
   default: false
 });
+const serverstatus = atom<string>({
+  key: 'server',
+  default: ''
+});
 
 export {
   dumydataState,
@@ -99,5 +103,6 @@ export {
   SortingRestaurantDataState,
   GeolocationDataState,
   m_SearchModalState,
-  logoutstate
+  logoutstate,
+  serverstatus
 };
