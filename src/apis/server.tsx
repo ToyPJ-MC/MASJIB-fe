@@ -237,3 +237,27 @@ export const ServerStatusAPI = async (setStatus: SetterOrUpdater<string>) => {
       console.log(err.response?.data);
     });
 };
+export const NicknameChangeAPI = async (
+  nickname: string,
+  setNickname: SetterOrUpdater<string>
+) => {
+  await axios
+    .post(
+      API_URL + '/user/nickname',
+      { nickname: nickname },
+      {
+        headers: {
+          ...headerConfig,
+          Authorization: `Bearer ${getCookie('access_token')}`
+        }
+      }
+    )
+    .then((res) => {
+      console.log(res);
+      setNickname(nickname);
+    })
+    .catch((err) => {
+      console.log(err.response?.data);
+    });
+}
+

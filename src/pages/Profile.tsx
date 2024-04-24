@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { LoginAPI } from '../apis/server';
+import { LoginAPI, NicknameChangeAPI } from '../apis/server';
 import { getCookie } from '../util/Cookie';
 import { Button, IconButton, TextField } from '@mui/material';
 import React from 'react';
@@ -23,7 +23,7 @@ const Profile = () => {
     }
   };
   const Nicknamebtn = () => {
-    LoginAPI(accesstoken as string, nickname);
+    NicknameChangeAPI(nickname, setNickname);
   };
   const nicknamechangebtn = () => {
     setNicknamemodal(true);
