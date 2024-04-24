@@ -14,6 +14,7 @@ const headerConfig = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Credentials': true
 };
+const width = window.innerWidth;
 export const BlogSearchAPI = async (
   search: string,
   setBlog: SetterOrUpdater<searchImageType>
@@ -135,10 +136,15 @@ export const LogoutAPI = async (setLogout: SetterOrUpdater<boolean>) => {
       }
     )
     .then((res) => {
-      res.status === 200 ? (window.location.href = '/information') : null;
-      removeCookie('access_token');
-      removeCookie('refresh_token');
-      setLogout(true);
+      res.status === 200 && width < 450
+        ? (window.location.href = '/m_information')
+        : res.status === 200 &&
+          width > 450 &&
+          (window.location.href = '/information');
+      res.status === 200 &&
+        (removeCookie('access_token'),
+        removeCookie('refresh_token'),
+        setLogout(true));
     })
     .catch((err) => {
       console.log('Error');
@@ -259,5 +265,4 @@ export const NicknameChangeAPI = async (
     .catch((err) => {
       console.log(err.response?.data);
     });
-}
-
+};
