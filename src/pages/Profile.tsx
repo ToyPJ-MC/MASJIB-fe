@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { LoginAPI, NicknameChangeAPI } from '../apis/server';
+import { LoginAPI, NicknameAPI, NicknameChangeAPI } from '../apis/server';
 import { getCookie } from '../util/Cookie';
 import { Button, IconButton, TextField } from '@mui/material';
 import React from 'react';
@@ -8,9 +8,13 @@ import { toast } from 'react-hot-toast';
 import CreateIcon from '@mui/icons-material/Create';
 import ClearIcon from '@mui/icons-material/Clear';
 import DoneIcon from '@mui/icons-material/Done';
+import { useRecoilState } from 'recoil';
+import { nicknameStatus } from '../state/atom';
 
 const Profile = () => {
   const [nickname, setNickname] = useState<string>('');
+  const [nicknamestatus, setNicknameStatus] =
+    useRecoilState<number>(nicknameStatus);
   const [nicknamemodal, setNicknamemodal] = useState<boolean>(false);
   const navigate = useNavigate();
   const accesstoken = getCookie('access_token');
@@ -22,8 +26,11 @@ const Profile = () => {
       navigate('/information');
     }
   };
+  useEffect(() => {
+    NicknameAPI(setNickname);
+  }, []);
   const Nicknamebtn = () => {
-    NicknameChangeAPI(nickname, setNickname);
+    NicknameChangeAPI(nickname, setNicknameStatus);
   };
   const nicknamechangebtn = () => {
     setNicknamemodal(true);
@@ -41,19 +48,31 @@ const Profile = () => {
     }
   }, []);
   useEffect(() => {
-    if (nickname === '' && accesstoken !== undefined) {
+    if (getCookie('nickname') === undefined && accesstoken !== undefined) {
       toast('닉네임을 정해주세요!', {
         icon: '👋'
       });
     }
   }, []);
+  useEffect(() => {
+    if (nicknamestatus === 200) {
+      toast.success('닉네임 변경을 완료하였습니다');
+      setNicknameStatus(0);
+      setNicknamemodal(false);
+    } else if (nicknamestatus === 400) {
+      toast.error('닉네임 중복입니다');
+      setNicknameStatus(0);
+      setNicknamemodal(true);
+    }
+  }, [nicknamestatus]);
+
   return (
     <div className='grid place-items-center'>
       <div className='mt-4 font-bold text-2xl'>
-        {'임시닉네임'}가 가장 좋아하는 음식 카테고리
+        {nickname} 가장 좋아하는 음식 카테고리
       </div>
       <div>음식 카테고리 이미지나 애니메이션 예정</div>
-      {nickname === '' ? (
+      {getCookie('nickname') === undefined ? (
         <div className='text-lg mt-2'>
           <TextField
             id='nickname'
@@ -68,8 +87,8 @@ const Profile = () => {
           </Button>
         </div>
       ) : null}
-      <div className='grid grid-cols-2 mt-2 place-items-center'>
-        {!nicknamemodal ? <div>{nickname}닉네임</div> : null}
+      <div className='flex flex-row mt-2 place-items-center'>
+        {!nicknamemodal ? <div>{nickname}</div> : null}
         <div>
           {!nicknamemodal ? (
             <IconButton onClick={nicknamechangebtn} size='small'>

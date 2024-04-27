@@ -243,13 +243,30 @@ export const ServerStatusAPI = async (setStatus: SetterOrUpdater<string>) => {
       console.log(err.response?.data);
     });
 };
+export const NicknameAPI = async (setNickname: SetterOrUpdater<string>) => {
+  await axios
+    .get(API_URL + '/members/info', {
+      headers: {
+        ...headerConfig,
+        Authorization: `Bearer ${getCookie('access_token')}`
+      }
+    })
+    .then((res) => {
+      setNickname(res.data);
+      setCookie('nickname', res.data);
+    })
+    .catch((err) => {
+      console.log(err.response?.data);
+    });
+};
+
 export const NicknameChangeAPI = async (
   nickname: string,
-  setNickname: SetterOrUpdater<string>
+  setNicknameStatus: SetterOrUpdater<number>
 ) => {
   await axios
     .post(
-      API_URL + '/user/nickname',
+      API_URL + `/members/${nickname}`,
       { nickname: nickname },
       {
         headers: {
@@ -259,10 +276,13 @@ export const NicknameChangeAPI = async (
       }
     )
     .then((res) => {
-      console.log(res);
-      setNickname(nickname);
+      if (res.status === 200) {
+        setNicknameStatus(200);
+      }
     })
     .catch((err) => {
-      console.log(err.response?.data);
+      if(err.response.status === 400){
+        setNicknameStatus(400)
+      }
     });
 };

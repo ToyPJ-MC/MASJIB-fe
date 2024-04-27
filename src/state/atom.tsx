@@ -88,6 +88,10 @@ const serverstatus = atom<string>({
   key: 'server',
   default: ''
 });
+const nicknameStatus = atom<number>({
+  key: 'nickname',
+  default: 0
+});
 
 export {
   dumydataState,
@@ -104,5 +108,6 @@ export {
   GeolocationDataState,
   m_SearchModalState,
   logoutstate,
-  serverstatus
+  serverstatus,
+  nicknameStatus
 };
