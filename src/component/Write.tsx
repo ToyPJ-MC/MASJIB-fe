@@ -12,6 +12,7 @@ import { Button, IconButton, Rating, TextareaAutosize } from '@mui/material';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import ThumbDownAltOutlinedIcon from '@mui/icons-material/ThumbDownAltOutlined';
 import React from 'react';
+import { WriteReviewAPI } from '../apis/server';
 
 const Write = () => {
   const [open, setOpen] = useRecoilState<boolean>(writemodalState);
@@ -46,7 +47,9 @@ const Write = () => {
   const reviewhandleSumbit = () => {
     console.log(JSON.stringify(review)); // 리뷰 글 형식 그대로 전달
     console.log(files); // 파일 형식 그대로 전달
+    WriteReviewAPI(review, 1, 5, 'good', 'good', 'good', files); // 예시
   };
+
   return (
     <SideSheet
       isShown={open}
