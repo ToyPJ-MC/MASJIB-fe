@@ -168,13 +168,15 @@ export const RadiusMakerAPI = async (
       headers: headerConfig
     })
     .then(async (res: AxiosResponse) => {
+      console.log(res);
       if (res.status === 200) {
         setMarkerAPIStatus(true);
       }
       setRadiusRestaurant(res.data);
     })
     .catch((err: AxiosError) => {
-      console.log(err.response?.data);
+      console.log(err);
+      //console.log(err.response?.data);
       if (err.response?.status === 400) {
         setMarkerAPIStatus(false);
       }
@@ -198,6 +200,7 @@ export const SortingRestaurantAPI = async (
       headers: headerConfig
     })
     .then(async (res: AxiosResponse) => {
+      console.log(res);
       setSortingRestaurant([]);
       Object.values(res.data[0]).map((item: any) => {
         setSortingRestaurant((prev) => [
@@ -219,7 +222,7 @@ export const SortingRestaurantAPI = async (
       });
     })
     .catch((err: AxiosError) => {
-      console.log(err.response?.data);
+      console.log(err);
     });
 };
 export const ServerStatusAPI = async (setStatus: SetterOrUpdater<string>) => {

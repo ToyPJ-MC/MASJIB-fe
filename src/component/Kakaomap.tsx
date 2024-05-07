@@ -148,14 +148,16 @@ const Kakaomap = () => {
             '            </div>' +
             '            <div>' +
             `               ${item.address}` +
-            '            </div>' +
-            '        <div class="body">' +
-            '            <div class="img">' +
-            `            <img src='${imageURL}${item.image}'>` +
-            '           </div>' +
-            '        </div>' +
-            '    </div>' +
-            '</div>';
+            '            </div>';
+          if (item.image) {
+            // item.image가 존재할 경우 이미지를 추가합니다.
+            '<div class="body">' +
+              '    <div class="img">' +
+              `        <img src='${imageURL}${item.image}'>` +
+              '    </div>' +
+              '</div>';
+          }
+          '</div>' + '</div>' + '</div>';
           let marker = new window.kakao.maps.Marker({
             map: map,
             position: new window.kakao.maps.LatLng(item.y, item.x)
