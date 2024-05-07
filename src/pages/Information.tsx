@@ -395,9 +395,9 @@ const Information = () => {
             </div>
           </div>
         </div>
-        {/* <div>
+        <div>
           <Kakaomap />
-        </div> */}
+        </div>
       </div>
     </div>
   );

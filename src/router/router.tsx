@@ -19,10 +19,10 @@ const Router = [
     url: '/information',
     component: <Information />
   },
-  // {
-  //   url: '/review/:restaurantname/:address/:x/:y',
-  //   component: <Review />
-  // },
+  {
+    url: '/review/:restaurantname/:x/:y',
+    component: <Review />
+  },
   {
     url: '/review',
     component: <Review />

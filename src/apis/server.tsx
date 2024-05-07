@@ -153,7 +153,6 @@ export const LogoutAPI = async (setLogout: SetterOrUpdater<boolean>) => {
 };
 
 export const RadiusMakerAPI = async (
-  address: string,
   x: number,
   y: number,
   setRadiusRestaurant: SetterOrUpdater<RadiusMarkerType>,
@@ -162,7 +161,6 @@ export const RadiusMakerAPI = async (
   axios
     .get(API_URL + '/shop/radius/all', {
       params: {
-        address: address,
         x: x,
         y: y
       },
@@ -173,7 +171,6 @@ export const RadiusMakerAPI = async (
       if (res.status === 200) {
         setMarkerAPIStatus(true);
       }
-      console.log(res.data);
       setRadiusRestaurant(res.data);
     })
     .catch((err: AxiosError) => {
@@ -184,7 +181,6 @@ export const RadiusMakerAPI = async (
     });
 };
 export const SortingRestaurantAPI = async (
-  address: string,
   x: number,
   y: number,
   sort: string,
@@ -196,7 +192,6 @@ export const SortingRestaurantAPI = async (
     .get(API_URL + '/shop/radius', {
       params: {
         sort: sort,
-        address: address,
         x: x,
         y: y,
         page: page
@@ -204,7 +199,7 @@ export const SortingRestaurantAPI = async (
       headers: headerConfig
     })
     .then(async (res: AxiosResponse) => {
-      //console.log(res);
+      console.log(res);
       setSortingRestaurant([]);
       Object.values(res.data[0]).map((item: any) => {
         setSortingRestaurant((prev) => [
@@ -281,8 +276,8 @@ export const NicknameChangeAPI = async (
       }
     })
     .catch((err) => {
-      if(err.response.status === 400){
-        setNicknameStatus(400)
+      if (err.response.status === 400) {
+        setNicknameStatus(400);
       }
     });
 };
