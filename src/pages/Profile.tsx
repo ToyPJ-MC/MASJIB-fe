@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { LoginAPI, NicknameAPI, NicknameChangeAPI } from '../apis/server';
-import { getCookie } from '../util/Cookie';
+import { NicknameAPI, NicknameChangeAPI } from '../apis/server';
+import { getCookie, removeCookie } from '../util/Cookie';
 import { Button, IconButton, TextField } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -43,8 +43,9 @@ const Profile = () => {
       } else {
         navigate('/information');
       }
-    } else {
+    } else if (getCookie('loginstatus') === 'success') {
       toast.success('로그인 성공!');
+      removeCookie('loginstatus');
     }
   }, []);
   useEffect(() => {

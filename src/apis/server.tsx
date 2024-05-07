@@ -113,8 +113,9 @@ export const LoginAPI = async (refreshtoken: string, nickname: string) => {
       }
     })
     .then((res) => {
-      console.log(res);
+      //console.log(res);
       if (res.status === 200) {
+        setCookie('loginstatus', 'success');
         window.location.href = '/information';
       }
     })
@@ -168,7 +169,7 @@ export const RadiusMakerAPI = async (
       headers: headerConfig
     })
     .then(async (res: AxiosResponse) => {
-      console.log(res);
+      //console.log(res);
       if (res.status === 200) {
         setMarkerAPIStatus(true);
       }
@@ -176,7 +177,6 @@ export const RadiusMakerAPI = async (
     })
     .catch((err: AxiosError) => {
       console.log(err);
-      //console.log(err.response?.data);
       if (err.response?.status === 400) {
         setMarkerAPIStatus(false);
       }
@@ -200,7 +200,7 @@ export const SortingRestaurantAPI = async (
       headers: headerConfig
     })
     .then(async (res: AxiosResponse) => {
-      console.log(res);
+      //console.log(res);
       setSortingRestaurant([]);
       Object.values(res.data[0]).map((item: any) => {
         setSortingRestaurant((prev) => [
