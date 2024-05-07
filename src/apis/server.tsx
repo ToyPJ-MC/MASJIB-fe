@@ -167,7 +167,6 @@ export const RadiusMakerAPI = async (
       headers: headerConfig
     })
     .then(async (res: AxiosResponse) => {
-      console.log(res);
       if (res.status === 200) {
         setMarkerAPIStatus(true);
       }
@@ -187,7 +186,6 @@ export const SortingRestaurantAPI = async (
   page: number,
   setSortingRestaurant: SetterOrUpdater<SortingRestaurantType>
 ) => {
-  //console.log('Here=> ' + address, x, y);
   axios
     .get(API_URL + '/shop/radius', {
       params: {
@@ -199,7 +197,6 @@ export const SortingRestaurantAPI = async (
       headers: headerConfig
     })
     .then(async (res: AxiosResponse) => {
-      console.log(res);
       setSortingRestaurant([]);
       Object.values(res.data[0]).map((item: any) => {
         setSortingRestaurant((prev) => [

@@ -357,7 +357,7 @@ const Information = () => {
                   </Select>
                 </FormControl>
               </div>
-              {/* {markerAPI === false ? (
+              {markerAPI === false ? (
                 <SortLoading />
               ) : markerAPI === true && review.length === 0 ? (
                 <SortLoading />
@@ -391,7 +391,7 @@ const Information = () => {
                     }
                   })}
                 </>
-              )} */}
+              )}
             </div>
           </div>
         </div>
