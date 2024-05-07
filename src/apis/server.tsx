@@ -286,25 +286,29 @@ export const WriteReviewAPI = async (
   taste: string,
   hygiene: string,
   kindness: string,
-  files: any
+  files: File[]
 ) => {
-  const formData = new FormData();
-  formData.append('comment', comment);
-  formData.append('shopId', shopId.toString());
-  formData.append('rating', rating.toString());
-  formData.append('taste', taste);
-  formData.append('hygiene', hygiene);
-  formData.append('kindness', kindness);
-  files.map((item: any) => {
-    formData.append('files', item);
-  });
   await axios
-    .post(API_URL + '/shop/review', formData, {
-      headers: {
-        ...headerConfig,
-        Authorization: `Bearer ${getCookie('access_token')}`
+    .post(
+      API_URL + '/review',
+      {
+        comment: comment,
+        shopId: shopId,
+        rating: rating,
+        taste: taste,
+        hygiene: hygiene,
+        kindness: kindness,
+        files: files
+      },
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+          Authorization: `Bearer ${getCookie('access_token')}`
+        }
       }
-    })
+    )
     .then((res) => {
       if (res.status === 200) {
         window.location.reload();
