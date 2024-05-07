@@ -9,6 +9,7 @@ import {
 import { API_URL } from '../Constants/Constants';
 import { getCookie, removeCookie, setCookie } from '../util/Cookie';
 import jinInterceptor from './jinInterceptor';
+import { comment } from 'postcss';
 const headerConfig = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
@@ -276,5 +277,40 @@ export const NicknameChangeAPI = async (
       if (err.response.status === 400) {
         setNicknameStatus(400);
       }
+    });
+};
+export const WriteReviewAPI = async (
+  comment: string,
+  shopId: number,
+  rating: number,
+  taste: string,
+  hygiene: string,
+  kindness: string,
+  files: any
+) => {
+  const formData = new FormData();
+  formData.append('comment', comment);
+  formData.append('shopId', shopId.toString());
+  formData.append('rating', rating.toString());
+  formData.append('taste', taste);
+  formData.append('hygiene', hygiene);
+  formData.append('kindness', kindness);
+  files.map((item: any) => {
+    formData.append('files', item);
+  });
+  await axios
+    .post(API_URL + '/shop/review', formData, {
+      headers: {
+        ...headerConfig,
+        Authorization: `Bearer ${getCookie('access_token')}`
+      }
+    })
+    .then((res) => {
+      if (res.status === 200) {
+        window.location.reload();
+      }
+    })
+    .catch((err) => {
+      console.log(err.response?.data);
     });
 };
