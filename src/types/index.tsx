@@ -42,6 +42,18 @@ type GeolocationType = {
   latitude: number;
   longitude: number;
 };
+type MemberReviewListType = {
+  shopId: number;
+  shopName: string;
+  reviewId: number;
+  comment: string;
+  rating: number;
+  taste: string;
+  hygiene: string;
+  kindness: string;
+  createTime: string;
+  paths: string[]; // image
+}[];
 
 export type {
   dumyType,
@@ -49,5 +61,6 @@ export type {
   searchImageType,
   RadiusMarkerType,
   SortingRestaurantType,
-  GeolocationType
+  GeolocationType,
+  MemberReviewListType
 };

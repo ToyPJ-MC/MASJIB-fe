@@ -2,14 +2,13 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { SetterOrUpdater, useSetRecoilState } from 'recoil';
 import {
   GeolocationType,
+  MemberReviewListType,
   RadiusMarkerType,
   SortingRestaurantType,
   searchImageType
 } from '../types';
 import { API_URL } from '../Constants/Constants';
 import { getCookie, removeCookie, setCookie } from '../util/Cookie';
-import jinInterceptor from './jinInterceptor';
-import { comment } from 'postcss';
 const headerConfig = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
@@ -46,32 +45,7 @@ export const BlogSearchAPI = async (
       console.log(err);
     });
 };
-export const AddressAPI = async (
-  lat: number,
-  lon: number,
-  setAddress: SetterOrUpdater<string>
-) => {
-  await axios
-    .get('/v2/local/geo/coord2address.json', {
-      headers: {
-        ...headerConfig,
-        Authorization: `KakaoAK ${process.env.KAKAO_RESTAPI_KEY}`
-      },
-      params: {
-        x: lat,
-        y: lon,
-        input_coord: 'WGS84'
-      }
-    })
-    .then((res) => {
-      setAddress(
-        res.data.documents[0].road_address.address_name.replace(/[1-9]/g, '')
-      );
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+
 export const RefreshTokenAPI = async (code: string) => {
   await axios
     .get(API_URL + '/oauth/refresh', {
@@ -169,7 +143,7 @@ export const RadiusMakerAPI = async (
       headers: headerConfig
     })
     .then(async (res: AxiosResponse) => {
-      console.log(res);
+      //console.log(res);
       if (res.status === 200) {
         setMarkerAPIStatus(true);
       }
@@ -319,5 +293,23 @@ export const WriteReviewAPI = async (
     })
     .catch((err) => {
       console.log(err.response?.data);
+    });
+};
+export const MemberReviewAPI = async (
+  setMemberReview: SetterOrUpdater<MemberReviewListType>
+) => {
+  await axios
+    .get(API_URL + '/review', {
+      headers: {
+        ...headerConfig,
+        Authorization: `Bearer ${getCookie('access_token')}`
+      }
+    })
+    .then((res) => {
+      console.log(res);
+      setMemberReview(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
     });
 };

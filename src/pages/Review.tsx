@@ -24,17 +24,17 @@ import CleanHandsOutlinedIcon from '@mui/icons-material/CleanHandsOutlined';
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 import TagFacesOutlinedIcon from '@mui/icons-material/TagFacesOutlined';
 import { useEffect, useState } from 'react';
-import { BlogSearchAPI } from '../apis/server';
 import { useRecoilState } from 'recoil';
-import { searchImageType } from '../types';
-import { searchImageState, writemodalState } from '../state/atom';
+import { MemberReviewListState, writemodalState } from '../state/atom';
 import Write from '../component/Write';
 import '../styles/global.css';
+import { MemberReviewAPI } from '../apis/server';
+import { getCookie } from '../util/Cookie';
+import { MemberReviewListType } from '../types';
 const Review = () => {
   const urlparams = new URLSearchParams(location.search);
   const [sort, setSort] = useState<string>('Newest First');
   const [sortReview, setSortReview] = useState<string>('Based Review');
-  const [blog, setBlog] = useRecoilState<searchImageType>(searchImageState);
   const [open, setOpen] = useRecoilState<boolean>(writemodalState);
   const params = {
     restaurantname: urlparams.get('restaurantname'),
@@ -90,12 +90,18 @@ const Review = () => {
     return imageList;
   };
   const imageList = chunkArray(data, 2);
-  useEffect(() => {
-    BlogSearchAPI(params.restaurantname + params.address!, setBlog);
-  }, []);
   const WriteReview = () => {
     setOpen(true);
   };
+  const [memberReview, setMemberReview] = useRecoilState<MemberReviewListType>(
+    MemberReviewListState
+  );
+  const imageurl = process.env.SERVER_URL;
+  useEffect(() => {
+    if (getCookie('access_token') !== undefined) {
+      MemberReviewAPI(setMemberReview);
+    }
+  }, []);
   return (
     <>
       {open ? <Write /> : null}
@@ -439,35 +445,54 @@ const Review = () => {
             </div>
           </div>
         </div>
-        {blog.length !== 0 ? (
-          <div className='grid place-items-center'>
-            <ImageList
-              sx={{
-                width: 500,
-                height: 450,
-                border: '3px solid black'
-              }}
-              cols={3}
-              rowHeight={164}
-            >
-              {blog.map((item, index) => (
-                <ImageListItem key={index}>
-                  <img
-                    srcSet={`${item.imageUrl}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                    src={`${item.imageUrl}?w=164&h=164&fit=crop&auto=format`}
-                    onClick={() => {
-                      window.open(item.doc_url, '_blank');
-                    }}
-                  />
-                </ImageListItem>
-              ))}
-            </ImageList>
+        <div>
+          <div>내가 쓴 리뷰</div>
+          <div>
+            {memberReview.map((item, index) => {
+              return (
+                <div key={index} className='grid grid-cols-2 w-full'>
+                  <div className='grid grid-cols-2'>
+                    <div className='grid place-items-center'>
+                      <Rating
+                        name='half-rating'
+                        defaultValue={item.rating}
+                        precision={0.5}
+                        readOnly
+                        size='large'
+                        emptyIcon={
+                          <StarIcon
+                            className='text-gray-300'
+                            fontSize='small'
+                          />
+                        }
+                      />
+                    </div>
+                    <div className='text-sm font-medium grid items-center'>
+                      {item.createTime}
+                    </div>
+                  </div>
+                  <div>{item.comment}</div>
+                  <div>
+                    <ImageList cols={3}>
+                      {item.paths.map((item, index) => {
+                        return (
+                          <ImageListItem key={index}>
+                            <img src={imageurl + '/' + item} alt={item} />
+                          </ImageListItem>
+                        );
+                      })}
+                    </ImageList>
+                  </div>
+                  <div>
+                    맛{item.taste}
+                    위생{item.hygiene}
+                    친철{item.kindness}
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        ) : (
-          <div className='grid place-items-center font-bold text-lg'>
-            현재 등록된 블로그가 없습니다.
-          </div>
-        )}
+        </div>
       </div>
     </>
   );

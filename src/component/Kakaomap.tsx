@@ -15,11 +15,7 @@ import {
 } from '../state/atom';
 import { RadiusMarkerType, SearchType, SortingRestaurantType } from '../types';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
-import {
-  AddressAPI,
-  RadiusMakerAPI,
-  SortingRestaurantAPI
-} from '../apis/server';
+import { RadiusMakerAPI, SortingRestaurantAPI } from '../apis/server';
 import '../styles/global.css';
 import { toast } from 'react-hot-toast';
 declare global {
