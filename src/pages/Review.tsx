@@ -91,7 +91,9 @@ const Review = () => {
   };
   const imageList = chunkArray(data, 2);
   const WriteReview = () => {
-    setOpen(true);
+    if (getCookie('access_token') === undefined) {
+      setOpen(true);
+    }
   };
   const [memberReview, setMemberReview] = useRecoilState<MemberReviewListType>(
     MemberReviewListState
