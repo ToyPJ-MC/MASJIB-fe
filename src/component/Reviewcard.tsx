@@ -14,11 +14,15 @@ const Reviewcard = (props: ReviewcardProps) => {
     <Card className='min-w-full hover:border'>
       <div className='grid grid-cols-2 w-fit'>
         <div className='w-48'>
-          <img
-            src={props.imageUrl}
-            alt={props.restaurantname}
-            className='w-48 h-48'
-          />
+          {props.imageUrl !== '' ? (
+            <img
+              src={props.imageUrl}
+              alt={props.restaurantname}
+              className='w-48 h-48'
+            />
+          ) : (
+            <div>등록된 이미지가 없습니다.</div>
+          )}
         </div>
         <div>
           <div className='text-2xl font-bold mt-2'>{props.restaurantname}</div>

@@ -94,6 +94,7 @@ const Information = () => {
   const reviewhandleClose = () => {
     reviewSetOpen(false);
   };
+
   const reviewmarks = [
     {
       value: 0,
@@ -112,7 +113,7 @@ const Information = () => {
       label: <CustomReviewMark value='100+' />
     }
   ];
-  // #endregion
+  //#endregion
   // #region sort by number of Dimbs
   const [dimopen, dimSetOpen] = useState<boolean>(false);
   const CustomDimbMark: React.FC<CustomMarkProps> = ({ value }) => {
@@ -362,35 +363,19 @@ const Information = () => {
               ) : markerAPI === true && review.length === 0 ? (
                 <SortLoading />
               ) : (
-                <>
-                  {review.map((item, index) => {
-                    if (item.recentReview === '등록된 리뷰가 없습니다.') {
-                      return (
-                        <div key={index}>
-                          {item.name} 등록된 리뷰가 없습니다.
-                        </div>
-                      );
-                    } else {
-                      return (
-                        <div className='overflow-auto h-96 scrollbar-hide mt-2 mr-4'>
-                          {review.map((item, index) => {
-                            return (
-                              <Reviewcard
-                                key={index}
-                                review={item.recentReview}
-                                rating={item.totalRating}
-                                imageUrl={imageURL + item.image}
-                                restaurantname={item.name}
-                                address={item.address}
-                                category={item.kind}
-                              />
-                            );
-                          })}
-                        </div>
-                      );
-                    }
-                  })}
-                </>
+                <div className='overflow-auto h-[50vh] scrollbar-hide mt-2 mr-4'>
+                  {review.map((item) => (
+                    <Reviewcard
+                      key={item.shopId}
+                      review={item.recentReview}
+                      rating={item.totalRating}
+                      imageUrl={imageURL + item.image}
+                      restaurantname={item.name}
+                      address={item.address}
+                      category={item.kind}
+                    />
+                  ))}
+                </div>
               )}
             </div>
           </div>

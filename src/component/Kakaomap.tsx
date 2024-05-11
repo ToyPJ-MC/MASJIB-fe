@@ -1,4 +1,4 @@
-import { Button, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import React from 'react';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import Loading from './Loading';
@@ -31,7 +31,6 @@ const Kakaomap = () => {
   const [locPosition, setLocPosition] = useState(
     new window.kakao.maps.LatLng(lat, lon)
   );
-  const [address, setAddress] = useState<string>(''); // 현재 위치 주소
   const [modal, setModal] = useRecoilState<boolean>(modalState);
   const [search, setSearch] = useRecoilState<string>(searchState);
   const [searchResult, setSearchResult] =
@@ -92,12 +91,6 @@ const Kakaomap = () => {
     }
   }, [currentlocation]);
 
-  // useEffect(() => {
-  //   if ((lat !== -1 && lon !== -1) || (lat !== 0 && lon !== 0)) {
-  //     AddressAPI(lon, lat, setAddress);
-  //   }
-  // }, [currentlocation, lat, lon]);
-
   // 반경 1km 음식점 마커 표시
   useEffect(() => {
     if (
@@ -105,7 +98,7 @@ const Kakaomap = () => {
       lon !== 0 &&
       lat !== -1 &&
       lon !== -1 &&
-      (sort || currentlocation)
+      (currentlocation || sort)
     ) {
       setRadiusMarker([]);
       SetSortRestaurant([]);
