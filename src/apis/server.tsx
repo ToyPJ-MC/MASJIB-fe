@@ -169,7 +169,7 @@ export const RadiusMakerAPI = async (
       headers: headerConfig
     })
     .then(async (res: AxiosResponse) => {
-      //console.log(res);
+      console.log(res);
       if (res.status === 200) {
         setMarkerAPIStatus(true);
       }

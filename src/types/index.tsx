@@ -22,6 +22,7 @@ type RadiusMarkerType = {
   y: number;
   kind: string;
   image: string;
+  shopId: number;
   totalRating: number;
 }[];
 type SortingRestaurantType = {

@@ -13,6 +13,7 @@ import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import ThumbDownAltOutlinedIcon from '@mui/icons-material/ThumbDownAltOutlined';
 import React from 'react';
 import { WriteReviewAPI } from '../apis/server';
+import { useParams } from 'react-router-dom';
 
 const Write = () => {
   const [open, setOpen] = useRecoilState<boolean>(writemodalState);
@@ -44,11 +45,21 @@ const Write = () => {
   );
   const fileCountOverLimit = files.length + fileRejections.length - maxFiles;
   const fileCountError = '최대 3개 사진만 올릴 수 있습니다!';
+
+  //#region 리뷰 작성
+  const [rating, setRating] = useState<number>(0);
+  const [taste, setTaste] = useState<string>(''); // 맛
+  const [hygiene, setHygiene] = useState<string>(''); // 위생
+  const [kindness, setKindness] = useState<string>(''); // 친절
+  const useparam = new URL(location.href).searchParams;
+  const shopid = Number(useparam.get('shopid'));
+
   const reviewhandleSumbit = () => {
     console.log(JSON.stringify(review)); // 리뷰 글 형식 그대로 전달
     console.log(files); // 파일 형식 그대로 전달
-    WriteReviewAPI(review, 1, 5, 'good', 'good', 'good', files); // 예시
+    WriteReviewAPI(review, shopid, rating, taste, hygiene, kindness, files);
   };
+  //#endregion
 
   return (
     <SideSheet
@@ -63,19 +74,33 @@ const Write = () => {
           name='half-rating'
           defaultValue={0.0}
           precision={0.5}
+          value={rating}
           size='large'
+          onChange={(event, newValue) => {
+            setRating(newValue as number);
+          }}
         />
         <div className='grid grid-rows-3 place-items-center mt-4'>
           <div className='grid place-items-center'>
             <div className='font-semibold text-base'>맛은 어땠나요?</div>
             <div className='grid grid-cols-2 place-items-center'>
               <div>
-                <IconButton color='primary'>
+                <IconButton
+                  color='primary'
+                  onClick={() => {
+                    setTaste('good');
+                  }}
+                >
                   <ThumbUpAltOutlinedIcon />
                 </IconButton>
               </div>
               <div>
-                <IconButton sx={{ color: '#FF4500' }}>
+                <IconButton
+                  sx={{ color: '#FF4500' }}
+                  onClick={() => {
+                    setTaste('good');
+                  }}
+                >
                   <ThumbDownAltOutlinedIcon />
                 </IconButton>
               </div>
@@ -85,12 +110,22 @@ const Write = () => {
             <div className='font-semibold text-base'>위생이 깨끗했나요?</div>
             <div className='grid grid-cols-2 place-items-center'>
               <div>
-                <IconButton color='primary'>
+                <IconButton
+                  color='primary'
+                  onClick={() => {
+                    setHygiene('good');
+                  }}
+                >
                   <ThumbUpAltOutlinedIcon />
                 </IconButton>
               </div>
               <div>
-                <IconButton sx={{ color: '#FF4500' }}>
+                <IconButton
+                  sx={{ color: '#FF4500' }}
+                  onClick={() => {
+                    setHygiene('good');
+                  }}
+                >
                   <ThumbDownAltOutlinedIcon />
                 </IconButton>
               </div>
@@ -102,12 +137,22 @@ const Write = () => {
             </div>
             <div className='grid grid-cols-2 place-items-center'>
               <div>
-                <IconButton color='primary'>
+                <IconButton
+                  color='primary'
+                  onClick={() => {
+                    setKindness('good');
+                  }}
+                >
                   <ThumbUpAltOutlinedIcon />
                 </IconButton>
               </div>
               <div>
-                <IconButton sx={{ color: '#FF4500' }}>
+                <IconButton
+                  sx={{ color: '#FF4500' }}
+                  onClick={() => {
+                    setKindness('bad');
+                  }}
+                >
                   <ThumbDownAltOutlinedIcon />
                 </IconButton>
               </div>

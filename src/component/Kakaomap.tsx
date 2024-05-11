@@ -167,7 +167,7 @@ const Kakaomap = () => {
           });
           window.kakao.maps.event.addListener(marker, 'click', function () {
             window.open(
-              `/review?restaurantname=${item.name}&address=${item.address}&x=${item.x}&y=${item.y}`,
+              `/review?restaurantname=${item.name}&shopid=${item.shopId}&x=${item.x}&y=${item.y}`,
               '_blank'
             );
           });
