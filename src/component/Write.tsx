@@ -13,7 +13,8 @@ import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import ThumbDownAltOutlinedIcon from '@mui/icons-material/ThumbDownAltOutlined';
 import React from 'react';
 import { WriteReviewAPI } from '../apis/server';
-import { useParams } from 'react-router-dom';
+import { getCookie } from '../util/Cookie';
+import toast from 'react-hot-toast';
 
 const Write = () => {
   const [open, setOpen] = useRecoilState<boolean>(writemodalState);
@@ -55,9 +56,13 @@ const Write = () => {
   const shopid = Number(useparam.get('shopid'));
 
   const reviewhandleSumbit = () => {
-    console.log(JSON.stringify(review)); // 리뷰 글 형식 그대로 전달
-    console.log(files); // 파일 형식 그대로 전달
-    WriteReviewAPI(review, shopid, rating, taste, hygiene, kindness, files);
+    //console.log(JSON.stringify(review)); // 리뷰 글 형식 그대로 전달
+    //console.log(files); // 파일 형식 그대로 전달
+    if (getCookie('access_token') !== undefined) {
+      WriteReviewAPI(review, shopid, rating, taste, hygiene, kindness, files);
+    } else {
+      toast.error('로그인이 필요합니다.');
+    }
   };
   //#endregion
 

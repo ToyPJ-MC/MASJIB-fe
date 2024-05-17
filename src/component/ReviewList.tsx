@@ -1,10 +1,12 @@
 import { Rating } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import React from 'react';
+import { getCookie } from '../util/Cookie';
 const ReviewList = () => {
+  const nickname = getCookie('nickname');
   return (
     <div>
-      <div>이름</div>
+      <div>{nickname}</div>
       <div className='grid grid-cols-2 w-fit'>
         <div className='grid place-items-center'>
           <Rating

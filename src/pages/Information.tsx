@@ -339,7 +339,7 @@ const Information = () => {
               ) : null}
             </div>
           </div>
-          <div className='mt-2'>
+          <div className='mt-12'>
             <div className='text-3xl font-bold'>
               TOP 10 restaurants in current location
               <div className='grid place-items-end mr-4'>

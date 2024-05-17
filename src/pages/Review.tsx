@@ -31,6 +31,7 @@ import '../styles/global.css';
 import { MemberReviewAPI } from '../apis/server';
 import { getCookie } from '../util/Cookie';
 import { MemberReviewListType } from '../types';
+import toast from 'react-hot-toast';
 const Review = () => {
   const urlparams = new URLSearchParams(location.search);
   const [sort, setSort] = useState<string>('Newest First');
@@ -93,6 +94,9 @@ const Review = () => {
   const WriteReview = () => {
     if (getCookie('access_token') === undefined) {
       setOpen(true);
+    } else {
+      toast.error('로그인이 필요합니다');
+      setOpen(false);
     }
   };
   const [memberReview, setMemberReview] = useRecoilState<MemberReviewListType>(

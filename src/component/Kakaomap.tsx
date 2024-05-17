@@ -133,7 +133,7 @@ const Kakaomap = () => {
             '        </div>' +
             '        <div class="body">' +
             '            <div>' +
-            `               ${item.kind} ${item.totalRating}` +
+            `               ${item.kind} ${item.totalRating}점` +
             '            </div>' +
             '            <div>' +
             `               ${item.address}` +
