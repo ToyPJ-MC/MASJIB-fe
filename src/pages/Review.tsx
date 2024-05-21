@@ -1,9 +1,6 @@
 import {
-  Button,
   FormControl,
   IconButton,
-  ImageList,
-  ImageListItem,
   MenuItem,
   Rating,
   Select,
@@ -32,6 +29,7 @@ import { MemberReviewAPI } from '../apis/server';
 import { getCookie } from '../util/Cookie';
 import { MemberReviewListType } from '../types';
 import toast from 'react-hot-toast';
+import ReviewList from '../component/ReviewList';
 const Review = () => {
   const urlparams = new URLSearchParams(location.search);
   const [sort, setSort] = useState<string>('Newest First');
@@ -92,7 +90,7 @@ const Review = () => {
   };
   const imageList = chunkArray(data, 2);
   const WriteReview = () => {
-    if (getCookie('access_token') === undefined) {
+    if (getCookie('access_token') !== undefined) {
       setOpen(true);
     } else {
       toast.error('로그인이 필요합니다');
@@ -102,7 +100,6 @@ const Review = () => {
   const [memberReview, setMemberReview] = useRecoilState<MemberReviewListType>(
     MemberReviewListState
   );
-  const imageurl = process.env.SERVER_URL;
   useEffect(() => {
     if (getCookie('access_token') !== undefined) {
       MemberReviewAPI(setMemberReview);
@@ -456,45 +453,17 @@ const Review = () => {
           <div>
             {memberReview.map((item, index) => {
               return (
-                <div key={index} className='grid grid-cols-2 w-full'>
-                  <div className='grid grid-cols-2'>
-                    <div className='grid place-items-center'>
-                      <Rating
-                        name='half-rating'
-                        defaultValue={item.rating}
-                        precision={0.5}
-                        readOnly
-                        size='large'
-                        emptyIcon={
-                          <StarIcon
-                            className='text-gray-300'
-                            fontSize='small'
-                          />
-                        }
-                      />
-                    </div>
-                    <div className='text-sm font-medium grid items-center'>
-                      {item.createTime}
-                    </div>
-                  </div>
-                  <div>{item.comment}</div>
-                  <div>
-                    <ImageList cols={3}>
-                      {item.paths.map((item, index) => {
-                        return (
-                          <ImageListItem key={index}>
-                            <img src={imageurl + '/' + item} alt={item} />
-                          </ImageListItem>
-                        );
-                      })}
-                    </ImageList>
-                  </div>
-                  <div>
-                    맛{item.taste}
-                    위생{item.hygiene}
-                    친철{item.kindness}
-                  </div>
-                </div>
+                <ReviewList
+                  key={index}
+                  content={item.comment}
+                  date={item.createTime}
+                  images={item.paths}
+                  rating={item.rating}
+                  hygiene={item.hygiene}
+                  kindness={item.kindness}
+                  taste={item.taste}
+                  reviewId={item.reviewId}
+                />
               );
             })}
           </div>

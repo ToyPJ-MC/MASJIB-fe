@@ -210,7 +210,10 @@ export const ServerStatusAPI = async (setStatus: SetterOrUpdater<string>) => {
       }
     })
     .catch((err) => {
-      console.log(err.response?.data);
+      //console.log(err.message);
+      if (err.message === 'Network Error') {
+        setStatus('Server Error');
+      }
     });
 };
 export const NicknameAPI = async (setNickname: SetterOrUpdater<string>) => {

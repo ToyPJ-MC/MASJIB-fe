@@ -1,26 +1,55 @@
-import { Rating } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import React from 'react';
-import { getCookie } from '../util/Cookie';
-const ReviewList = () => {
-  const nickname = getCookie('nickname');
+import CleanHandsOutlinedIcon from '@mui/icons-material/CleanHandsOutlined';
+import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
+import TagFacesOutlinedIcon from '@mui/icons-material/TagFacesOutlined';
+
+interface ReviewListProps {
+  images: string[];
+  rating: number;
+  date: string;
+  content: string;
+  hygiene: string;
+  taste: string;
+  kindness: string;
+  reviewId: number;
+}
+const imageURL = process.env.SERVER_URL;
+
+const ReviewList = (props: ReviewListProps) => {
   return (
     <div>
-      <div>{nickname}</div>
-      <div className='grid grid-cols-2 w-fit'>
-        <div className='grid place-items-center'>
-          <Rating
-            name='half-rating'
-            defaultValue={3.5}
-            precision={0.5}
-            readOnly
-            size='large'
-            emptyIcon={<StarIcon className='text-gray-300' fontSize='small' />}
-          />
-        </div>
-        <div className='text-sm font-medium grid items-cente'>몇 월 몇 일</div>
+      <div className='flex'>
+        {props.images.length > 1
+          ? props.images.map((image, index) => (
+              <img
+                key={index}
+                src={imageURL + '/' + image}
+                alt={`review${index}`}
+                className='w-28 h-24'
+              />
+            ))
+          : null}
       </div>
-      <div>글</div>
+      <div className='flex'>
+        <StarIcon
+          sx={{
+            color: '#ffbf00'
+          }}
+        />
+        {props.rating + '/5'}
+        {props.hygiene === 'good' ? (
+          <RestaurantOutlinedIcon />
+        ) : (
+          <RestaurantOutlinedIcon />
+        )}
+        <CleanHandsOutlinedIcon />
+        <TagFacesOutlinedIcon />
+      </div>
+      <div>{props.content}</div>
+      <div className='flex'>
+        <div className='text-sm font-medium grid items-cente'>{props.date}</div>
+      </div>
     </div>
   );
 };

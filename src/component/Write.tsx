@@ -103,7 +103,7 @@ const Write = () => {
                 <IconButton
                   sx={{ color: '#FF4500' }}
                   onClick={() => {
-                    setTaste('good');
+                    setTaste('bad');
                   }}
                 >
                   <ThumbDownAltOutlinedIcon />
@@ -128,7 +128,7 @@ const Write = () => {
                 <IconButton
                   sx={{ color: '#FF4500' }}
                   onClick={() => {
-                    setHygiene('good');
+                    setHygiene('bad');
                   }}
                 >
                   <ThumbDownAltOutlinedIcon />
