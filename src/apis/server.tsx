@@ -316,14 +316,11 @@ export const MemberReviewAPI = async (
       console.log(err);
     });
 };
-export const DeleteMemberReviewAPI = async (
-  reviewId: number,
-  setMemberReview: SetterOrUpdater<MemberReviewListType>
-) => {
+export const DeleteMemberReviewAPI = async (reviewId: number) => {
   await axios
     .delete(API_URL + '/review', {
       params: {
-        ids: [reviewId]
+        ids: reviewId
       },
       headers: {
         ...headerConfig,
@@ -331,7 +328,9 @@ export const DeleteMemberReviewAPI = async (
       }
     })
     .then((res) => {
-      MemberReviewAPI(setMemberReview);
+      if (res.status === 200) {
+        window.location.reload();
+      }
     })
     .catch((err) => {
       console.log(err);

@@ -4,6 +4,8 @@ import CleanHandsOutlinedIcon from '@mui/icons-material/CleanHandsOutlined';
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 import TagFacesOutlinedIcon from '@mui/icons-material/TagFacesOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { DeleteMemberReviewAPI } from '../apis/server';
+import { MemberReviewListState } from '../state/atom';
 
 interface ReviewListProps {
   images: string[];
@@ -17,12 +19,9 @@ interface ReviewListProps {
 }
 const imageURL = process.env.SERVER_URL;
 
-const DeleteReview = (
-  reviewId: number,
-  setReviewList: React.Dispatch<React.SetStateAction<ReviewListProps[]>>
-) => {
-  
-}
+const DeleteReview = (reviewId: number) => {
+  DeleteMemberReviewAPI(reviewId);
+};
 
 const ReviewList = (props: ReviewListProps) => {
   return (
@@ -89,7 +88,11 @@ const ReviewList = (props: ReviewListProps) => {
       <div>{props.content}</div>
       <div className='grid grid-cols-2'>
         <div className='text-sm font-medium grid items-cente'>{props.date}</div>
-        <div>
+        <div
+          onClick={() => {
+            DeleteReview(props.reviewId);
+          }}
+        >
           <DeleteIcon />
         </div>
       </div>
