@@ -316,3 +316,24 @@ export const MemberReviewAPI = async (
       console.log(err);
     });
 };
+export const DeleteMemberReviewAPI = async (
+  reviewId: number,
+  setMemberReview: SetterOrUpdater<MemberReviewListType>
+) => {
+  await axios
+    .delete(API_URL + '/review', {
+      params: {
+        ids: [reviewId]
+      },
+      headers: {
+        ...headerConfig,
+        Authorization: `Bearer ${getCookie('access_token')}`
+      }
+    })
+    .then((res) => {
+      MemberReviewAPI(setMemberReview);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};

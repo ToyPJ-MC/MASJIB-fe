@@ -3,6 +3,7 @@ import React from 'react';
 import CleanHandsOutlinedIcon from '@mui/icons-material/CleanHandsOutlined';
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 import TagFacesOutlinedIcon from '@mui/icons-material/TagFacesOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface ReviewListProps {
   images: string[];
@@ -15,6 +16,13 @@ interface ReviewListProps {
   reviewId: number;
 }
 const imageURL = process.env.SERVER_URL;
+
+const DeleteReview = (
+  reviewId: number,
+  setReviewList: React.Dispatch<React.SetStateAction<ReviewListProps[]>>
+) => {
+  
+}
 
 const ReviewList = (props: ReviewListProps) => {
   return (
@@ -31,7 +39,7 @@ const ReviewList = (props: ReviewListProps) => {
             ))
           : null}
       </div>
-      <div className='flex'>
+      <div className='flex gap-1'>
         <StarIcon
           sx={{
             color: '#ffbf00'
@@ -39,16 +47,51 @@ const ReviewList = (props: ReviewListProps) => {
         />
         {props.rating + '/5'}
         {props.hygiene === 'good' ? (
-          <RestaurantOutlinedIcon />
+          <RestaurantOutlinedIcon
+            sx={{
+              color: '#0066ff'
+            }}
+          />
         ) : (
-          <RestaurantOutlinedIcon />
+          <RestaurantOutlinedIcon
+            sx={{
+              color: '#ff0000'
+            }}
+          />
         )}
-        <CleanHandsOutlinedIcon />
-        <TagFacesOutlinedIcon />
+        {props.hygiene === 'good' ? (
+          <CleanHandsOutlinedIcon
+            sx={{
+              color: '#0066ff'
+            }}
+          />
+        ) : (
+          <CleanHandsOutlinedIcon
+            sx={{
+              color: '#ff0000'
+            }}
+          />
+        )}
+        {props.hygiene === 'good' ? (
+          <TagFacesOutlinedIcon
+            sx={{
+              color: '#0066ff'
+            }}
+          />
+        ) : (
+          <TagFacesOutlinedIcon
+            sx={{
+              color: '#ff0000'
+            }}
+          />
+        )}
       </div>
       <div>{props.content}</div>
-      <div className='flex'>
+      <div className='grid grid-cols-2'>
         <div className='text-sm font-medium grid items-cente'>{props.date}</div>
+        <div>
+          <DeleteIcon />
+        </div>
       </div>
     </div>
   );
