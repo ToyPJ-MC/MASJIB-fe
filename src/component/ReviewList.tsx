@@ -45,7 +45,7 @@ const ReviewList = (props: ReviewListProps) => {
           }}
         />
         {props.rating + '/5'}
-        {props.hygiene === 'good' ? (
+        {props.taste === 'good' ? (
           <RestaurantOutlinedIcon
             sx={{
               color: '#0066ff'
@@ -71,7 +71,7 @@ const ReviewList = (props: ReviewListProps) => {
             }}
           />
         )}
-        {props.hygiene === 'good' ? (
+        {props.kindness === 'good' ? (
           <TagFacesOutlinedIcon
             sx={{
               color: '#0066ff'
