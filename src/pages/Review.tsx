@@ -448,8 +448,7 @@ const Review = () => {
             </div>
           </div>
         </div>
-        <div>
-          <div>내가 쓴 리뷰</div>
+        <div className='flex justify-center items-center'>
           <div>
             {memberReview.map((item, index) => {
               return (
