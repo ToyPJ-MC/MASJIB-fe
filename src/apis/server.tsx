@@ -9,6 +9,7 @@ import {
 } from '../types';
 import { API_URL } from '../Constants/Constants';
 import { getCookie, removeCookie, setCookie } from '../util/Cookie';
+import toast from 'react-hot-toast';
 const headerConfig = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
@@ -330,6 +331,7 @@ export const DeleteMemberReviewAPI = async (reviewId: number) => {
     .then((res) => {
       if (res.status === 200) {
         window.location.reload();
+        toast.success('리뷰를 삭제하였습니다');
       }
     })
     .catch((err) => {

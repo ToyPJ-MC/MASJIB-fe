@@ -1,5 +1,5 @@
 import StarIcon from '@mui/icons-material/Star';
-import React from 'react';
+import React, { useState } from 'react';
 import CleanHandsOutlinedIcon from '@mui/icons-material/CleanHandsOutlined';
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 import TagFacesOutlinedIcon from '@mui/icons-material/TagFacesOutlined';
@@ -20,10 +20,13 @@ interface ReviewListProps {
 const imageURL = process.env.SERVER_URL;
 
 const DeleteReview = (reviewId: number) => {
-  DeleteMemberReviewAPI(reviewId);
+  if (confirm('리뷰를 삭제하시겠습니까?') === true) {
+    DeleteMemberReviewAPI(reviewId);
+  }
 };
 
 const ReviewList = (props: ReviewListProps) => {
+  console.log(imageURL + '/' + props.images);
   return (
     <div>
       <div className='flex'>
