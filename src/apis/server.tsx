@@ -71,8 +71,11 @@ export const RefreshTokenAPI = async (code: string) => {
       setCookie('access_token', res.data.accessToken, {
         expires: accessTokenExpiration
       });
-      if (res.data.accessToken) {
+      if (res.data.accessToken && getCookie('nickname') === undefined) {
         location.href = '/profile';
+      }
+      if (res.data.accessToken && getCookie('nickname') !== undefined) {
+        location.href = '/information';
       }
     })
     .catch((error) => {
@@ -227,7 +230,9 @@ export const NicknameAPI = async (setNickname: SetterOrUpdater<string>) => {
     })
     .then((res) => {
       setNickname(res.data);
-      setCookie('nickname', res.data);
+      if (!res.data.match(/@\w+/g)) {
+        setCookie('nickname', res.data);
+      }
     })
     .catch((err) => {
       console.log(err.response?.data);
@@ -255,7 +260,7 @@ export const NicknameChangeAPI = async (
       }
     })
     .catch((err) => {
-      if (err.response.status === 400) {
+      if (err.status === 400) {
         setNicknameStatus(400);
       }
     });
