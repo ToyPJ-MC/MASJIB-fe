@@ -11,6 +11,8 @@ import { useRecoilState } from 'recoil';
 import { Button, IconButton, Rating, TextareaAutosize } from '@mui/material';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import ThumbDownAltOutlinedIcon from '@mui/icons-material/ThumbDownAltOutlined';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import React from 'react';
 import { WriteReviewAPI } from '../apis/server';
 import { getCookie } from '../util/Cookie';
@@ -96,7 +98,11 @@ const Write = () => {
                     setTaste('good');
                   }}
                 >
-                  <ThumbUpAltOutlinedIcon />
+                  {taste === 'good' ? (
+                    <ThumbUpIcon />
+                  ) : (
+                    <ThumbUpAltOutlinedIcon />
+                  )}
                 </IconButton>
               </div>
               <div>
@@ -106,7 +112,11 @@ const Write = () => {
                     setTaste('bad');
                   }}
                 >
-                  <ThumbDownAltOutlinedIcon />
+                  {taste === 'bad' ? (
+                    <ThumbDownIcon />
+                  ) : (
+                    <ThumbDownAltOutlinedIcon />
+                  )}
                 </IconButton>
               </div>
             </div>
@@ -121,7 +131,11 @@ const Write = () => {
                     setHygiene('good');
                   }}
                 >
-                  <ThumbUpAltOutlinedIcon />
+                  {hygiene === 'good' ? (
+                    <ThumbUpIcon />
+                  ) : (
+                    <ThumbUpAltOutlinedIcon />
+                  )}
                 </IconButton>
               </div>
               <div>
@@ -131,7 +145,11 @@ const Write = () => {
                     setHygiene('bad');
                   }}
                 >
-                  <ThumbDownAltOutlinedIcon />
+                  {hygiene === 'bad' ? (
+                    <ThumbDownIcon />
+                  ) : (
+                    <ThumbDownAltOutlinedIcon />
+                  )}
                 </IconButton>
               </div>
             </div>
@@ -148,7 +166,11 @@ const Write = () => {
                     setKindness('good');
                   }}
                 >
-                  <ThumbUpAltOutlinedIcon />
+                  {kindness === 'good' ? (
+                    <ThumbUpIcon />
+                  ) : (
+                    <ThumbUpAltOutlinedIcon />
+                  )}
                 </IconButton>
               </div>
               <div>
@@ -158,7 +180,11 @@ const Write = () => {
                     setKindness('bad');
                   }}
                 >
-                  <ThumbDownAltOutlinedIcon />
+                  {kindness === 'bad' ? (
+                    <ThumbDownIcon />
+                  ) : (
+                    <ThumbDownAltOutlinedIcon />
+                  )}
                 </IconButton>
               </div>
             </div>
