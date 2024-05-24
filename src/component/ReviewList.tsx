@@ -30,7 +30,7 @@ const ReviewList = (props: ReviewListProps) => {
   return (
     <div>
       <div className='flex'>
-        {props.images.length > 1
+        {props.images.length > 0
           ? props.images.map((image, index) => (
               <img
                 key={index}
