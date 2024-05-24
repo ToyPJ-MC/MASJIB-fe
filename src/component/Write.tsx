@@ -239,11 +239,11 @@ const Write = () => {
           <div className='text-base font-semibold'>음식점 리뷰</div>
           <TextareaAutosize
             name='review'
-            placeholder='  리뷰를 작성해주세요.'
+            placeholder='리뷰를 작성해주세요.'
             maxLength={250}
             minRows={5}
             maxRows={10}
-            className='w-96 h-fit outline outline-blue-500 rounded-lg mt-2'
+            className='w-96 h-fit outline outline-blue-500 rounded-lg mt-2 p-2'
             onChange={(e) => {
               setReview(e.target.value);
             }}
