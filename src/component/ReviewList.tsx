@@ -80,7 +80,11 @@ const ReviewList = (props: ReviewListProps) => {
           )}
         </div>
       </div>
-      <div className='mt-2 ml-2'>{props.content}</div>
+      <div className='mt-2 ml-2'>
+        {props.content.split(/\r\n|\r|\n/).map((line, index) => (
+          <p key={index}>{line}</p>
+        ))}
+      </div>
       <div className='flex mt-2 ml-2'>
         {props.images.length > 0
           ? props.images.map((image, index) => (
