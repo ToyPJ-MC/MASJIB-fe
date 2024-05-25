@@ -66,11 +66,11 @@ const Information = () => {
       setReview([]);
     } else if (event.target.value === 'Review') {
       setSortby(event.target.value as string);
-      setSort('reviewCount');
+      setSort('review');
       setReview([]);
     } else if (event.target.value === 'Dibs') {
       setSortby(event.target.value as string);
-      setSort('FollowCount');
+      setSort('follow');
       setReview([]);
     }
   };
