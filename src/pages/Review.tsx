@@ -26,7 +26,7 @@ import { MemberReviewListState, writemodalState } from '../state/atom';
 import Write from '../component/Write';
 import '../styles/global.css';
 import { MemberReviewAPI } from '../apis/server';
-import { getCookie } from '../util/Cookie';
+import { getCookie, removeCookie } from '../util/Cookie';
 import { MemberReviewListType } from '../types';
 import toast from 'react-hot-toast';
 import ReviewList from '../component/ReviewList';
@@ -104,6 +104,15 @@ const Review = () => {
   useEffect(() => {
     if (getCookie('access_token') !== undefined) {
       MemberReviewAPI(setMemberReview);
+    }
+  }, []);
+  useEffect(() => {
+    if (
+      getCookie('deletestatus') === 'success' &&
+      getCookie('access_token') !== undefined
+    ) {
+      toast.success('리뷰를 삭제하였습니다');
+      removeCookie('deletestatus');
     }
   }, []);
   return (

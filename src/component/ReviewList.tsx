@@ -5,7 +5,6 @@ import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 import TagFacesOutlinedIcon from '@mui/icons-material/TagFacesOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DeleteMemberReviewAPI } from '../apis/server';
-import { MemberReviewListState } from '../state/atom';
 
 interface ReviewListProps {
   images: string[];
@@ -26,7 +25,6 @@ const DeleteReview = (reviewId: number) => {
 };
 
 const ReviewList = (props: ReviewListProps) => {
-  //console.log(imageURL + '/' + props.images);
   return (
     <div className='mb-2 border border-solid p-5'>
       <div className='flex gap-1 justify-evenly mt-2'>

@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { SetterOrUpdater, useSetRecoilState } from 'recoil';
+import { SetterOrUpdater } from 'recoil';
 import {
-  GeolocationType,
   MemberReviewListType,
   RadiusMarkerType,
   SortingRestaurantType,
@@ -9,7 +8,6 @@ import {
 } from '../types';
 import { API_URL } from '../Constants/Constants';
 import { getCookie, removeCookie, setCookie } from '../util/Cookie';
-import toast from 'react-hot-toast';
 const headerConfig = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
@@ -214,7 +212,6 @@ export const ServerStatusAPI = async (setStatus: SetterOrUpdater<string>) => {
       }
     })
     .catch((err) => {
-      //console.log(err.message);
       if (err.message === 'Network Error') {
         setStatus('Server Error');
       }
@@ -336,7 +333,7 @@ export const DeleteMemberReviewAPI = async (reviewId: number) => {
     .then((res) => {
       if (res.status === 200) {
         window.location.reload();
-        toast.success('리뷰를 삭제하였습니다');
+        setCookie('deletestatus', 'success');
       }
     })
     .catch((err) => {
