@@ -1,5 +1,6 @@
 import { Card, Rating, Typography } from '@mui/material';
 import { Button } from 'evergreen-ui';
+import ximage from 'src/assets/준비중.jpeg';
 import React from 'react';
 interface ReviewcardProps {
   review: string;
@@ -9,19 +10,21 @@ interface ReviewcardProps {
   category: string;
   imageUrl: string;
 }
+const serverimageURL = process.env.SERVER_URL;
 const Reviewcard = (props: ReviewcardProps) => {
+  console.log(props.imageUrl);
   return (
     <Card className='min-w-full hover:border'>
       <div className='grid grid-cols-2 w-fit'>
         <div className='w-48'>
-          {props.imageUrl !== '' ? (
+          {props.imageUrl !== serverimageURL + '/등록된 사진이 없습니다.' ? (
             <img
               src={props.imageUrl}
               alt={props.restaurantname}
               className='w-48 h-48'
             />
           ) : (
-            <div>등록된 이미지가 없습니다.</div>
+            <img src={ximage} className='w-48 h-48' />
           )}
         </div>
         <div>
