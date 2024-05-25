@@ -373,6 +373,9 @@ const Information = () => {
                       restaurantname={item.name}
                       address={item.address}
                       category={item.kind}
+                      x={item.x}
+                      y={item.y}
+                      shopid={item.shopId}
                     />
                   ))}
                 </div>
