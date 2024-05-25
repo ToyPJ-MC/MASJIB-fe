@@ -38,6 +38,7 @@ const Review = () => {
   const params = {
     restaurantname: urlparams.get('restaurantname'),
     address: urlparams.get('address'),
+    shopid: urlparams.get('shopid'),
     x: urlparams.get('x'),
     y: urlparams.get('y')
   };
@@ -448,10 +449,10 @@ const Review = () => {
             </div>
           </div>
         </div>
-        <div className='flex justify-center items-center'>
-          <div>
-            {memberReview.map((item, index) => {
-              return (
+        <div className='flex justify-center items-center pl-8 pr-8'>
+          <div className='w-full'>
+            {memberReview.map((item, index) =>
+              item.shopId === Number(params.shopid) ? (
                 <ReviewList
                   key={index}
                   content={item.comment}
@@ -463,8 +464,8 @@ const Review = () => {
                   taste={item.taste}
                   reviewId={item.reviewId}
                 />
-              );
-            })}
+              ) : null
+            )}
           </div>
         </div>
       </div>

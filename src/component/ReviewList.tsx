@@ -28,7 +28,7 @@ const DeleteReview = (reviewId: number) => {
 const ReviewList = (props: ReviewListProps) => {
   //console.log(imageURL + '/' + props.images);
   return (
-    <div className='mb-2 border border-solid'>
+    <div className='mb-2 border border-solid p-5'>
       <div className='flex gap-1 justify-evenly mt-2'>
         <div>
           <StarIcon
