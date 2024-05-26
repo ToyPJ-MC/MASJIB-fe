@@ -27,16 +27,18 @@ const DeleteReview = (reviewId: number) => {
 const ReviewList = (props: ReviewListProps) => {
   return (
     <div className='mb-2 border border-solid p-5'>
-      <div className='flex gap-1 justify-evenly mt-2'>
-        <div>
+      <div>
+        <div className='flex gap-1'>
           <StarIcon
             sx={{
               color: '#ffbf00'
             }}
           />
-          {props.rating + '/5'}
+          <p className='w-[1rem] h-[1rem] text-gray-400'>
+            {props.rating + '/5'}
+          </p>
         </div>
-        <div className='flex gap-2'>
+        <div className='flex gap-2 mt-1'>
           {props.taste === 'good' ? (
             <RestaurantOutlinedIcon
               sx={{
@@ -78,12 +80,12 @@ const ReviewList = (props: ReviewListProps) => {
           )}
         </div>
       </div>
-      <div className='mt-2 ml-2'>
+      <div className='mt-2'>
         {props.content.split(/\r\n|\r|\n/).map((line, index) => (
           <p key={index}>{line}</p>
         ))}
       </div>
-      <div className='flex mt-2 ml-2'>
+      <div className='flex mt-2'>
         {props.images.length > 0
           ? props.images.map((image, index) => (
               <img
@@ -95,8 +97,8 @@ const ReviewList = (props: ReviewListProps) => {
             ))
           : null}
       </div>
-      <div className='grid grid-cols-2'>
-        <div className='text-sm font-medium grid items-center'>
+      <div className='grid grid-cols-2 mt-2'>
+        <div className='text-sm text-gray-500 font-medium grid items-center'>
           {props.date}
         </div>
         <div className='grid place-items-end'>
@@ -104,6 +106,9 @@ const ReviewList = (props: ReviewListProps) => {
             fontSize='small'
             onClick={() => {
               DeleteReview(props.reviewId);
+            }}
+            sx={{
+              color: '#cccccc'
             }}
           />
         </div>
