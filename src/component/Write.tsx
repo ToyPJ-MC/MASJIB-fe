@@ -8,7 +8,13 @@ import {
 import { useCallback, useMemo, useState } from 'react';
 import { writemodalState } from '../state/atom';
 import { useRecoilState } from 'recoil';
-import { Button, IconButton, Rating, TextareaAutosize } from '@mui/material';
+import {
+  Button,
+  IconButton,
+  Rating,
+  TextareaAutosize,
+  TextField
+} from '@mui/material';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import ThumbDownAltOutlinedIcon from '@mui/icons-material/ThumbDownAltOutlined';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
@@ -25,6 +31,7 @@ const Write = () => {
   const maxSizeInBytes = 10000000; // 10MB;
   const [files, setFiles] = useState<File[]>([]);
   const [fileRejections, setFileRejections] = useState<FileRejection[]>([]);
+  const [onereview, setOneReview] = useState<string>('');
   const [review, setReview] = useState<string>('');
   const values = useMemo(
     () => [
@@ -60,8 +67,17 @@ const Write = () => {
   const reviewhandleSumbit = () => {
     //console.log(JSON.stringify(review)); // 리뷰 글 형식 그대로 전달
     //console.log(files); // 파일 형식 그대로 전달
+    const totalreview = onereview + '\n' + review;
     if (getCookie('access_token') !== undefined) {
-      WriteReviewAPI(review, shopid, rating, taste, hygiene, kindness, files);
+      WriteReviewAPI(
+        totalreview,
+        shopid,
+        rating,
+        taste,
+        hygiene,
+        kindness,
+        files
+      );
     } else {
       toast.error('로그인이 필요합니다.');
     }
@@ -237,13 +253,23 @@ const Write = () => {
         />
         <div className='grid place-items-center mt-2'>
           <div className='text-base font-semibold'>음식점 리뷰</div>
+          <div className='mt-2 font-semibold'>한줄평</div>
+          <TextField
+            id='review'
+            placeholder='한줄평을 작성해주세요.'
+            onChange={(e) => {
+              setOneReview(e.target.value);
+            }}
+            className='w-96 outline outline-blue-500 rounded-lg mt-2'
+          />
+          <div className='mt-2 font-semibold'>리뷰</div>
           <TextareaAutosize
             name='review'
             placeholder='리뷰를 작성해주세요.'
             maxLength={250}
             minRows={5}
             maxRows={10}
-            className='w-96 h-fit outline outline-blue-500 rounded-lg mt-2 p-2'
+            className='w-96 h-fit outline outline-1 outline-neutral-300 rounded-lg mt-2 p-2'
             onChange={(e) => {
               setReview(e.target.value);
             }}

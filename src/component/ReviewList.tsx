@@ -81,9 +81,15 @@ const ReviewList = (props: ReviewListProps) => {
         </div>
       </div>
       <div className='mt-2'>
-        {props.content.split(/\r\n|\r|\n/).map((line, index) => (
-          <p key={index}>{line}</p>
-        ))}
+        {props.content.split(/\r\n|\r|\n/).map((line, index) =>
+          index === 0 ? (
+            <p key={index} className='font-semibold text-lg'>
+              {line}
+            </p>
+          ) : (
+            <p key={index}>{line}</p>
+          )
+        )}
       </div>
       <div className='flex mt-2'>
         {props.images.length > 0
