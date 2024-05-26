@@ -20,7 +20,8 @@ module.exports = {
   },
   resolve: {
     plugins: [new TsConfigPathsPlugin()],
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    modules: ['node_modules']
   },
   module: {
     rules: [
@@ -49,7 +50,7 @@ module.exports = {
       },
       // css loader 설정
       {
-        test: /\.(s*)css$/, // scss, css 둘다 적용
+        test: /\.(s*)css$/,
         use: ['style-loader', 'css-loader', 'postcss-loader'],
         exclude: /node_modules/
       },

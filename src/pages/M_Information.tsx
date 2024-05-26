@@ -1,50 +1,125 @@
-import { Box, Button, Tab, Tabs, tabsClasses } from '@mui/material';
+import {
+  Box,
+  Button,
+  Drawer,
+  MenuItem,
+  Tab,
+  Tabs,
+  tabsClasses
+} from '@mui/material';
 import { useRecoilState } from 'recoil';
-import { m_SearchModalState } from '../state/atom';
+import { logoutstate, m_SearchModalState } from '../state/atom';
 import Kakaomap from '../component/Kakaomap';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
 import M_SearchModal from '../component/M_SearchModal';
+import { getCookie } from '../util/Cookie';
+import { useNavigate } from 'react-router-dom';
+import { IconButton } from 'evergreen-ui';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { LogoutAPI } from '../apis/server';
+import toast from 'react-hot-toast';
 
 const M_Information = () => {
   const [modal, setModal] = useRecoilState<boolean>(m_SearchModalState);
+  const [open, setOpen] = useState<boolean>(false);
   const [value, setValue] = useState(0);
+  const navigate = useNavigate();
   const searchmodal = () => {
     setModal(true);
   };
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+  const menuDrawer = (newOpen: boolean) => () => {
+    setOpen(newOpen);
+  };
+  //#region logout
+  const [logout, setLogout] = useRecoilState<boolean>(logoutstate);
+  const logoutbtn = () => {
+    LogoutAPI(setLogout);
+  };
+
+  useEffect(() => {
+    if (logout) {
+      toast.success('로그아웃 되었습니다.');
+      setLogout(false);
+    }
+  }, [logout]);
+  //#endregion
+
   return (
     <div className='h-screen w-screen overflow-hidden'>
-      <div className='grid grid-cols-2 mt-2 items-center place-content-center border border-b-2 border-t-0 border-l-0 border-r-0'>
-        <div className='font-bold text-3xl text-blue-500 mb-2 text-start ml-2'>
+      <div className='grid grid-cols-3 mt-2 border border-b-2 border-t-0 border-l-0 border-r-0 mb-2'>
+        <div className='w-fit grid place-items-start'>
+          <Button>
+            <MoreVertIcon onClick={menuDrawer(true)} />
+          </Button>
+          {
+            <Drawer anchor='left' open={open} onClose={menuDrawer(false)}>
+              <div className='grid place-items-center'>
+                <MenuItem
+                  onClick={() => {
+                    navigate('/profile');
+                  }}
+                >
+                  Profile
+                </MenuItem>
+                <MenuItem>검색</MenuItem>
+              </div>
+            </Drawer>
+          }
+        </div>
+        <div className='font-bold text-3xl text-blue-500 grid place-items-center'>
           MASJIB
         </div>
-        <div className='text-end mr-2 mb-2'>
-          <Button
-            className='place-items-center'
-            variant='outlined'
-            sx={{
-              textAlign: 'center',
-              color: 'white',
-              height: '2.5rem',
-              backgroundColor: '#3B82F6',
-              borderColor: '#3B82F6',
-              fontFamily: 'bold',
-              fontSize: '1.0em',
-              ':hover': {
+        <div className='text-end grid place-items-center'>
+          {getCookie('access_token') ? (
+            <Button
+              className='place-items-center'
+              variant='outlined'
+              sx={{
+                textAlign: 'center',
+                color: 'white',
+                height: '1.8rem',
                 backgroundColor: '#3B82F6',
-                color: 'white'
-              }
-            }}
-            onClick={() => {
-              location.href =
-                'http://34.64.33.188:18080/oauth2/authorization/kakao';
-            }}
-          >
-            Log In
-          </Button>
+                borderColor: '#3B82F6',
+                fontFamily: 'bold',
+                fontSize: '0.8rem',
+                ':hover': {
+                  backgroundColor: '#3B82F6',
+                  color: 'white'
+                }
+              }}
+              onClick={logoutbtn}
+            >
+              Logout
+            </Button>
+          ) : (
+            <Button
+              className='place-items-center'
+              variant='outlined'
+              sx={{
+                textAlign: 'center',
+                color: 'white',
+                height: '1.8rem',
+                backgroundColor: '#3B82F6',
+                borderColor: '#3B82F6',
+                fontFamily: 'bold',
+                fontSize: '0.8rem',
+                ':hover': {
+                  backgroundColor: '#3B82F6',
+                  color: 'white'
+                }
+              }}
+              onClick={() => {
+                location.href =
+                  'http://35.216.61.47:18080/oauth2/authorization/kakao';
+              }}
+            >
+              Log In
+            </Button>
+          )}
         </div>
       </div>
       <div className='h-full'>
