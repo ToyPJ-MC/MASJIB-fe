@@ -1,17 +1,19 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { SetterOrUpdater } from 'recoil';
 import {
-  GeolocationType,
+  MemberReviewListType,
   RadiusMarkerType,
   SortingRestaurantType,
   searchImageType
 } from '../types';
 import { API_URL } from '../Constants/Constants';
-import { setAccessToken, setRefreshToken } from '../util/Cookie';
+import { getCookie, removeCookie, setCookie } from '../util/Cookie';
 const headerConfig = {
   'Content-Type': 'application/json',
-  'Access-Control-Allow-Origin': '*'
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Credentials': true
 };
+const width = window.innerWidth;
 export const BlogSearchAPI = async (
   search: string,
   setBlog: SetterOrUpdater<searchImageType>
@@ -42,59 +44,40 @@ export const BlogSearchAPI = async (
       console.log(err);
     });
 };
-export const AddressAPI = async (
-  lat: number,
-  lon: number,
-  setAddress: SetterOrUpdater<string>
-) => {
-  await axios
-    .get('/v2/local/geo/coord2address.json', {
-      headers: {
-        ...headerConfig,
-        Authorization: `KakaoAK ${process.env.KAKAO_RESTAPI_KEY}`
-      },
-      params: {
-        x: lat,
-        y: lon,
-        input_coord: 'WGS84'
-      }
-    })
-    .then((res) => {
-      setAddress(
-        res.data.documents[0].road_address.address_name.replace(/[1-9]/g, '')
-      );
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+
 export const RefreshTokenAPI = async (code: string) => {
   await axios
     .get(API_URL + '/oauth/refresh', {
       headers: {
         'Content-Type': 'text/plain'
       },
+      withCredentials: true,
       params: {
         refreshToken: code
       }
     })
     .then((res) => {
-      setAccessToken(
-        'access_token',
-        res.data.accessToken,
-        res.data.accessTokenExpiresIn
+      const accessTokenExpiration = new Date(
+        Date.now() + res.data.accessTokenExpiresIn * 10
       );
-      setRefreshToken(
-        'refresh_token',
-        res.data.refreshToken,
-        res.data.refreshTokenExpiresIn
+      const refreshTokenExpiration = new Date(
+        Date.now() + res.data.refreshTokenExpiresIn * 6
       );
-      if (res.data.accessToken) {
-        window.location.href = '/profile';
+      setCookie('refresh_token', res.data.refreshToken, {
+        expires: refreshTokenExpiration
+      });
+      setCookie('access_token', res.data.accessToken, {
+        expires: accessTokenExpiration
+      });
+      if (res.data.accessToken && getCookie('nickname') === undefined) {
+        location.href = '/profile';
+      }
+      if (res.data.accessToken && getCookie('nickname') !== undefined) {
+        location.href = '/information';
       }
     })
-    .catch((err) => {
-      console.log(err);
+    .catch((error) => {
+      console.log(error);
     });
 };
 export const LoginAPI = async (refreshtoken: string, nickname: string) => {
@@ -106,17 +89,48 @@ export const LoginAPI = async (refreshtoken: string, nickname: string) => {
       }
     })
     .then((res) => {
-      console.log(res);
+      //console.log(res);
       if (res.status === 200) {
-        window.location.href = '/';
+        setCookie('loginstatus', 'success');
+        window.location.href = '/information';
       }
     })
     .catch((err) => {
       console.log(err.response?.data);
     });
 };
+
+export const LogoutAPI = async (setLogout: SetterOrUpdater<boolean>) => {
+  await axios
+    .post(
+      API_URL + '/oauth/logout',
+      {},
+      {
+        withCredentials: true,
+        headers: {
+          ...headerConfig,
+          Authorization: `Bearer ${getCookie('access_token')}`
+        }
+      }
+    )
+    .then((res) => {
+      res.status === 200 && width < 450
+        ? (window.location.href = '/m_information')
+        : res.status === 200 &&
+          width > 450 &&
+          (window.location.href = '/information');
+      res.status === 200 &&
+        (removeCookie('access_token'),
+        removeCookie('refresh_token'),
+        setLogout(true));
+    })
+    .catch((err) => {
+      console.log('Error');
+      console.log(err.response.data);
+    });
+};
+
 export const RadiusMakerAPI = async (
-  address: string,
   x: number,
   y: number,
   setRadiusRestaurant: SetterOrUpdater<RadiusMarkerType>,
@@ -125,41 +139,36 @@ export const RadiusMakerAPI = async (
   axios
     .get(API_URL + '/shop/radius/all', {
       params: {
-        address: address,
         x: x,
         y: y
       },
       headers: headerConfig
     })
     .then(async (res: AxiosResponse) => {
-      console.log(res);
+      //console.log(res);
       if (res.status === 200) {
         setMarkerAPIStatus(true);
       }
-      console.log(res.data);
       setRadiusRestaurant(res.data);
     })
     .catch((err: AxiosError) => {
-      console.log(err.response?.data);
+      console.log(err);
       if (err.response?.status === 400) {
         setMarkerAPIStatus(false);
       }
     });
 };
 export const SortingRestaurantAPI = async (
-  address: string,
   x: number,
   y: number,
   sort: string,
   page: number,
   setSortingRestaurant: SetterOrUpdater<SortingRestaurantType>
 ) => {
-  console.log('Here=> ' + address, x, y);
   axios
     .get(API_URL + '/shop/radius', {
       params: {
         sort: sort,
-        address: address,
         x: x,
         y: y,
         page: page
@@ -189,6 +198,145 @@ export const SortingRestaurantAPI = async (
       });
     })
     .catch((err: AxiosError) => {
+      console.log(err);
+    });
+};
+export const ServerStatusAPI = async (setStatus: SetterOrUpdater<string>) => {
+  await axios
+    .get(API_URL + '/ping', {
+      headers: headerConfig
+    })
+    .then((res) => {
+      if (res.status === 500) {
+        setStatus('Server Error');
+      }
+    })
+    .catch((err) => {
+      if (err.message === 'Network Error') {
+        setStatus('Server Error');
+      }
+    });
+};
+export const NicknameAPI = async (setNickname: SetterOrUpdater<string>) => {
+  await axios
+    .get(API_URL + '/members/info', {
+      headers: {
+        ...headerConfig,
+        Authorization: `Bearer ${getCookie('access_token')}`
+      }
+    })
+    .then((res) => {
+      setNickname(res.data);
+      if (!res.data.match(/@\w+/g)) {
+        setCookie('nickname', res.data);
+      }
+    })
+    .catch((err) => {
       console.log(err.response?.data);
+    });
+};
+
+export const NicknameChangeAPI = async (
+  nickname: string,
+  setNicknameStatus: SetterOrUpdater<number>
+) => {
+  await axios
+    .post(
+      API_URL + `/members/${nickname}`,
+      { nickname: nickname },
+      {
+        headers: {
+          ...headerConfig,
+          Authorization: `Bearer ${getCookie('access_token')}`
+        }
+      }
+    )
+    .then((res) => {
+      if (res.status === 200) {
+        setNicknameStatus(200);
+      }
+    })
+    .catch((err) => {
+      if (err.status === 400) {
+        setNicknameStatus(400);
+      }
+    });
+};
+export const WriteReviewAPI = async (
+  comment: string,
+  shopId: number,
+  rating: number,
+  taste: string,
+  hygiene: string,
+  kindness: string,
+  files: File[]
+) => {
+  await axios
+    .post(
+      API_URL + '/review',
+      {
+        comment: comment,
+        shopId: shopId,
+        rating: rating,
+        taste: taste,
+        hygiene: hygiene,
+        kindness: kindness,
+        files: files
+      },
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+          Authorization: `Bearer ${getCookie('access_token')}`
+        }
+      }
+    )
+    .then((res) => {
+      if (res.status === 200) {
+        window.location.reload();
+      }
+    })
+    .catch((err) => {
+      console.log(err.response?.data);
+    });
+};
+export const MemberReviewAPI = async (
+  setMemberReview: SetterOrUpdater<MemberReviewListType>
+) => {
+  await axios
+    .get(API_URL + '/review', {
+      headers: {
+        ...headerConfig,
+        Authorization: `Bearer ${getCookie('access_token')}`
+      }
+    })
+    .then((res) => {
+      console.log(res);
+      setMemberReview(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+export const DeleteMemberReviewAPI = async (reviewId: number) => {
+  await axios
+    .delete(API_URL + '/review', {
+      params: {
+        ids: reviewId
+      },
+      headers: {
+        ...headerConfig,
+        Authorization: `Bearer ${getCookie('access_token')}`
+      }
+    })
+    .then((res) => {
+      if (res.status === 200) {
+        window.location.reload();
+        setCookie('deletestatus', 'success');
+      }
+    })
+    .catch((err) => {
+      console.log(err);
     });
 };

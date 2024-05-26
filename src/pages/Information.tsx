@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import {
   Autocomplete,
   Button,
-  ButtonGroup,
   FormControl,
   InputLabel,
-  Menu,
   MenuItem,
   Rating,
   Select,
   SelectChangeEvent,
-  TextField
+  Slider,
+  TextField,
+  Typography
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import Kakaomap from '../component/Kakaomap';
@@ -20,13 +20,25 @@ import {
   RadiusMarkerDataState,
   RadiusSortState,
   SortingRestaurantDataState,
-  loginmodalState
+  loginmodalState,
+  logoutstate,
+  serverstatus
 } from '../state/atom';
 import Reviewcard from '../component/Reviewcard';
 import LoginModal from '../component/LoginModal';
 import { SortingRestaurantType } from '../types';
 import SortLoading from '../component/SortLoading';
+import { getCookie } from '../util/Cookie';
+import { useNavigate } from 'react-router-dom';
+import { LogoutAPI, ServerStatusAPI } from '../apis/server';
+import toast from 'react-hot-toast';
+
+interface CustomMarkProps {
+  value: string;
+}
+
 const Information = () => {
+  const navigate = useNavigate();
   const categoriesChange = ['한식', '중식', '일식', '양식'];
   const [modal, setModal] = useRecoilState<boolean>(loginmodalState);
   const [sort, setSort] = useRecoilState<string>(RadiusSortState);
@@ -34,15 +46,17 @@ const Information = () => {
   const [review, setReview] = useRecoilState<SortingRestaurantType>(
     SortingRestaurantDataState
   );
+  const [logout, setLogout] = useRecoilState<boolean>(logoutstate);
   const markerAPI = useRecoilValue<boolean>(RadiusMarkerAPIStatus);
-  useEffect(() => {
-    const handleScroll = () => {
-      window.addEventListener('scroll', handleScroll, { passive: true });
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
-    };
-  }, [review]); // scroll hide시 passive true로 변경
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     window.addEventListener('scroll', handleScroll, { passive: true });
+  //     return () => {
+  //       window.removeEventListener('scroll', handleScroll);
+  //     };
+  //   };
+  // }, [review]); // scroll hide시 passive true로 변경
+
   const imageURL = process.env.SERVER_URL + '/';
 
   const SortByhandleChange = (event: SelectChangeEvent) => {
@@ -52,26 +66,120 @@ const Information = () => {
       setReview([]);
     } else if (event.target.value === 'Review') {
       setSortby(event.target.value as string);
-      setSort('reviewCount');
+      setSort('review');
       setReview([]);
     } else if (event.target.value === 'Dibs') {
       setSortby(event.target.value as string);
-      setSort('FollowCount');
+      setSort('follow');
       setReview([]);
     }
   };
-  // categories menu
-  const [open, setOpen] = useState<boolean>(false);
-  const handleOpen = () => {
-    setOpen(true);
+  // #region restaurants menu
+  const [resopen, resSetOpen] = useState<boolean>(false);
+  const reshandleOpen = () => {
+    resSetOpen(true);
   };
-  const handleClose = () => {
-    setOpen(false);
+  const reshandleClose = () => {
+    resSetOpen(false);
   };
+  // #endregion
+  // #region sort by number of reviews
+  const [reviewopen, reviewSetOpen] = useState<boolean>(false);
+  const CustomReviewMark: React.FC<CustomMarkProps> = ({ value }) => {
+    return <Typography style={{ fontSize: '0.7rem' }}>{value}</Typography>;
+  };
+  const reviewhandleOpen = () => {
+    reviewSetOpen(true);
+  };
+  const reviewhandleClose = () => {
+    reviewSetOpen(false);
+  };
+
+  const reviewmarks = [
+    {
+      value: 0,
+      label: <CustomReviewMark value='0' />
+    },
+    {
+      value: 10,
+      label: <CustomReviewMark value='10+' />
+    },
+    {
+      value: 50,
+      label: <CustomReviewMark value='50+' />
+    },
+    {
+      value: 100,
+      label: <CustomReviewMark value='100+' />
+    }
+  ];
+  //#endregion
+  // #region sort by number of Dimbs
+  const [dimopen, dimSetOpen] = useState<boolean>(false);
+  const CustomDimbMark: React.FC<CustomMarkProps> = ({ value }) => {
+    return <Typography style={{ fontSize: '0.7rem' }}>{value}</Typography>;
+  };
+  const dimhandleOpen = () => {
+    dimSetOpen(true);
+  };
+  const dimhandleClose = () => {
+    dimSetOpen(false);
+  };
+  const dimmarks = [
+    {
+      value: 0,
+      label: <CustomDimbMark value='0' />
+    },
+    {
+      value: 10,
+      label: <CustomDimbMark value='10+' />
+    },
+    {
+      value: 50,
+      label: <CustomDimbMark value='50+' />
+    },
+    {
+      value: 100,
+      label: <CustomDimbMark value='100+' />
+    }
+  ];
+  // #endregion
+  // #region sort by Ration
+  const [ratopen, ratSetOpen] = useState<boolean>(false);
+  const rathandleOpen = () => {
+    ratSetOpen(true);
+  };
+  const rathandleClose = () => {
+    ratSetOpen(false);
+  };
+  // #endregion
+
+  const logoutbtn = () => {
+    LogoutAPI(setLogout);
+  };
+
+  useEffect(() => {
+    if (logout) {
+      toast.success('로그아웃 되었습니다.');
+      setLogout(false);
+    }
+  }, [logout]);
+
+  //#region server status
+  const [status, setStatus] = useRecoilState<string>(serverstatus);
+  useEffect(() => {
+    ServerStatusAPI(setStatus);
+  }, []);
+  useEffect(() => {
+    if (status === 'Server Error') {
+      toast.error('서버 점검중입니다.');
+    }
+  }, [status]);
+  //#endregion
   return (
     <div className='h-screen w-screen overflow-hidden'>
       <div className='grid grid-cols-4 mt-4 items-center place-content-center border border-b-2 border-t-0 border-l-0 border-r-0'>
-        <div className='font-bold text-4xl text-blue-500 mb-2 text-start ml-2'>
+        <div className='font-bold text-4xl text-blue-500 mb-2 text-start ml-4'>
           MASJIB
         </div>
         <div className='col-span-2 grid grid-cols-3 mb-2 items-center'>
@@ -109,42 +217,74 @@ const Information = () => {
           </Button>
         </div>
         <div className='text-end mr-8'>
-          <Button
-            className='place-items-center'
-            variant='outlined'
-            sx={{
-              textAlign: 'center',
-              color: 'white',
-              height: '2.5rem',
-              backgroundColor: '#3B82F6',
-              borderColor: '#3B82F6',
-              fontFamily: 'bold',
-              fontSize: '1.0em',
-              ':hover': {
+          {getCookie('access_token') ? (
+            <div className='grid grid-cols-2'>
+              <Button
+                className='place-items-center'
+                variant='outlined'
+                sx={{
+                  textAlign: 'center',
+                  color: 'white',
+                  height: '2.5rem',
+                  backgroundColor: '#3B82F6',
+                  borderColor: '#3B82F6',
+                  fontFamily: 'bold',
+                  fontSize: '1.0em',
+                  ':hover': {
+                    backgroundColor: '#3B82F6',
+                    color: 'white'
+                  }
+                }}
+                onClick={logoutbtn}
+              >
+                Logout
+              </Button>
+              <Button
+                onClick={() => {
+                  navigate('/profile');
+                }}
+              >
+                Profile
+              </Button>
+            </div>
+          ) : (
+            <Button
+              className='place-items-center'
+              variant='outlined'
+              sx={{
+                textAlign: 'center',
+                color: 'white',
+                height: '2.5rem',
                 backgroundColor: '#3B82F6',
-                color: 'white'
-              }
-            }}
-            onClick={() => {
-              setModal(true);
-            }}
-          >
-            Log In
-          </Button>
+                borderColor: '#3B82F6',
+                fontFamily: 'bold',
+                fontSize: '1.0em',
+                ':hover': {
+                  backgroundColor: '#3B82F6',
+                  color: 'white'
+                }
+              }}
+              onClick={() => {
+                setModal(true);
+              }}
+            >
+              Log In
+            </Button>
+          )}
         </div>
       </div>
       {modal ? <LoginModal /> : null}
       <div className='grid grid-cols-2'>
-        <div className='ml-4'>
-          <div className='grid grid-cols-2'>
+        <div className='ml-4 mt-2'>
+          <div className='grid md:grid-cols-4'>
             <div
               className='text-xl font-bold w-fit'
-              onMouseEnter={handleOpen}
-              onMouseLeave={handleClose}
+              onMouseEnter={reshandleOpen}
+              onMouseLeave={reshandleClose}
             >
-              Categories
-              {open ? (
-                <div className='grid grid-cols-3'>
+              Restaurants
+              {resopen ? (
+                <div className='grid grid-cols-3 shadow-lg rounded-md'>
                   <MenuItem>한식</MenuItem>
                   <MenuItem>중식</MenuItem>
                   <MenuItem>일식</MenuItem>
@@ -152,45 +292,55 @@ const Information = () => {
                 </div>
               ) : null}
             </div>
-            <div className='grid grid-rows-3'>
-              <div>
-                <div className='text-base font-semibold'>
-                  Sort by number of reviews
+            <div
+              className='text-xl font-bold'
+              onMouseEnter={reviewhandleOpen}
+              onMouseLeave={reviewhandleClose}
+            >
+              Reviews
+              {reviewopen ? (
+                <div className='grid place-items-center shadow-lg rounded-md w-40 h-12 pl-4 pr-4'>
+                  <Slider
+                    aria-label='Reviews'
+                    defaultValue={10}
+                    step={null}
+                    marks={reviewmarks}
+                  />
                 </div>
-                <ButtonGroup
-                  variant='outlined'
-                  aria-label='outlined button group'
-                  size='small'
-                >
-                  <Button>10+</Button>
-                  <Button>50+</Button>
-                  <Button>100+</Button>
-                </ButtonGroup>
-              </div>
-              <div>
-                <div className='text-base font-semibold'>
-                  Sort by numbers Dibs
+              ) : null}
+            </div>
+            <div
+              className='text-xl font-bold'
+              onMouseEnter={dimhandleOpen}
+              onMouseLeave={dimhandleClose}
+            >
+              Dimbs
+              {dimopen ? (
+                <div className='grid place-items-center shadow-lg rounded-md w-40 h-12 pl-4 pr-4'>
+                  <Slider
+                    aria-label='Dimbs'
+                    defaultValue={10}
+                    step={null}
+                    marks={dimmarks}
+                  />
                 </div>
-                <ButtonGroup
-                  variant='outlined'
-                  aria-label='outlined button group'
-                  size='small'
-                >
-                  <Button>10+</Button>
-                  <Button>50+</Button>
-                  <Button>100+</Button>
-                </ButtonGroup>
-              </div>
-              <div>
-                <div className='text-base font-semibold'>
-                  Sort by star rating
+              ) : null}
+            </div>
+            <div
+              className='text-xl font-bold w-fit'
+              onMouseEnter={rathandleOpen}
+              onMouseLeave={rathandleClose}
+            >
+              Rating
+              {ratopen ? (
+                <div className='grid place-items-center shadow-lg rounded-md w-40 h-12 pl-4 pr-4'>
+                  <Rating name='half-rating' defaultValue={0} precision={0.5} />
                 </div>
-                <Rating name='half-rating' defaultValue={0} precision={0.5} />
-              </div>
+              ) : null}
             </div>
           </div>
-          <div>
-            <div className='text-2xl font-bold'>
+          <div className='mt-12'>
+            <div className='text-3xl font-bold'>
               TOP 10 restaurants in current location
               <div className='grid place-items-end mr-4'>
                 <FormControl>
@@ -208,45 +358,34 @@ const Information = () => {
                   </Select>
                 </FormControl>
               </div>
-              {/* {markerAPI === false ? (
+              {markerAPI === false ? (
                 <SortLoading />
               ) : markerAPI === true && review.length === 0 ? (
                 <SortLoading />
               ) : (
-                <>
-                  {review.map((item, index) => {
-                    if (item.recentReview === '등록된 리뷰가 없습니다.') {
-                      return (
-                        <div key={index}>
-                          {item.name} 등록된 리뷰가 없습니다.
-                        </div>
-                      );
-                    } else {
-                      return (
-                        <div className='overflow-auto h-96 scrollbar-hide mt-2 mr-4'>
-                          {review.map((item, index) => {
-                            return (
-                              <Reviewcard
-                                key={index}
-                                review={item.recentReview}
-                                rating={item.totalRating}
-                                imageUrl={imageURL + item.image}
-                                restaurantname={item.name}
-                                address={item.address}
-                                category={item.kind}
-                              />
-                            );
-                          })}
-                        </div>
-                      );
-                    }
-                  })}
-                </>
-              )} */}
+                <div className='overflow-auto h-[50vh] scrollbar-hide mt-2 mr-4'>
+                  {review.map((item) => (
+                    <Reviewcard
+                      key={item.shopId}
+                      review={item.recentReview}
+                      rating={item.totalRating}
+                      imageUrl={imageURL + item.image}
+                      restaurantname={item.name}
+                      address={item.address}
+                      category={item.kind}
+                      x={item.x}
+                      y={item.y}
+                      shopid={item.shopId}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
-        <div>{/* <Kakaomap /> */}</div>
+        <div>
+          <Kakaomap />
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '../Constants/Constants';
-import { getCookie, setAccessToken } from '../util/Cookie';
+import { getCookie, setCookie } from '../util/Cookie';
 
 const jinInterceptor = axios.create({
   baseURL: API_URL,
@@ -27,6 +27,7 @@ jinInterceptor.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
+
 jinInterceptor.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -38,13 +39,24 @@ jinInterceptor.interceptors.response.use(
       originalRequest._retry = true;
       const refreshToken = refresh_token;
       return axios
-        .post(`${API_URL}/oauth/login`, refreshToken, {
-          headers: { 'Content-Type': 'text/plain' }
+        .post(`${API_URL}/oauth/refresh`, refreshToken, {
+          headers: { 'Content-Type': 'text/plain', withCredentials: true }
         })
         .then((res) => {
           if (res.status === 200) {
-            //setAccessToken('access_token', res.data.accessToken);
-            console.log('Access token refreshed!');
+            const accessTokenExpiration = new Date(
+              Date.now() + res.data.accessTokenExpiresIn * 10
+            );
+            const refreshTokenExpiration = new Date(
+              Date.now() + res.data.refreshTokenExpiresIn * 6
+            );
+            setCookie('access_token', res.data.accessToken, {
+              expires: accessTokenExpiration
+            });
+            setCookie('refresh_token', res.data.refreshToken, {
+              expires: refreshTokenExpiration
+            });
+            //console.log('Access token refreshed!');
             return jinInterceptor(originalRequest);
           }
         });

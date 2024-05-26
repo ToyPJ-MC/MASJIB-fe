@@ -1,9 +1,6 @@
 import {
-  Button,
   FormControl,
   IconButton,
-  ImageList,
-  ImageListItem,
   MenuItem,
   Rating,
   Select,
@@ -24,21 +21,24 @@ import CleanHandsOutlinedIcon from '@mui/icons-material/CleanHandsOutlined';
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 import TagFacesOutlinedIcon from '@mui/icons-material/TagFacesOutlined';
 import { useEffect, useState } from 'react';
-import { BlogSearchAPI } from '../apis/server';
 import { useRecoilState } from 'recoil';
-import { searchImageType } from '../types';
-import { searchImageState, writemodalState } from '../state/atom';
+import { MemberReviewListState, writemodalState } from '../state/atom';
 import Write from '../component/Write';
 import '../styles/global.css';
+import { MemberReviewAPI } from '../apis/server';
+import { getCookie, removeCookie } from '../util/Cookie';
+import { MemberReviewListType } from '../types';
+import toast from 'react-hot-toast';
+import ReviewList from '../component/ReviewList';
 const Review = () => {
   const urlparams = new URLSearchParams(location.search);
   const [sort, setSort] = useState<string>('Newest First');
   const [sortReview, setSortReview] = useState<string>('Based Review');
-  const [blog, setBlog] = useRecoilState<searchImageType>(searchImageState);
   const [open, setOpen] = useRecoilState<boolean>(writemodalState);
   const params = {
     restaurantname: urlparams.get('restaurantname'),
     address: urlparams.get('address'),
+    shopid: urlparams.get('shopid'),
     x: urlparams.get('x'),
     y: urlparams.get('y')
   };
@@ -90,12 +90,31 @@ const Review = () => {
     return imageList;
   };
   const imageList = chunkArray(data, 2);
-  useEffect(() => {
-    BlogSearchAPI(params.restaurantname + params.address!, setBlog);
-  }, []);
   const WriteReview = () => {
-    setOpen(true);
+    if (getCookie('access_token') !== undefined) {
+      setOpen(true);
+    } else {
+      toast.error('로그인이 필요합니다');
+      setOpen(false);
+    }
   };
+  const [memberReview, setMemberReview] = useRecoilState<MemberReviewListType>(
+    MemberReviewListState
+  );
+  useEffect(() => {
+    if (getCookie('access_token') !== undefined) {
+      MemberReviewAPI(setMemberReview);
+    }
+  }, []);
+  useEffect(() => {
+    if (
+      getCookie('deletestatus') === 'success' &&
+      getCookie('access_token') !== undefined
+    ) {
+      toast.success('리뷰를 삭제하였습니다');
+      removeCookie('deletestatus');
+    }
+  }, []);
   return (
     <>
       {open ? <Write /> : null}
@@ -439,35 +458,25 @@ const Review = () => {
             </div>
           </div>
         </div>
-        {blog.length !== 0 ? (
-          <div className='grid place-items-center'>
-            <ImageList
-              sx={{
-                width: 500,
-                height: 450,
-                border: '3px solid black'
-              }}
-              cols={3}
-              rowHeight={164}
-            >
-              {blog.map((item, index) => (
-                <ImageListItem key={index}>
-                  <img
-                    srcSet={`${item.imageUrl}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                    src={`${item.imageUrl}?w=164&h=164&fit=crop&auto=format`}
-                    onClick={() => {
-                      window.open(item.doc_url, '_blank');
-                    }}
-                  />
-                </ImageListItem>
-              ))}
-            </ImageList>
+        <div className='flex justify-center items-center pl-8 pr-8'>
+          <div className='w-full'>
+            {memberReview.map((item, index) =>
+              item.shopId === Number(params.shopid) ? (
+                <ReviewList
+                  key={index}
+                  content={item.comment}
+                  date={item.createTime}
+                  images={item.paths}
+                  rating={item.rating}
+                  hygiene={item.hygiene}
+                  kindness={item.kindness}
+                  taste={item.taste}
+                  reviewId={item.reviewId}
+                />
+              ) : null
+            )}
           </div>
-        ) : (
-          <div className='grid place-items-center font-bold text-lg'>
-            현재 등록된 블로그가 없습니다.
-          </div>
-        )}
+        </div>
       </div>
     </>
   );

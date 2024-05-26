@@ -1,6 +1,7 @@
 import { atom } from 'recoil';
 import {
   GeolocationType,
+  MemberReviewListType,
   RadiusMarkerType,
   SearchType,
   SortingRestaurantType,
@@ -80,7 +81,22 @@ const m_SearchModalState = atom<boolean>({
   key: 'm_SearchModalState',
   default: false
 });
-
+const logoutstate = atom<boolean>({
+  key: 'logoutstate',
+  default: false
+});
+const serverstatus = atom<string>({
+  key: 'server',
+  default: ''
+});
+const nicknameStatus = atom<number>({
+  key: 'nickname',
+  default: 0
+});
+const MemberReviewListState = atom<MemberReviewListType>({
+  key: 'MemberReviewListState',
+  default: []
+});
 export {
   dumydataState,
   modalState,
@@ -94,5 +110,9 @@ export {
   RadiusMarkerAPIStatus,
   SortingRestaurantDataState,
   GeolocationDataState,
-  m_SearchModalState
+  m_SearchModalState,
+  logoutstate,
+  serverstatus,
+  nicknameStatus,
+  MemberReviewListState,
 };
