@@ -98,6 +98,7 @@ type RestaurantDetailType = {
     hygiene: string;
     kindness: string;
   }[];
+  shop_images: [];
   totalPage: number;
 };
 

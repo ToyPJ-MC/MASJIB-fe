@@ -373,10 +373,30 @@ export const RestaurantDetailAPI = async (
             reviewCount: item.reviewCount,
             followCount: item.followCount,
             totalRating: item.totalRating,
-            shopId: item.shopId
+            shopId: item.shopId,
+            rating: item.rating,
+            assessment: item.assessment,
+            review: item.review,
+            shop_images: item.shop_images,
+            totalPage: item.totalPage
           }
         ]);
       });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+export const SearchAPI = async (keyword: string) => {
+  await axios
+    .get(API_URL + '/es/shop', {
+      params: {
+        keyword: keyword
+      },
+      headers: headerConfig
+    })
+    .then((res) => {
+      console.log(res);
     })
     .catch((err) => {
       console.log(err);
