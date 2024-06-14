@@ -97,6 +97,10 @@ const MemberReviewListState = atom<MemberReviewListType>({
   key: 'MemberReviewListState',
   default: []
 });
+const RestaurantReviewListState = atom<MemberReviewListType>({
+  key: 'RestaurantReviewListState',
+  default: []
+});
 export {
   dumydataState,
   modalState,
@@ -115,4 +119,5 @@ export {
   serverstatus,
   nicknameStatus,
   MemberReviewListState,
+  RestaurantReviewListState
 };

@@ -54,6 +54,52 @@ type MemberReviewListType = {
   createTime: string;
   paths: string[]; // image
 }[];
+type RestaurantDetailType = {
+  shopId: number;
+  shopName: string;
+  address: string;
+  x: number;
+  y: number;
+  kind: string;
+  status: string;
+  image: string;
+  recentReview: string;
+  reviewCount: number;
+  followCount: number;
+  totalRating: number;
+  rating: {
+    five: number;
+    fourHalf: number;
+    four: number;
+    threeHalf: number;
+    three: number;
+    twoHalf: number;
+    two: number;
+    oneHalf: number;
+    one: number;
+    half: number;
+    zero: number;
+    count: number;
+  };
+  assessment: {
+    goodTaste: number;
+    badTaste: number;
+    goodHygiene: number;
+    badHygiene: number;
+    kindness: number;
+    unKindness: number;
+  };
+  reviews: {
+    id: number;
+    comment: string;
+    createTime: string;
+    rating: number;
+    taste: string;
+    hygiene: string;
+    kindness: string;
+  }[];
+  totalPage: number;
+};
 
 export type {
   dumyType,
@@ -62,5 +108,6 @@ export type {
   RadiusMarkerType,
   SortingRestaurantType,
   GeolocationType,
-  MemberReviewListType
+  MemberReviewListType,
+  RestaurantDetailType
 };

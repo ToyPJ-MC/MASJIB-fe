@@ -340,3 +340,45 @@ export const DeleteMemberReviewAPI = async (reviewId: number) => {
       console.log(err);
     });
 };
+export const RestaurantDetailAPI = async (
+  shopId: number,
+  sortType: string,
+  reviewType: string,
+  page: number,
+  setDetail: SetterOrUpdater<SortingRestaurantType>
+) => {
+  await axios
+    .get(API_URL + `/shop/${shopId}`, {
+      params: {
+        sortType: sortType,
+        reviewType: reviewType,
+        page: page
+      },
+      headers: headerConfig
+    })
+    .then((res) => {
+      setDetail([]);
+      Object.values(res.data).map((item: any) => {
+        setDetail((prev) => [
+          ...prev,
+          {
+            name: item.name,
+            address: item.address,
+            x: item.x,
+            y: item.y,
+            kind: item.kind,
+            status: item.status,
+            image: item.image,
+            recentReview: item.recentReview,
+            reviewCount: item.reviewCount,
+            followCount: item.followCount,
+            totalRating: item.totalRating,
+            shopId: item.shopId
+          }
+        ]);
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
