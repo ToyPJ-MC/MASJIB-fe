@@ -3,6 +3,8 @@ import { SetterOrUpdater } from 'recoil';
 import {
   MemberReviewListType,
   RadiusMarkerType,
+  RestaurantDetailType,
+  SearchResultType,
   SortingRestaurantType,
   searchImageType
 } from '../types';
@@ -345,7 +347,7 @@ export const RestaurantDetailAPI = async (
   sortType: string,
   reviewType: string,
   page: number,
-  setDetail: SetterOrUpdater<SortingRestaurantType>
+  setDetail: SetterOrUpdater<RestaurantDetailType>
 ) => {
   await axios
     .get(API_URL + `/shop/${shopId}`, {
@@ -357,37 +359,67 @@ export const RestaurantDetailAPI = async (
       headers: headerConfig
     })
     .then((res) => {
+      console.log(res);
       setDetail([]);
       Object.values(res.data).map((item: any) => {
-        setDetail((prev) => [
+        setDetail((prev) => ({
           ...prev,
-          {
-            name: item.name,
-            address: item.address,
-            x: item.x,
-            y: item.y,
-            kind: item.kind,
-            status: item.status,
-            image: item.image,
-            recentReview: item.recentReview,
-            reviewCount: item.reviewCount,
-            followCount: item.followCount,
-            totalRating: item.totalRating,
-            shopId: item.shopId,
-            rating: item.rating,
-            assessment: item.assessment,
-            review: item.review,
-            shop_images: item.shop_images,
-            totalPage: item.totalPage
-          }
-        ]);
+          shopId: item.shopId,
+          shopName: item.name,
+          address: item.address,
+          x: item.x,
+          y: item.y,
+          kind: item.kind,
+          status: item.status,
+          image: item.image,
+          recentReview: item.recentReview,
+          reviewCount: item.reviewCount,
+          followCount: item.followCount,
+          totalRating: item.totalRating,
+          rating: {
+            five: item.rating.five,
+            fourHalf: item.rating.fourHalf,
+            four: item.rating.four,
+            threeHalf: item.rating.threeHalf,
+            three: item.rating.three,
+            twoHalf: item.rating.twoHalf,
+            two: item.rating.two,
+            oneHalf: item.rating.oneHalf,
+            one: item.rating.one,
+            half: item.rating.half,
+            zero: item.rating.zero,
+            count: item.rating.count
+          },
+          assessment: {
+            goodTaste: item.assessment.goodTaste,
+            badTaste: item.assessment.badTaste,
+            goodHygiene: item.assessment.goodHygiene,
+            badHygiene: item.assessment.badHygiene,
+            kindness: item.assessment.kindness,
+            unKindness: item.assessment.unKindness
+          },
+          reviews: item.review.map((reviewItem: any) => ({
+            id: reviewItem.id,
+            comment: reviewItem.comment,
+            createTime: reviewItem.createTime,
+            rating: reviewItem.rating,
+            taste: reviewItem.taste,
+            hygiene: reviewItem.hygiene,
+            kindness: reviewItem.kindness
+          })),
+          shop_images: item.shop_images,
+          totalPage: item.totalPage
+        }));
       });
     })
     .catch((err) => {
       console.log(err);
     });
 };
-export const SearchAPI = async (keyword: string) => {
+export const SearchAPI = async (
+  keyword: string,
+  setSearchResult: SetterOrUpdater<SearchResultType>
+) => {
   await axios
     .get(API_URL + '/es/shop', {
       params: {
@@ -397,6 +429,7 @@ export const SearchAPI = async (keyword: string) => {
     })
     .then((res) => {
       console.log(res);
+      setSearchResult(res.data);
     })
     .catch((err) => {
       console.log(err);

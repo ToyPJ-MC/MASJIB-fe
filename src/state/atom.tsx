@@ -3,7 +3,8 @@ import {
   GeolocationType,
   MemberReviewListType,
   RadiusMarkerType,
-  SearchType,
+  RestaurantDetailType,
+  SearchResultType,
   SortingRestaurantType,
   dumyType,
   searchImageType
@@ -34,17 +35,9 @@ const modalState = atom<boolean>({
   key: 'modal',
   default: false
 });
-const searchState = atom<string>({
-  key: 'search',
-  default: 'Restaurant'
-});
 const loginmodalState = atom<boolean>({
   key: 'loginmodal',
   default: false
-});
-const searchResultState = atom<SearchType>({
-  key: 'searchResult',
-  default: []
 });
 const searchImageState = atom<searchImageType>({
   key: 'searchImage',
@@ -97,15 +90,17 @@ const MemberReviewListState = atom<MemberReviewListType>({
   key: 'MemberReviewListState',
   default: []
 });
-const RestaurantReviewListState = atom<MemberReviewListType>({
+const RestaurantReviewListState = atom<RestaurantDetailType>({
   key: 'RestaurantReviewListState',
+  default: []
+});
+const SearchResultState = atom<SearchResultType>({
+  key: 'SearchResultState',
   default: []
 });
 export {
   dumydataState,
   modalState,
-  searchState,
-  searchResultState,
   loginmodalState,
   searchImageState,
   writemodalState,
@@ -119,5 +114,6 @@ export {
   serverstatus,
   nicknameStatus,
   MemberReviewListState,
-  RestaurantReviewListState
+  RestaurantReviewListState,
+  SearchResultState
 };

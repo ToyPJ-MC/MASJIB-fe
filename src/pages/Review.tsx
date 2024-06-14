@@ -22,12 +22,16 @@ import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 import TagFacesOutlinedIcon from '@mui/icons-material/TagFacesOutlined';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { MemberReviewListState, writemodalState } from '../state/atom';
+import {
+  MemberReviewListState,
+  RestaurantReviewListState,
+  writemodalState
+} from '../state/atom';
 import Write from '../component/Write';
 import '../styles/global.css';
-import { MemberReviewAPI } from '../apis/server';
+import { MemberReviewAPI, RestaurantDetailAPI } from '../apis/server';
 import { getCookie, removeCookie } from '../util/Cookie';
-import { MemberReviewListType } from '../types';
+import { MemberReviewListType, RestaurantDetailType } from '../types';
 import toast from 'react-hot-toast';
 import ReviewList from '../component/ReviewList';
 const Review = () => {
@@ -101,6 +105,8 @@ const Review = () => {
   const [memberReview, setMemberReview] = useRecoilState<MemberReviewListType>(
     MemberReviewListState
   );
+  const [RestaurantDetail, setRestaurantDetail] =
+    useRecoilState<RestaurantDetailType>(RestaurantReviewListState);
   useEffect(() => {
     if (getCookie('access_token') !== undefined) {
       MemberReviewAPI(setMemberReview);
@@ -114,6 +120,15 @@ const Review = () => {
       toast.success('리뷰를 삭제하였습니다');
       removeCookie('deletestatus');
     }
+  }, []);
+  useEffect(() => {
+    RestaurantDetailAPI(
+      Number(params.shopid),
+      'newest',
+      'based',
+      1,
+      setRestaurantDetail
+    );
   }, []);
   return (
     <>

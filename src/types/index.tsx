@@ -6,11 +6,6 @@ type dumyType = {
   imageUrl: string;
   category: string;
 }[];
-type SearchType = {
-  phone: string;
-  place_name: string;
-  road_address_name: string;
-}[];
 type searchImageType = {
   imageUrl: string;
   doc_url: string;
@@ -100,15 +95,21 @@ type RestaurantDetailType = {
   }[];
   shop_images: [];
   totalPage: number;
-};
+}[];
+type SearchResultType = {
+  id: number;
+  name: string;
+  address: string;
+  kind: string;
+}[];
 
 export type {
   dumyType,
-  SearchType,
   searchImageType,
   RadiusMarkerType,
   SortingRestaurantType,
   GeolocationType,
   MemberReviewListType,
-  RestaurantDetailType
+  RestaurantDetailType,
+  SearchResultType
 };

@@ -12,10 +12,8 @@ import { logoutstate, m_SearchModalState } from '../state/atom';
 import Kakaomap from '../component/Kakaomap';
 import { useEffect, useState } from 'react';
 import React from 'react';
-import M_SearchModal from '../component/M_SearchModal';
 import { getCookie } from '../util/Cookie';
 import { useNavigate } from 'react-router-dom';
-import { IconButton } from 'evergreen-ui';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { LogoutAPI } from '../apis/server';
 import toast from 'react-hot-toast';
@@ -153,8 +151,6 @@ const M_Information = () => {
           <Kakaomap />
         </div>
       </div>
-      {/* {modal ? <M_SearchModal /> : null} */}
-      <M_SearchModal />
     </div>
   );
 };

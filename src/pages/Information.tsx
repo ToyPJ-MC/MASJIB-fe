@@ -3,7 +3,11 @@ import {
   Autocomplete,
   Button,
   FormControl,
+  InputAdornment,
   InputLabel,
+  List,
+  ListItem,
+  ListItemText,
   MenuItem,
   Rating,
   Select,
@@ -13,12 +17,14 @@ import {
   Typography
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
 import Kakaomap from '../component/Kakaomap';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   RadiusMarkerAPIStatus,
   RadiusMarkerDataState,
   RadiusSortState,
+  SearchResultState,
   SortingRestaurantDataState,
   loginmodalState,
   logoutstate,
@@ -26,12 +32,13 @@ import {
 } from '../state/atom';
 import Reviewcard from '../component/Reviewcard';
 import LoginModal from '../component/LoginModal';
-import { SortingRestaurantType } from '../types';
+import { SearchResultType, SortingRestaurantType } from '../types';
 import SortLoading from '../component/SortLoading';
 import { getCookie } from '../util/Cookie';
 import { useNavigate } from 'react-router-dom';
-import { LogoutAPI, ServerStatusAPI } from '../apis/server';
+import { LogoutAPI, SearchAPI, ServerStatusAPI } from '../apis/server';
 import toast from 'react-hot-toast';
+import IconButton from '@mui/material';
 
 interface CustomMarkProps {
   value: string;
@@ -176,6 +183,25 @@ const Information = () => {
     }
   }, [status]);
   //#endregion
+
+  //#region 검색기능
+  const [searchText, setSearchText] = useState<string>('');
+  const [searchResult, setSearchResult] =
+    useRecoilState<SearchResultType>(SearchResultState);
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(event.target.value);
+  };
+  const handleclear = () => {
+    setSearchText('');
+    setSearchResult([]);
+  };
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      SearchAPI(searchText, setSearchResult);
+    }
+  };
+  //#endregion
   return (
     <div className='h-screen w-screen overflow-hidden'>
       <div className='grid grid-cols-4 mt-4 items-center place-content-center border border-b-2 border-t-0 border-l-0 border-r-0'>
@@ -198,23 +224,32 @@ const Information = () => {
           </div>
           <div>
             <TextField
-              id='outlined-basic'
-              label='Location'
+              value={searchText}
+              onChange={handleSearchChange}
+              onKeyUp={handleKeyDown}
               variant='outlined'
-              sx={{
-                width: '100%'
+              fullWidth
+              placeholder='Search...'
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    {searchText && <ClearIcon onClick={handleclear} />}
+                  </InputAdornment>
+                )
               }}
             />
           </div>
-          <Button
-            variant='outlined'
-            sx={{
-              width: 'fit-content',
-              height: '100%'
-            }}
-          >
-            <SearchIcon />
-          </Button>
+          <div>
+            <List>
+              {searchResult.map((item) => (
+                <ListItem key={item.id}>
+                  <ListItemText primary={item.name} />
+                  <ListItemText primary={item.address} />
+                  <ListItemText primary={item.kind} />
+                </ListItem>
+              ))}
+            </List>
+          </div>
         </div>
         <div className='text-end mr-8'>
           {getCookie('access_token') ? (

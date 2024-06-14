@@ -2,18 +2,14 @@ import { IconButton } from '@mui/material';
 import React from 'react';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import Loading from './Loading';
-import SearchModal from './SearchModal';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   RadiusMarkerAPIStatus,
   RadiusMarkerDataState,
   RadiusSortState,
-  SortingRestaurantDataState,
-  modalState,
-  searchResultState,
-  searchState
+  SortingRestaurantDataState
 } from '../state/atom';
-import { RadiusMarkerType, SearchType, SortingRestaurantType } from '../types';
+import { RadiusMarkerType, SortingRestaurantType } from '../types';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import { RadiusMakerAPI, SortingRestaurantAPI } from '../apis/server';
 import '../styles/global.css';
@@ -31,10 +27,6 @@ const Kakaomap = () => {
   const [locPosition, setLocPosition] = useState(
     new window.kakao.maps.LatLng(lat, lon)
   );
-  const [modal, setModal] = useRecoilState<boolean>(modalState);
-  const [search, setSearch] = useRecoilState<string>(searchState);
-  const [searchResult, setSearchResult] =
-    useRecoilState<SearchType>(searchResultState);
   const [loading, setLoading] = useState<boolean>(false);
   const sort = useRecoilValue<string>(RadiusSortState);
   let imageSrc =
@@ -121,7 +113,7 @@ const Kakaomap = () => {
         position: locPosition,
         image: markerImage
       });
-      if (search === 'Restaurant' && radiusMarker.length !== 0) {
+      if (radiusMarker.length !== 0) {
         // 반경 내 음식점 마커 표시
         setLoading(true);
         radiusMarker.map((item, index) => {
@@ -311,7 +303,6 @@ const Kakaomap = () => {
             </Button>
           </>
         ) : null} */}
-        {modal ? <SearchModal /> : null}
       </div>
     </>
   );
