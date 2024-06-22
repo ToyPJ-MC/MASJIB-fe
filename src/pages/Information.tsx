@@ -244,7 +244,6 @@ const Information = () => {
               }}
             />
           </div>
-          {searchModal ? <SearchModal searchText={searchText} /> : null}
         </div>
         <div className='text-end mr-8'>
           {getCookie('access_token') ? (
@@ -417,6 +416,7 @@ const Information = () => {
           <Kakaomap />
         </div>
       </div>
+      {searchModal ? <SearchModal searchText={searchText} /> : null}
     </div>
   );
 };
