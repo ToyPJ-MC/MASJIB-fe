@@ -8,8 +8,7 @@ import {
   Slider
 } from '@mui/material';
 import React from 'react';
-import yami from '../assets/image.jpeg';
-import rest from '../assets/restaurant.jpg';
+import ximg from '../assets/준비중.jpeg';
 import Carousel from 'react-material-ui-carousel';
 import StarIcon from '@mui/icons-material/Star';
 import { StarBorder } from '@mui/icons-material';
@@ -61,6 +60,18 @@ const Review = () => {
   useEffect(() => {
     RestaurantImagesAPI(Number(params.shopid), setImagesList);
   }, []);
+  const totalimg = 6;
+  const placehoder = totalimg - imagesList.length;
+  const ImageList = [...imagesList];
+  if (placehoder < totalimg) {
+    for (let i = 0; i < placehoder; i++) {
+      ImageList.push(ximg);
+    }
+  }
+  const slides = [];
+  for (let i = 0; i < ImageList.length; i += 3) {
+    slides.push(ImageList.slice(i, i + 3));
+  }
   //#endregion
   const WriteReview = () => {
     if (getCookie('access_token') !== undefined) {
@@ -98,7 +109,6 @@ const Review = () => {
       setRestaurantDetail
     );
   }, []);
-  console.log(RestaurantDetail);
   return (
     <>
       {open ? <Write /> : null}
@@ -109,24 +119,26 @@ const Review = () => {
           navButtonsAlwaysVisible
           indicators={false}
         >
-          {imagesList.length === 0
-            ? null
-            : imagesList.map((item, index) => (
-                <div className='grid grid-cols-2 w-full h-80'>
-                  <img
-                    src={imageUrl + '/' + item}
-                    className='w-screen h-80 brightness-[0.7]'
-                    key={index}
-                    alt={`image-${index}`}
-                  />
-                </div>
+          {slides.map((slide, slideindex) => (
+            <div className='grid grid-cols-3 w-full h-80' key={slideindex}>
+              {slide.map((item, index) => (
+                <img
+                  src={
+                    item.startsWith('images/') ? `${imageUrl}/${item}` : item
+                  }
+                  className='w-screen h-80 brightness-[0.7]'
+                  key={index}
+                  alt={`image-${index}`}
+                />
               ))}
+            </div>
+          ))}
         </Carousel>
         <div className='z-10 l absolute bottom-14 left-32'>
           <div className='font-extrabold text-white text-3xl'>
             {params.restaurantname}
           </div>
-          <div className='grid grid-cols-2'>
+          <div className='flex gap-2'>
             <div className='w-fit grid items-center'>
               <Rating
                 name='half-rating'

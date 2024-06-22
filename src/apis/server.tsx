@@ -15,6 +15,14 @@ const headerConfig = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Credentials': true
 };
+const jinInterceptor = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Allow-Control-Allow-Credentials': true
+  }
+});
 const width = window.innerWidth;
 export const BlogSearchAPI = async (
   search: string,
@@ -48,11 +56,9 @@ export const BlogSearchAPI = async (
 };
 
 export const RefreshTokenAPI = async (code: string) => {
-  await axios
+  await jinInterceptor
     .get(API_URL + '/oauth/refresh', {
-      headers: {
-        'Content-Type': 'text/plain'
-      },
+      headers: headerConfig,
       withCredentials: true,
       params: {
         refreshToken: code
@@ -349,7 +355,7 @@ export const RestaurantDetailAPI = async (
   page: number,
   setDetail: SetterOrUpdater<RestaurantDetailType | null>
 ) => {
-  await axios
+  await jinInterceptor
     .get(API_URL + `/shop/${shopId}`, {
       params: {
         sortType: sortType,

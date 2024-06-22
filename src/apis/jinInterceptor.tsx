@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { API_URL } from '../Constants/Constants';
-import { getCookie, setCookie } from '../util/Cookie';
+import { getCookie, removeCookie, setCookie } from '../util/Cookie';
 
 const jinInterceptor = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*'
+    'Access-Control-Allow-Origin': '*',
+    withCredentials: 'true'
   }
 });
 const access_token = getCookie('access_token');
@@ -14,7 +15,8 @@ const refresh_token = getCookie('refresh_token');
 
 const headerConfig = {
   'Content-Type': 'application/json',
-  'Access-Control-Allow-Origin': '*'
+  'Access-Control-Allow-Origin': '*',
+  'Allow-Control-Allow-Credentials': true
 };
 
 jinInterceptor.interceptors.request.use(
@@ -36,11 +38,19 @@ jinInterceptor.interceptors.response.use(
       (error.response.status === 401 && !originalRequest._retry) ||
       (error.response.status === 403 && !originalRequest._retry)
     ) {
+      removeCookie('access_token');
       originalRequest._retry = true;
       const refreshToken = refresh_token;
       return axios
-        .post(`${API_URL}/oauth/refresh`, refreshToken, {
-          headers: { 'Content-Type': 'text/plain', withCredentials: true }
+        .get(`${API_URL}/oauth/refresh`, {
+          params: {
+            refreshToken: refreshToken
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Allow-Control-Allow-Credentials': true
+          }
         })
         .then((res) => {
           if (res.status === 200) {
