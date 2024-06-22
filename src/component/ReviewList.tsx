@@ -1,5 +1,5 @@
 import StarIcon from '@mui/icons-material/Star';
-import React, { useState } from 'react';
+import React from 'react';
 import CleanHandsOutlinedIcon from '@mui/icons-material/CleanHandsOutlined';
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 import TagFacesOutlinedIcon from '@mui/icons-material/TagFacesOutlined';
@@ -34,9 +34,9 @@ const ReviewList = (props: ReviewListProps) => {
               color: '#ffbf00'
             }}
           />
-          <p className='w-[1rem] h-[1rem] text-gray-400'>
+          <div className='w-[1rem] h-[1rem] text-gray-400'>
             {props.rating + '/5'}
-          </p>
+          </div>
         </div>
         <div className='flex gap-2 mt-1'>
           {props.taste === 'good' ? (
@@ -83,11 +83,11 @@ const ReviewList = (props: ReviewListProps) => {
       <div className='mt-2'>
         {props.content.split(/\r\n|\r|\n/).map((line, index) =>
           index === 0 ? (
-            <p key={index} className='font-semibold text-lg'>
+            <div key={index} className='font-semibold text-lg'>
               {line}
-            </p>
+            </div>
           ) : (
-            <p key={index}>{line}</p>
+            <div key={index}>{line}</div>
           )
         )}
       </div>

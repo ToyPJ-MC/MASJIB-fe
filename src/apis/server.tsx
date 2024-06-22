@@ -177,7 +177,6 @@ export const SortingRestaurantAPI = async (
       headers: headerConfig
     })
     .then(async (res: AxiosResponse) => {
-      console.log(res);
       setSortingRestaurant([]);
       Object.values(res.data[0]).map((item: any) => {
         setSortingRestaurant((prev) => [

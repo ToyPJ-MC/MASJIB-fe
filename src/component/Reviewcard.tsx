@@ -72,7 +72,10 @@ const Reviewcard = (props: ReviewcardProps) => {
             sx={{ marginTop: '4px' }}
           >
             {props.review.split(/\r\n|\r|\n/).map((line, index) => (
-              <Typography key={index}>{line}</Typography>
+              <React.Fragment key={index}>
+                {line}
+                <br />
+              </React.Fragment>
             ))}
           </Typography>
         </div>
