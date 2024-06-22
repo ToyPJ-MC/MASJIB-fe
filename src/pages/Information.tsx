@@ -24,6 +24,7 @@ import {
   RadiusMarkerAPIStatus,
   RadiusMarkerDataState,
   RadiusSortState,
+  SearchModalState,
   SearchResultState,
   SortingRestaurantDataState,
   loginmodalState,
@@ -36,9 +37,9 @@ import { SearchResultType, SortingRestaurantType } from '../types';
 import SortLoading from '../component/SortLoading';
 import { getCookie } from '../util/Cookie';
 import { useNavigate } from 'react-router-dom';
-import { LogoutAPI, SearchAPI, ServerStatusAPI } from '../apis/server';
+import { LogoutAPI, ServerStatusAPI } from '../apis/server';
 import toast from 'react-hot-toast';
-import IconButton from '@mui/material';
+import SearchModal from '../component/SerachModal';
 
 interface CustomMarkProps {
   value: string;
@@ -48,6 +49,8 @@ const Information = () => {
   const navigate = useNavigate();
   const categoriesChange = ['한식', '중식', '일식', '양식'];
   const [modal, setModal] = useRecoilState<boolean>(loginmodalState);
+  const [searchModal, setSearchModal] =
+    useRecoilState<boolean>(SearchModalState);
   const [sort, setSort] = useRecoilState<string>(RadiusSortState);
   const [sortby, setSortby] = useState<string>('Rating');
   const [review, setReview] = useRecoilState<SortingRestaurantType>(
@@ -66,6 +69,7 @@ const Information = () => {
 
   const imageURL = process.env.SERVER_URL + '/';
 
+  // #region sort by reviewcard
   const SortByhandleChange = (event: SelectChangeEvent) => {
     if (event.target.value === 'Rating') {
       setSortby(event.target.value as string);
@@ -81,6 +85,7 @@ const Information = () => {
       setReview([]);
     }
   };
+  // #endregion
   // #region restaurants menu
   const [resopen, resSetOpen] = useState<boolean>(false);
   const reshandleOpen = () => {
@@ -198,7 +203,7 @@ const Information = () => {
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      SearchAPI(searchText, setSearchResult);
+      setSearchModal(true);
     }
   };
   //#endregion
@@ -239,17 +244,7 @@ const Information = () => {
               }}
             />
           </div>
-          <div>
-            <List>
-              {searchResult.map((item) => (
-                <ListItem key={item.id}>
-                  <ListItemText primary={item.name} />
-                  <ListItemText primary={item.address} />
-                  <ListItemText primary={item.kind} />
-                </ListItem>
-              ))}
-            </List>
-          </div>
+          {searchModal ? <SearchModal searchText={searchText} /> : null}
         </div>
         <div className='text-end mr-8'>
           {getCookie('access_token') ? (

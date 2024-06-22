@@ -98,6 +98,10 @@ const SearchResultState = atom<SearchResultType>({
   key: 'SearchResultState',
   default: []
 });
+const SearchModalState = atom<boolean>({
+  key: 'SearchModalState',
+  default: false
+});
 export {
   dumydataState,
   modalState,
@@ -115,5 +119,6 @@ export {
   nicknameStatus,
   MemberReviewListState,
   RestaurantReviewListState,
-  SearchResultState
+  SearchResultState,
+  SearchModalState
 };

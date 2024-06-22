@@ -372,14 +372,18 @@ const Review = () => {
                     sx={{ color: '#1E90FF' }}
                     fontSize='medium'
                   />
-                  <div className='font-medium text-sm'>4</div>
+                  <div className='font-medium text-sm'>
+                    {RestaurantDetail?.restaurant.assessment.goodTaste}
+                  </div>
                 </div>
                 <div className='grid place-items-center'>
                   <ThumbDownAltOutlinedIcon
                     sx={{ color: '#FF4500' }}
                     fontSize='medium'
                   />
-                  <div className='font-medium text-sm'>3</div>
+                  <div className='font-medium text-sm'>
+                    {RestaurantDetail?.restaurant.assessment.badTaste}
+                  </div>
                 </div>
               </div>
             </div>
@@ -392,14 +396,18 @@ const Review = () => {
                     sx={{ color: '#1E90FF' }}
                     fontSize='medium'
                   />
-                  <div className='font-medium text-sm'>3</div>
+                  <div className='font-medium text-sm'>
+                    {RestaurantDetail?.restaurant.assessment.goodHygiene}
+                  </div>
                 </div>
                 <div className='grid place-items-center'>
                   <ThumbDownAltOutlinedIcon
                     sx={{ color: '#FF4500' }}
                     fontSize='medium'
                   />
-                  <div className='font-medium text-sm'>8</div>
+                  <div className='font-medium text-sm'>
+                    {RestaurantDetail?.restaurant.assessment.badHygiene}
+                  </div>
                 </div>
               </div>
             </div>
@@ -412,14 +420,18 @@ const Review = () => {
                     sx={{ color: '#1E90FF' }}
                     fontSize='medium'
                   />
-                  <div className='font-medium text-sm'>1</div>
+                  <div className='font-medium text-sm'>
+                    {RestaurantDetail?.restaurant.assessment.kindness}
+                  </div>
                 </div>
                 <div className='grid place-items-center'>
                   <ThumbDownAltOutlinedIcon
                     sx={{ color: '#FF4500' }}
                     fontSize='medium'
                   />
-                  <div className='font-medium text-sm'>0</div>
+                  <div className='font-medium text-sm'>
+                    {RestaurantDetail?.restaurant.assessment.unKindness}
+                  </div>
                 </div>
               </div>
             </div>
