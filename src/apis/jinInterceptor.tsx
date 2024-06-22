@@ -46,11 +46,7 @@ jinInterceptor.interceptors.response.use(
           params: {
             refreshToken: refreshToken
           },
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Allow-Control-Allow-Credentials': true
-          }
+          headers: headerConfig
         })
         .then((res) => {
           if (res.status === 200) {

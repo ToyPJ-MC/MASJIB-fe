@@ -10,19 +10,12 @@ import {
 } from '../types';
 import { API_URL } from '../Constants/Constants';
 import { getCookie, removeCookie, setCookie } from '../util/Cookie';
+import jinInterceptor from './jinInterceptor';
 const headerConfig = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Credentials': true
 };
-const jinInterceptor = axios.create({
-  baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Allow-Control-Allow-Credentials': true
-  }
-});
 const width = window.innerWidth;
 export const BlogSearchAPI = async (
   search: string,
@@ -109,7 +102,7 @@ export const LoginAPI = async (refreshtoken: string, nickname: string) => {
 };
 
 export const LogoutAPI = async (setLogout: SetterOrUpdater<boolean>) => {
-  await axios
+  await jinInterceptor
     .post(
       API_URL + '/oauth/logout',
       {},
@@ -226,7 +219,7 @@ export const ServerStatusAPI = async (setStatus: SetterOrUpdater<string>) => {
     });
 };
 export const NicknameAPI = async (setNickname: SetterOrUpdater<string>) => {
-  await axios
+  await jinInterceptor
     .get(API_URL + '/members/info', {
       headers: {
         ...headerConfig,
@@ -248,7 +241,7 @@ export const NicknameChangeAPI = async (
   nickname: string,
   setNicknameStatus: SetterOrUpdater<number>
 ) => {
-  await axios
+  await jinInterceptor
     .post(
       API_URL + `/members/${nickname}`,
       { nickname: nickname },
@@ -279,7 +272,7 @@ export const WriteReviewAPI = async (
   kindness: string,
   files: File[]
 ) => {
-  await axios
+  await jinInterceptor
     .post(
       API_URL + '/review',
       {
@@ -312,7 +305,7 @@ export const WriteReviewAPI = async (
 export const MemberReviewAPI = async (
   setMemberReview: SetterOrUpdater<MemberReviewListType>
 ) => {
-  await axios
+  await jinInterceptor
     .get(API_URL + '/review', {
       headers: {
         ...headerConfig,
@@ -328,7 +321,7 @@ export const MemberReviewAPI = async (
     });
 };
 export const DeleteMemberReviewAPI = async (reviewId: number) => {
-  await axios
+  await jinInterceptor
     .delete(API_URL + '/review', {
       params: {
         ids: reviewId

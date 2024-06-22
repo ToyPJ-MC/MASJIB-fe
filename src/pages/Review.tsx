@@ -109,6 +109,22 @@ const Review = () => {
       setRestaurantDetail
     );
   }, []);
+  const TotalRating =
+    Math.ceil(Number(RestaurantDetail?.totalRating) * 10) / 10;
+  const fivestart = RestaurantDetail?.restaurant.rating.five ?? 0;
+  const fourstart =
+    (RestaurantDetail?.restaurant.rating.four ?? 0) +
+    (RestaurantDetail?.restaurant.rating.fourHalf ?? 0);
+  const threestart =
+    (RestaurantDetail?.restaurant.rating.three ?? 0) +
+    (RestaurantDetail?.restaurant.rating.threeHalf ?? 0);
+  const twostart =
+    (RestaurantDetail?.restaurant.rating.two ?? 0) +
+    (RestaurantDetail?.restaurant.rating.twoHalf ?? 0);
+  const onestart =
+    (RestaurantDetail?.restaurant.rating.one ?? 0) +
+    (RestaurantDetail?.restaurant.rating.oneHalf ?? 0);
+  const zerostart = RestaurantDetail?.restaurant.rating.zero ?? 0;
   return (
     <>
       {open ? <Write /> : null}
@@ -142,7 +158,7 @@ const Review = () => {
             <div className='w-fit grid items-center'>
               <Rating
                 name='half-rating'
-                defaultValue={3.5}
+                value={TotalRating}
                 precision={0.5}
                 readOnly
                 size='large'
@@ -151,8 +167,8 @@ const Review = () => {
                 }
               />
             </div>
-            <div className='text-sm font-medium grid items-center text-white'>
-              3.5 (167reviews)
+            <div className='text-md font-medium grid items-center text-white'>
+              {RestaurantDetail?.totalRating}
             </div>
           </div>
           <div className='text-sm font-medium grid items-center text-white mt-2'>
@@ -233,7 +249,7 @@ const Review = () => {
               <div className='grid place-items-center'>
                 <Rating
                   name='half-rating'
-                  defaultValue={3.5}
+                  value={TotalRating}
                   precision={0.5}
                   readOnly
                   size='large'
@@ -243,8 +259,10 @@ const Review = () => {
                 />
               </div>
               <div className='grid grid-cols-2 place-items-center mt-2'>
-                <div className='text-xl font-medium text-start'>3.5</div>
-                <div className='text-lg font-normal'>167 Reviews</div>
+                <div className='text-xl font-medium text-start'>
+                  {RestaurantDetail?.totalRating}
+                </div>
+                <div className='text-lg font-normal'>{`${RestaurantDetail?.reviews.length} Reviewes`}</div>
               </div>
             </div>
             <div className='grid grid-rows-5 mt-4 w-full'>
@@ -255,9 +273,8 @@ const Review = () => {
                 <div className='grid items-center'>
                   <Slider
                     aria-label='Five stars'
-                    defaultValue={44}
-                    value={44}
-                    max={100}
+                    value={fivestart}
+                    max={RestaurantDetail?.restaurant.rating.count}
                     min={0}
                     sx={{ color: '#3B82F6' }}
                     componentsProps={{ thumb: { style: { display: 'none' } } }}
@@ -271,9 +288,8 @@ const Review = () => {
                 <div className='grid items-center'>
                   <Slider
                     aria-label='Four stars'
-                    defaultValue={86}
-                    value={86}
-                    max={100}
+                    value={fourstart}
+                    max={RestaurantDetail?.restaurant.rating.count}
                     min={0}
                     sx={{ color: '#3B82F6' }}
                     componentsProps={{ thumb: { style: { display: 'none' } } }}
@@ -287,9 +303,8 @@ const Review = () => {
                 <div className='grid items-center'>
                   <Slider
                     aria-label='Three stars'
-                    defaultValue={50}
-                    value={50}
-                    max={100}
+                    value={threestart}
+                    max={RestaurantDetail?.restaurant.rating.count}
                     min={0}
                     sx={{ color: '#3B82F6' }}
                     componentsProps={{ thumb: { style: { display: 'none' } } }}
@@ -303,9 +318,8 @@ const Review = () => {
                 <div className='grid items-center'>
                   <Slider
                     aria-label='Two stars'
-                    defaultValue={27}
-                    value={27}
-                    max={100}
+                    value={twostart}
+                    max={RestaurantDetail?.restaurant.rating.count}
                     min={0}
                     sx={{ color: '#3B82F6' }}
                     componentsProps={{ thumb: { style: { display: 'none' } } }}
@@ -319,9 +333,8 @@ const Review = () => {
                 <div className='w-full'>
                   <Slider
                     aria-label='One stars'
-                    defaultValue={30}
-                    value={30}
-                    max={100}
+                    value={onestart}
+                    max={RestaurantDetail?.restaurant.rating.count}
                     min={0}
                     sx={{ color: '#3B82F6' }}
                     componentsProps={{ thumb: { style: { display: 'none' } } }}
@@ -335,9 +348,8 @@ const Review = () => {
                 <div className='grid items-center'>
                   <Slider
                     aria-label='Zero stars'
-                    defaultValue={10}
-                    value={10}
-                    max={100}
+                    value={zerostart}
+                    max={RestaurantDetail?.restaurant.rating.count}
                     min={0}
                     sx={{ color: '#3B82F6' }}
                     componentsProps={{ thumb: { style: { display: 'none' } } }}
@@ -447,7 +459,7 @@ const Review = () => {
               </FormControl>
             </div>
           </div>
-          <div>리뷰 리스트</div>
+          <div className='mt-20 ml-8'>리뷰 리스트</div>
         </div>
         <div className='flex justify-center items-center pl-8 pr-8'>
           <div className='w-full'>
