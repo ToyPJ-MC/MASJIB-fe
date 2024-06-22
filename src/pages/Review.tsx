@@ -40,8 +40,8 @@ import ReviewList from '../component/ReviewList';
 const Review = () => {
   const urlparams = new URLSearchParams(location.search);
   const imageUrl = process.env.SERVER_URL;
-  const [sort, setSort] = useState<string>('Newest First');
-  const [sortReview, setSortReview] = useState<string>('Based Review');
+  const [sort, setSort] = useState<string>('newest');
+  const [sortReview, setSortReview] = useState<string>('based');
   const [open, setOpen] = useRecoilState<boolean>(writemodalState);
   const params = {
     restaurantname: urlparams.get('restaurantname'),
@@ -103,8 +103,8 @@ const Review = () => {
   useEffect(() => {
     RestaurantDetailAPI(
       Number(params.shopid),
-      'newest',
-      'based',
+      sort,
+      sortReview,
       1,
       setRestaurantDetail
     );
@@ -422,10 +422,10 @@ const Review = () => {
                   value={sort}
                   onChange={sortChange}
                 >
-                  <MenuItem value={'Newest First'}>Newest First</MenuItem>
-                  <MenuItem value={'Oldest First'}>Oldest First</MenuItem>
-                  <MenuItem value={'Highest Rated'}>Highest Rated</MenuItem>
-                  <MenuItem value={'Lowest Rated'}>Lowest Rated</MenuItem>
+                  <MenuItem value={'newest'}>Newest First</MenuItem>
+                  <MenuItem value={'oldest'}>Oldest First</MenuItem>
+                  <MenuItem value={'highest'}>Highest Rated</MenuItem>
+                  <MenuItem value={'lowest'}>Lowest Rated</MenuItem>
                 </Select>
               </FormControl>
             </div>
@@ -438,17 +438,16 @@ const Review = () => {
                   value={sortReview}
                   onChange={sortReviewChange}
                 >
-                  <MenuItem value={'Based Review'}>Based Review</MenuItem>
-                  <MenuItem value={'Only Pictures Review'}>
+                  <MenuItem value={'based'}>Based Review</MenuItem>
+                  <MenuItem value={'onlyPictures'}>
                     Only Pictures Review
                   </MenuItem>
-                  <MenuItem value={'Only Writing Review'}>
-                    Only Writing Review
-                  </MenuItem>
+                  <MenuItem value={'onlyText'}>Only Writing Review</MenuItem>
                 </Select>
               </FormControl>
             </div>
           </div>
+          <div>리뷰 리스트</div>
         </div>
         <div className='flex justify-center items-center pl-8 pr-8'>
           <div className='w-full'>
