@@ -435,3 +435,19 @@ export const SearchAPI = async (
       console.log(err);
     });
 };
+export const RestaurantImagesAPI = async (
+  shopId: number,
+  setImages: SetterOrUpdater<string[]>
+) => {
+  await axios
+    .get(API_URL + `/shop/${shopId}/images`, {
+      headers: headerConfig
+    })
+    .then((res) => {
+      console.log(res);
+      setImages(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}

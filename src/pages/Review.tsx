@@ -29,7 +29,11 @@ import {
 } from '../state/atom';
 import Write from '../component/Write';
 import '../styles/global.css';
-import { MemberReviewAPI, RestaurantDetailAPI } from '../apis/server';
+import {
+  MemberReviewAPI,
+  RestaurantDetailAPI,
+  RestaurantImagesAPI
+} from '../apis/server';
 import { getCookie, removeCookie } from '../util/Cookie';
 import { MemberReviewListType, RestaurantDetailType } from '../types';
 import toast from 'react-hot-toast';
@@ -52,48 +56,20 @@ const Review = () => {
   const sortReviewChange = (event: SelectChangeEvent) => {
     setSortReview(event.target.value as string);
   };
-  const data = [
-    {
-      id: 1,
-      imgAddress: yami
-    },
-    {
-      id: 2,
-      imgAddress: rest
-    },
-    {
-      id: 3,
-      imgAddress: rest
-    },
-    {
-      id: 4,
-      imgAddress: rest
-    },
-    {
-      id: 5,
-      imgAddress: yami
-    },
-    {
-      id: 6,
-      imgAddress: rest
-    },
-    {
-      id: 7,
-      imgAddress: yami
-    },
-    {
-      id: 8,
-      imgAddress: rest
-    }
-  ];
+  //#region restaurant images
+  const [imagesList, setImagesList] = useState<string[]>([]);
+  useEffect(() => {
+    RestaurantImagesAPI(Number(params.shopid), setImagesList);
+  }, []);
   const chunkArray = (arr: any, size: number) => {
     const imageList = [];
-    for (let i = 0; i < data.length; i += size) {
+    for (let i = 0; i < imagesList.length; i += size) {
       imageList.push(arr.slice(i, i + size));
     }
     return imageList;
   };
-  const imageList = chunkArray(data, 2);
+  const imageList = chunkArray(imagesList, 2);
+  //#endregion
   const WriteReview = () => {
     if (getCookie('access_token') !== undefined) {
       setOpen(true);
