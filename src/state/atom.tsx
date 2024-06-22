@@ -90,9 +90,9 @@ const MemberReviewListState = atom<MemberReviewListType>({
   key: 'MemberReviewListState',
   default: []
 });
-const RestaurantReviewListState = atom<RestaurantDetailType>({
+const RestaurantReviewListState = atom<RestaurantDetailType | null>({
   key: 'RestaurantReviewListState',
-  default: []
+  default: null
 });
 const SearchResultState = atom<SearchResultType>({
   key: 'SearchResultState',

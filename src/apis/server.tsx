@@ -347,7 +347,7 @@ export const RestaurantDetailAPI = async (
   sortType: string,
   reviewType: string,
   page: number,
-  setDetail: SetterOrUpdater<RestaurantDetailType>
+  setDetail: SetterOrUpdater<RestaurantDetailType | null>
 ) => {
   await axios
     .get(API_URL + `/shop/${shopId}`, {
@@ -358,59 +358,60 @@ export const RestaurantDetailAPI = async (
       },
       headers: headerConfig
     })
-    .then((res) => {
-      console.log(res);
-      setDetail([]);
-      Object.values(res.data).map((item: any) => {
-        setDetail((prev) => ({
-          ...prev,
-          shopId: item.shopId,
-          shopName: item.name,
-          address: item.address,
-          x: item.x,
-          y: item.y,
-          kind: item.kind,
-          status: item.status,
-          image: item.image,
-          recentReview: item.recentReview,
-          reviewCount: item.reviewCount,
-          followCount: item.followCount,
-          totalRating: item.totalRating,
+    .then((response) => {
+      console.log(response);
+      const data = response.data;
+      const restaurantDetail: RestaurantDetailType = {
+        restaurant: {
+          id: data[0].id,
+          name: data[0].name,
+          address: data[0].address,
+          x: data[0].x,
+          y: data[0].y,
+          status: data[0].status,
+          reviewCount: data[0].reviewCount,
+          followCount: data[0].followCount,
+          kind: data[0].kind,
           rating: {
-            five: item.rating.five,
-            fourHalf: item.rating.fourHalf,
-            four: item.rating.four,
-            threeHalf: item.rating.threeHalf,
-            three: item.rating.three,
-            twoHalf: item.rating.twoHalf,
-            two: item.rating.two,
-            oneHalf: item.rating.oneHalf,
-            one: item.rating.one,
-            half: item.rating.half,
-            zero: item.rating.zero,
-            count: item.rating.count
+            five: data[0].rating.five,
+            fourHalf: data[0].rating.fourHalf,
+            four: data[0].rating.four,
+            threeHalf: data[0].rating.threeHalf,
+            three: data[0].rating.three,
+            twoHalf: data[0].rating.twoHalf,
+            two: data[0].rating.two,
+            oneHalf: data[0].rating.oneHalf,
+            one: data[0].rating.one,
+            half: data[0].rating.half,
+            zero: data[0].rating.zero,
+            count: data[0].rating.count
           },
           assessment: {
-            goodTaste: item.assessment.goodTaste,
-            badTaste: item.assessment.badTaste,
-            goodHygiene: item.assessment.goodHygiene,
-            badHygiene: item.assessment.badHygiene,
-            kindness: item.assessment.kindness,
-            unKindness: item.assessment.unKindness
+            goodTaste: data[0].assessment.goodTaste,
+            badTaste: data[0].assessment.badTaste,
+            goodHygiene: data[0].assessment.goodHygiene,
+            badHygiene: data[0].assessment.badHygiene,
+            kindness: data[0].assessment.kindness,
+            unKindness: data[0].assessment.unKindness
+          }
+        },
+        shopImages: data[1].shop_images,
+        reviews: data[2].map((item: any) => ({
+          review: {
+            id: item.review.id,
+            comment: item.review.comment,
+            createTime: item.review.createTime,
+            rating: item.review.rating,
+            taste: item.review.taste,
+            hygiene: item.review.hygiene,
+            kindness: item.review.kindness
           },
-          reviews: item.review.map((reviewItem: any) => ({
-            id: reviewItem.id,
-            comment: reviewItem.comment,
-            createTime: reviewItem.createTime,
-            rating: reviewItem.rating,
-            taste: reviewItem.taste,
-            hygiene: reviewItem.hygiene,
-            kindness: reviewItem.kindness
-          })),
-          shop_images: item.shop_images,
-          totalPage: item.totalPage
-        }));
-      });
+          imagePath: item.imagePath
+        })),
+        totalPage: data[3].totalPage,
+        totalRating: data[4].totalRating
+      };
+      setDetail(restaurantDetail);
     })
     .catch((err) => {
       console.log(err);
@@ -444,10 +445,10 @@ export const RestaurantImagesAPI = async (
       headers: headerConfig
     })
     .then((res) => {
-      console.log(res);
+      //console.log(res);
       setImages(res.data);
     })
     .catch((err) => {
       console.log(err);
     });
-}
+};

@@ -49,53 +49,66 @@ type MemberReviewListType = {
   createTime: string;
   paths: string[]; // image
 }[];
-type RestaurantDetailType = {
-  shopId: number;
-  shopName: string;
-  address: string;
+type RatingType = {
+  five: number;
+  fourHalf: number;
+  four: number;
+  threeHalf: number;
+  three: number;
+  twoHalf: number;
+  two: number;
+  oneHalf: number;
+  one: number;
+  half: number;
+  zero: number;
+  count: number;
+};
+
+type AssessmentType = {
+  goodTaste: number;
+  badTaste: number;
+  goodHygiene: number;
+  badHygiene: number;
+  kindness: number;
+  unKindness: number;
+};
+
+type RestaurantType = {
+  id: number;
+  name: string;
   x: number;
   y: number;
-  kind: string;
+  address: string;
   status: string;
-  image: string;
-  recentReview: string;
   reviewCount: number;
   followCount: number;
-  totalRating: number;
-  rating: {
-    five: number;
-    fourHalf: number;
-    four: number;
-    threeHalf: number;
-    three: number;
-    twoHalf: number;
-    two: number;
-    oneHalf: number;
-    one: number;
-    half: number;
-    zero: number;
-    count: number;
-  };
-  assessment: {
-    goodTaste: number;
-    badTaste: number;
-    goodHygiene: number;
-    badHygiene: number;
-    kindness: number;
-    unKindness: number;
-  };
-  reviews: {
-    id: number;
-    comment: string;
-    createTime: string;
-    rating: number;
-    taste: string;
-    hygiene: string;
-    kindness: string;
-  }[];
-  shop_images: [];
+  kind: string;
+  rating: RatingType;
+  assessment: AssessmentType;
+};
+
+type ReviewType = {
+  id: number;
+  comment: string;
+  createTime: string;
+  rating: number;
+  taste: string;
+  hygiene: string;
+  kindness: string;
+};
+
+type ReviewWithImageType = {
+  review: ReviewType;
+  imagePath: string[];
+};
+
+type RestaurantDetailType = {
+  restaurant: RestaurantType;
+  shopImages: string[];
+  reviews: ReviewWithImageType[];
   totalPage: number;
-}[];
+  totalRating: number;
+};
 type SearchResultType = {
   id: number;
   name: string;
@@ -111,5 +124,10 @@ export type {
   GeolocationType,
   MemberReviewListType,
   RestaurantDetailType,
-  SearchResultType
+  SearchResultType,
+  RatingType,
+  AssessmentType,
+  RestaurantType,
+  ReviewType,
+  ReviewWithImageType
 };

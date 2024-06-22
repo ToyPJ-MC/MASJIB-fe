@@ -40,12 +40,12 @@ import toast from 'react-hot-toast';
 import ReviewList from '../component/ReviewList';
 const Review = () => {
   const urlparams = new URLSearchParams(location.search);
+  const imageUrl = process.env.SERVER_URL;
   const [sort, setSort] = useState<string>('Newest First');
   const [sortReview, setSortReview] = useState<string>('Based Review');
   const [open, setOpen] = useRecoilState<boolean>(writemodalState);
   const params = {
     restaurantname: urlparams.get('restaurantname'),
-    address: urlparams.get('address'),
     shopid: urlparams.get('shopid'),
     x: urlparams.get('x'),
     y: urlparams.get('y')
@@ -61,14 +61,6 @@ const Review = () => {
   useEffect(() => {
     RestaurantImagesAPI(Number(params.shopid), setImagesList);
   }, []);
-  const chunkArray = (arr: any, size: number) => {
-    const imageList = [];
-    for (let i = 0; i < imagesList.length; i += size) {
-      imageList.push(arr.slice(i, i + size));
-    }
-    return imageList;
-  };
-  const imageList = chunkArray(imagesList, 2);
   //#endregion
   const WriteReview = () => {
     if (getCookie('access_token') !== undefined) {
@@ -82,7 +74,7 @@ const Review = () => {
     MemberReviewListState
   );
   const [RestaurantDetail, setRestaurantDetail] =
-    useRecoilState<RestaurantDetailType>(RestaurantReviewListState);
+    useRecoilState<RestaurantDetailType | null>(RestaurantReviewListState);
   useEffect(() => {
     if (getCookie('access_token') !== undefined) {
       MemberReviewAPI(setMemberReview);
@@ -106,6 +98,7 @@ const Review = () => {
       setRestaurantDetail
     );
   }, []);
+  console.log(RestaurantDetail);
   return (
     <>
       {open ? <Write /> : null}
@@ -116,22 +109,18 @@ const Review = () => {
           navButtonsAlwaysVisible
           indicators={false}
         >
-          {imageList.map((item, index) => {
-            return (
-              <div key={index} className='grid grid-cols-2 w-full h-80'>
-                {item.map((item: any) => {
-                  return (
-                    <img
-                      src={item.imgAddress}
-                      alt={item.imgAddress}
-                      className='w-screen h-80 brightness-[0.7]'
-                      key={item.id}
-                    />
-                  );
-                })}
-              </div>
-            );
-          })}
+          {imagesList.length === 0
+            ? null
+            : imagesList.map((item, index) => (
+                <div className='grid grid-cols-2 w-full h-80'>
+                  <img
+                    src={imageUrl + '/' + item}
+                    className='w-screen h-80 brightness-[0.7]'
+                    key={index}
+                    alt={`image-${index}`}
+                  />
+                </div>
+              ))}
         </Carousel>
         <div className='z-10 l absolute bottom-14 left-32'>
           <div className='font-extrabold text-white text-3xl'>
@@ -155,7 +144,7 @@ const Review = () => {
             </div>
           </div>
           <div className='text-sm font-medium grid items-center text-white mt-2'>
-            {params.address}
+            {RestaurantDetail?.restaurant.address}
           </div>
         </div>
       </div>
