@@ -131,10 +131,10 @@ const Write = () => {
                   <IconButton
                     color='primary'
                     onClick={() => {
-                      setTaste('goodHygiene');
+                      setTaste('goodTaste');
                     }}
                   >
-                    {taste === 'goodHygiene' ? (
+                    {taste === 'goodTaste' ? (
                       <ThumbUpIcon />
                     ) : (
                       <ThumbUpAltOutlinedIcon />
@@ -178,10 +178,10 @@ const Write = () => {
                   <IconButton
                     sx={{ color: '#FF4500' }}
                     onClick={() => {
-                      setHygiene('goodHygiene');
+                      setHygiene('badHygiene');
                     }}
                   >
-                    {hygiene === 'goodHygiene' ? (
+                    {hygiene === 'badHygiene' ? (
                       <ThumbDownIcon />
                     ) : (
                       <ThumbDownAltOutlinedIcon />
